@@ -1,396 +1,583 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>유앤아이 김포점 · AI 검색 워크스페이스</title>
+<title>유앤아이 김포점 · AI 검색 트래킹</title>
 <style>
   :root {
-    --bg: #FFFFFF; --sbg: #F7F6F3; --ink: #37352F; --muted: #787774;
-    --line: #EDECE9; --hover: #EFEFEE; --callout: #F1F1EF; --card: #FFFFFF;
-    --blue: #2383E2; --blue-soft: #E7F3F8;
-    --ok: #2F7D51; --ok-bg: #EDF3EC; --part: #A87A1C; --part-bg: #FBF3DB; --miss: #B3403A; --miss-bg: #FDEBEC;
-    --shadow: 0 1px 2px rgba(15,15,15,.06);
+    --bg: #F5F5F3; --surface: #FFFFFF; --inset: #FAFAF9;
+    --ink: #17181A; --muted: #6B6F76; --faint: #9AA0A8;
+    --line: #E8E8E6; --line2: #DEDFDC;
+    --cta: #17181A; --cta-ink: #FFFFFF;
+    --ok: #0E7A46; --ok-bg: #E9F4EE;
+    --part: #96690A; --part-bg: #FAF1D9;
+    --off: #6B6F76; --off-bg: #EFEFED;
+    --warn: #C2413A; --warn-bg: #FAECEA;
+    --wash: rgba(23,24,26,.035);
+    --shadow: 0 1px 2px rgba(20,20,22,.05), 0 4px 16px rgba(20,20,22,.04);
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #191919; --sbg: #202020; --ink: #D4D4D4; --muted: #9B9B9B;
-      --line: #2F2F2F; --hover: #2C2C2C; --callout: #252525; --card: #202020;
-      --blue: #529CCA; --blue-soft: #253945;
-      --ok: #7DC79A; --ok-bg: #243B2E; --part: #D9B15C; --part-bg: #3A331E; --miss: #E08983; --miss-bg: #3E2A29;
+      --bg: #131416; --surface: #1C1D20; --inset: #17181B;
+      --ink: #ECEDEF; --muted: #9BA0A8; --faint: #6F747C;
+      --line: #2A2C30; --line2: #34363B;
+      --cta: #ECEDEF; --cta-ink: #17181A;
+      --ok: #5FC08D; --ok-bg: #1F3129;
+      --part: #D8AE55; --part-bg: #35301F;
+      --off: #9BA0A8; --off-bg: #26282C;
+      --warn: #E28680; --warn-bg: #382524;
+      --wash: rgba(255,255,255,.045);
       --shadow: none;
     }
   }
   :root[data-theme="dark"] {
-    --bg: #191919; --sbg: #202020; --ink: #D4D4D4; --muted: #9B9B9B;
-    --line: #2F2F2F; --hover: #2C2C2C; --callout: #252525; --card: #202020;
-    --blue: #529CCA; --blue-soft: #253945;
-    --ok: #7DC79A; --ok-bg: #243B2E; --part: #D9B15C; --part-bg: #3A331E; --miss: #E08983; --miss-bg: #3E2A29;
+    --bg: #131416; --surface: #1C1D20; --inset: #17181B;
+    --ink: #ECEDEF; --muted: #9BA0A8; --faint: #6F747C;
+    --line: #2A2C30; --line2: #34363B;
+    --cta: #ECEDEF; --cta-ink: #17181A;
+    --ok: #5FC08D; --ok-bg: #1F3129;
+    --part: #D8AE55; --part-bg: #35301F;
+    --off: #9BA0A8; --off-bg: #26282C;
+    --warn: #E28680; --warn-bg: #382524;
+    --wash: rgba(255,255,255,.045);
     --shadow: none;
   }
   :root[data-theme="light"] {
-    --bg: #FFFFFF; --sbg: #F7F6F3; --ink: #37352F; --muted: #787774;
-    --line: #EDECE9; --hover: #EFEFEE; --callout: #F1F1EF; --card: #FFFFFF;
-    --blue: #2383E2; --blue-soft: #E7F3F8;
-    --ok: #2F7D51; --ok-bg: #EDF3EC; --part: #A87A1C; --part-bg: #FBF3DB; --miss: #B3403A; --miss-bg: #FDEBEC;
-    --shadow: 0 1px 2px rgba(15,15,15,.06);
+    --bg: #F5F5F3; --surface: #FFFFFF; --inset: #FAFAF9;
+    --ink: #17181A; --muted: #6B6F76; --faint: #9AA0A8;
+    --line: #E8E8E6; --line2: #DEDFDC;
+    --cta: #17181A; --cta-ink: #FFFFFF;
+    --ok: #0E7A46; --ok-bg: #E9F4EE;
+    --part: #96690A; --part-bg: #FAF1D9;
+    --off: #6B6F76; --off-bg: #EFEFED;
+    --warn: #C2413A; --warn-bg: #FAECEA;
+    --wash: rgba(23,24,26,.035);
+    --shadow: 0 1px 2px rgba(20,20,22,.05), 0 4px 16px rgba(20,20,22,.04);
   }
 
   * { box-sizing: border-box; }
+  html { color-scheme: light dark; }
   body {
     margin: 0; background: var(--bg); color: var(--ink);
     font-family: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", -apple-system, sans-serif;
-    line-height: 1.6; -webkit-font-smoothing: antialiased;
+    font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased;
   }
+  .num, td.mono, .matrix th { font-variant-numeric: tabular-nums; }
+
   .app { display: flex; min-height: 100vh; }
 
-  /* ---------- sidebar ---------- */
+  /* ================= sidebar ================= */
   aside {
-    width: 250px; flex-shrink: 0; background: var(--sbg); border-right: 1px solid var(--line);
-    padding: 14px 8px; position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    width: 240px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--line);
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    display: flex; flex-direction: column; padding: 20px 12px 14px;
   }
-  .ws { display: flex; align-items: center; gap: 8px; padding: 6px 10px; margin-bottom: 12px; font-weight: 700; font-size: 14px; }
-  .ws .ic { font-size: 18px; }
-  .navlabel { font-size: 11.5px; font-weight: 600; color: var(--muted); padding: 10px 10px 4px; letter-spacing: .03em; }
-  .navitem {
-    display: flex; align-items: center; gap: 8px; width: 100%;
-    padding: 5px 10px; border: 0; background: none; color: var(--ink);
-    font: inherit; font-size: 14px; border-radius: 5px; cursor: pointer; text-align: left;
+  .brand { padding: 2px 10px 16px; }
+  .brand .nm { font-size: 14.5px; font-weight: 700; letter-spacing: -.01em; }
+  .brand .sub { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
+  .grp { font-size: 11px; font-weight: 600; color: var(--faint); letter-spacing: .06em; padding: 16px 10px 5px; }
+  .nav {
+    display: flex; align-items: center; gap: 9px; width: 100%;
+    height: 33px; padding: 0 10px; border: 0; background: none; color: var(--muted);
+    font: inherit; font-size: 13.5px; border-radius: 7px; cursor: pointer; text-align: left;
   }
-  .navitem:hover { background: var(--hover); }
-  .navitem.active { background: var(--hover); font-weight: 700; }
-  .navitem .no { font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; width: 18px; }
-  .navitem .ic { width: 20px; text-align: center; }
+  .nav:hover { background: var(--inset); color: var(--ink); }
+  .nav.active { background: var(--off-bg); color: var(--ink); font-weight: 700; }
+  .nav svg { width: 15px; height: 15px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .nav .bdg { margin-left: auto; font-size: 10.5px; font-weight: 600; color: var(--faint); }
+  .sig { margin-top: auto; border-top: 1px solid var(--line); padding: 12px 10px 2px; }
+  .sig .lbl { font-size: 10.5px; font-weight: 600; color: var(--faint); letter-spacing: .05em; margin-bottom: 7px; }
+  .sig .leds { display: flex; gap: 7px; }
+  .sig .led { width: 8px; height: 8px; border-radius: 999px; background: var(--off-bg); }
 
-  /* ---------- main ---------- */
+  /* ================= main ================= */
   main { flex: 1; min-width: 0; }
-  .crumb {
-    position: sticky; top: 0; background: var(--bg); z-index: 5;
-    padding: 10px 24px; font-size: 13.5px; color: var(--muted);
-    border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 6px;
+  .topbar {
+    position: sticky; top: 0; z-index: 6; background: var(--bg);
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 28px 12px; border-bottom: 1px solid var(--line);
   }
-  .content { max-width: 980px; margin: 0 auto; padding: 36px 32px 120px; }
+  .topbar h1 { font-size: 16.5px; font-weight: 700; margin: 0; letter-spacing: -.01em; }
+  .topbar .right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .chip {
+    font-size: 11.5px; font-weight: 600; color: var(--muted);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px;
+  }
+  .content { max-width: 1060px; margin: 0 auto; padding: 26px 28px 110px; }
 
   .page { display: none; }
   .page.active { display: block; }
-  .pageicon { font-size: 52px; line-height: 1; margin-bottom: 8px; }
-  h1 { font-size: 30px; font-weight: 800; margin: 0 0 6px; letter-spacing: -.01em; text-wrap: balance; }
-  .pagesub { color: var(--muted); margin: 0 0 24px; font-size: 15px; max-width: 64ch; }
-  h2 { font-size: 19px; font-weight: 700; margin: 36px 0 10px; }
-  h3 { font-size: 15.5px; font-weight: 700; margin: 20px 0 6px; }
-  hr { border: 0; border-top: 1px solid var(--line); margin: 28px 0; }
+  .desc { color: var(--muted); font-size: 13.5px; margin: 0 0 20px; max-width: 70ch; }
+  h2 { font-size: 15.5px; font-weight: 700; margin: 30px 0 10px; letter-spacing: -.01em; }
+  h2 small { font-weight: 500; color: var(--faint); font-size: 11.5px; margin-left: 8px; }
 
-  .callout { background: var(--callout); border-radius: 6px; padding: 14px 16px; display: flex; gap: 12px; font-size: 14px; margin: 16px 0; }
-  .callout .ic { font-size: 18px; line-height: 1.5; }
-  .callout p { margin: 0; }
-  .callout.blue { background: var(--blue-soft); }
+  /* ================= shared surfaces ================= */
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .strip { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .strip .cell { padding: 18px 22px 16px; border-right: 1px solid var(--line); min-width: 0; }
+  .strip .cell:last-child { border-right: 0; }
+  .cell .k { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: .05em; }
+  .cell .v { font-size: 34px; font-weight: 700; letter-spacing: -.02em; line-height: 1.25; margin-top: 2px; }
+  .cell .v .unit { font-size: 15px; font-weight: 600; color: var(--muted); margin-left: 1px; }
+  .cell .d { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+  .cell .delta { font-size: 11.5px; font-weight: 700; margin-left: 7px; vertical-align: 4px; }
+  .delta.up { color: var(--ok); } .delta.down { color: var(--warn); } .delta.flat { color: var(--faint); }
+  .microbar { position: relative; height: 4px; border-radius: 999px; background: var(--off-bg); margin-top: 9px; overflow: visible; }
+  .microbar .fill { height: 100%; border-radius: 999px; background: var(--ink); transition: width .3s; }
+  .microbar .tick { position: absolute; top: -2px; width: 2px; height: 8px; background: var(--faint); border-radius: 1px; }
 
-  /* tiles */
-  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 16px 0; }
-  .tile { border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px 12px; background: var(--card); box-shadow: var(--shadow); }
-  .tile .k { font-size: 12px; color: var(--muted); font-weight: 600; }
-  .tile .v { font-size: 28px; font-weight: 800; font-variant-numeric: tabular-nums; }
-  .tile .d { font-size: 12px; color: var(--muted); }
-  .v.ok { color: var(--ok); } .v.part { color: var(--part); } .v.miss { color: var(--miss); } .v.blue { color: var(--blue); }
-
-  /* ---------- tracking matrix ---------- */
-  .legend { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; font-size: 12.5px; color: var(--muted); margin: 10px 0 18px; }
-  .legend .li { display: inline-flex; align-items: center; gap: 6px; }
-  .dot { width: 10px; height: 10px; border-radius: 999px; display: inline-block; flex-shrink: 0; }
-  .dot.ring { background: transparent !important; border: 2px solid currentColor; width: 8px; height: 8px; }
-  .dot.dash { width: 8px; height: 2px; border-radius: 1px; background: var(--line); }
-
-  .kwcard {
-    border: 1px solid var(--line); border-radius: 10px; background: var(--card);
-    box-shadow: var(--shadow); padding: 16px 18px 14px; margin: 14px 0;
-  }
-  .kwhead { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 12px; }
-  .kwhead .q { font-weight: 700; font-size: 14.5px; }
-  .kwhead .base { font-size: 11.5px; color: var(--muted); }
-  .kwhead .spacer { flex: 1; }
-  .kwhead .btn { font-size: 12px; padding: 4px 12px; }
-  .matrixwrap { overflow-x: auto; }
-  .matrix { border-collapse: collapse; font-size: 11px; color: var(--muted); }
-  .matrix th { font-weight: 600; padding: 2px 4px; text-align: center; white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .matrix td { padding: 3px 4px; text-align: center; }
-  .matrix td.eng { text-align: left; padding-right: 12px; white-space: nowrap; font-size: 12px; font-weight: 600; color: var(--ink); }
-  .matrix td.eng .dot { margin-right: 6px; }
-  .matrix .cell { width: 26px; }
-  .matrix td.today { background: var(--hover); border-radius: 4px; }
-
-  /* table */
-  .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; margin: 14px 0; }
-  table.data { border-collapse: collapse; width: 100%; min-width: 680px; font-size: 13.5px; }
-  table.data th { text-align: left; font-size: 12px; color: var(--muted); font-weight: 600; padding: 9px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; background: var(--sbg); }
-  table.data td { padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
-  table.data tr:last-child td { border-bottom: 0; }
-  td.q { font-weight: 600; white-space: nowrap; }
-  td.who { color: var(--muted); max-width: 330px; }
-  .pill { display: inline-block; font-size: 12px; font-weight: 700; border-radius: 4px; padding: 2px 8px; white-space: nowrap; }
+  .pill { display: inline-block; font-size: 11.5px; font-weight: 700; border-radius: 5px; padding: 2px 8px; white-space: nowrap; }
   .pill.ok { background: var(--ok-bg); color: var(--ok); }
   .pill.part { background: var(--part-bg); color: var(--part); }
-  .pill.miss { background: var(--miss-bg); color: var(--miss); }
-  .cat { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .pill.off { background: var(--off-bg); color: var(--off); }
+  .pill.warn { background: var(--warn-bg); color: var(--warn); }
 
-  /* plan todos */
-  .progress { display: flex; align-items: center; gap: 12px; margin: 14px 0 20px; }
-  .bar { flex: 1; height: 8px; border-radius: 999px; background: var(--hover); overflow: hidden; }
-  .bar > div { height: 100%; background: var(--blue); border-radius: 999px; transition: width .25s; }
-  .progress .n { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .todo { display: grid; grid-template-columns: 24px 1fr; gap: 10px; padding: 10px 10px; border-radius: 6px; cursor: pointer; }
-  .todo:hover { background: var(--hover); }
-  .todo input { width: 16px; height: 16px; margin-top: 4px; accent-color: var(--blue); cursor: pointer; }
-  .todo .t { font-size: 14.5px; font-weight: 600; }
-  .todo.done .t { text-decoration: line-through; color: var(--muted); font-weight: 500; }
-  .todo .d { font-size: 13px; color: var(--muted); }
-  .grouplabel { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: .05em; margin: 22px 0 4px; }
+  .btn {
+    font: inherit; font-size: 13px; font-weight: 600; border-radius: 8px; cursor: pointer;
+    padding: 8px 14px; border: 1px solid var(--line2); background: var(--surface); color: var(--ink);
+  }
+  .btn:hover { background: var(--inset); }
+  .btn.primary { background: var(--cta); border-color: var(--cta); color: var(--cta-ink); }
+  .btn.primary:hover { opacity: .88; }
+  .btn.sm { font-size: 12px; padding: 5px 11px; border-radius: 7px; }
 
-  /* test page */
-  .testbox { border: 1px solid var(--line); border-radius: 8px; padding: 18px; margin: 16px 0; background: var(--card); box-shadow: var(--shadow); }
+  /* dot vocabulary — 색은 데이터에만 */
+  .dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; flex-shrink: 0; }
+  .dot.ring { background: transparent !important; border: 2px solid currentColor; width: 8px; height: 8px; }
+  .dot.dash { width: 9px; height: 2.5px; border-radius: 2px; background: var(--line2); }
+  .dot.none { width: 3px; height: 3px; background: var(--line); }
+
+  /* ================= chart ================= */
+  .chartcard { padding: 20px 22px 14px; }
+  .chartcard .head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 6px; }
+  .bigv { font-size: 44px; font-weight: 700; letter-spacing: -.025em; line-height: 1.1; }
+  .bigv .unit { font-size: 20px; font-weight: 600; color: var(--muted); }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin-left: auto; }
+  .seg button { font: inherit; font-size: 12px; font-weight: 600; color: var(--muted); background: var(--surface); border: 0; padding: 5px 12px; cursor: pointer; }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button.on { background: var(--off-bg); color: var(--ink); }
+  .chartwrap { position: relative; }
+  .chartwrap svg { display: block; width: 100%; height: auto; }
+  .chart-cap { font-size: 11.5px; color: var(--faint); margin-top: 6px; }
+
+  /* ================= tables ================= */
+  .tablewrap { overflow-x: auto; }
+  table.data { border-collapse: collapse; width: 100%; font-size: 13px; }
+  table.data th {
+    text-align: left; font-size: 11px; font-weight: 600; color: var(--faint); letter-spacing: .04em;
+    padding: 10px 16px; border-bottom: 1px solid var(--line); white-space: nowrap;
+  }
+  table.data td { padding: 11px 16px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  table.data tr:last-child td { border-bottom: 0; }
+  table.data tr.rowhover:hover td { background: var(--inset); }
+  td.mono { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .brandchip { display: inline-block; font-size: 12px; font-weight: 600; border: 1px solid var(--line); border-radius: 6px; padding: 3px 9px; margin: 2px 3px 2px 0; color: var(--muted); background: var(--inset); white-space: nowrap; }
+  .brandchip.me { background: var(--cta); border-color: var(--cta); color: var(--cta-ink); font-weight: 700; }
+  .ratebar { display: flex; align-items: center; gap: 10px; min-width: 160px; }
+  .ratebar .track { flex: 1; height: 5px; border-radius: 999px; background: var(--off-bg); overflow: hidden; }
+  .ratebar .fill { height: 100%; border-radius: 999px; background: var(--ink); }
+  .ratebar .pct { font-size: 12px; font-weight: 700; width: 38px; text-align: right; }
+
+  /* ================= prompt matrix ================= */
+  .kwcard { margin: 12px 0; overflow: hidden; }
+  .kwhead { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+  .kwhead .q { font-weight: 700; font-size: 13.5px; letter-spacing: -.005em; }
+  .kwhead .meta { font-size: 11px; color: var(--faint); }
+  .kwhead .spacer { flex: 1; }
+  .matrixwrap { overflow-x: auto; padding: 10px 18px 14px; }
+  .matrix { border-collapse: collapse; font-size: 10.5px; color: var(--faint); width: 100%; }
+  .matrix th { font-weight: 600; padding: 2px 3px 6px; text-align: center; white-space: nowrap; font-family: ui-monospace, "SF Mono", Consolas, monospace; }
+  .matrix th.today { color: var(--ink); font-weight: 700; }
+  .matrix td { padding: 0; text-align: center; height: 26px; }
+  .matrix td.eng {
+    text-align: left; padding-right: 14px; white-space: nowrap; font-size: 11.5px; font-weight: 600; color: var(--muted);
+    position: sticky; left: 0; background: var(--surface); z-index: 1;
+  }
+  .matrix td.eng .dot { width: 6px; height: 6px; margin-right: 7px; }
+  .matrix .cell { min-width: 24px; }
+  .matrix td.today, .matrix th.todaybg { background: var(--wash); }
+  @keyframes ignite { 0% { transform: scale(.4); opacity: .2; } 70% { transform: scale(1.25); } 100% { transform: scale(1); opacity: 1; } }
+  .dot.new { animation: ignite .45s cubic-bezier(.2,.9,.3,1.3); }
+  @media (prefers-reduced-motion: reduce) { .dot.new { animation: none; } }
+
+  /* ================= list rows (콘텐츠 / 인용출처) ================= */
+  .rowitem { display: flex; align-items: center; gap: 14px; padding: 13px 18px; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .rowitem:last-child { border-bottom: 0; }
+  .rowitem:hover { background: var(--inset); }
+  .rowitem .t { font-weight: 600; font-size: 13.5px; }
+  .rowitem .s { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .rowitem .right { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .rowitem .date { font-size: 11.5px; color: var(--faint); }
+
+  /* doc viewer */
+  .docview { padding: 26px 30px 30px; }
+  .docview .back { margin-bottom: 18px; }
+  .docview h3 { font-size: 18px; font-weight: 700; margin: 0 0 4px; }
+  .docview .meta { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+  .docbody { font-size: 14px; line-height: 1.75; max-width: 680px; }
+  .docbody h4 { font-size: 14.5px; font-weight: 700; margin: 22px 0 6px; }
+  .docbody p { margin: 8px 0; }
+  .docbody ul { margin: 8px 0; padding-left: 20px; }
+  .docbody li { margin: 3px 0; }
+  .docbody table { border-collapse: collapse; font-size: 13px; margin: 10px 0; }
+  .docbody th, .docbody td { border: 1px solid var(--line); padding: 6px 12px; text-align: left; }
+  .docbody blockquote { margin: 14px 0; padding: 12px 16px; background: var(--inset); border-left: 3px solid var(--line2); border-radius: 0 8px 8px 0; font-size: 13px; color: var(--muted); }
+  .docbody pre { background: var(--inset); border: 1px solid var(--line); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 12px; line-height: 1.55; }
+
+  /* ================= plan ================= */
+  .progress { display: flex; align-items: center; gap: 12px; margin: 6px 0 18px; }
+  .bar { flex: 1; height: 6px; border-radius: 999px; background: var(--off-bg); overflow: hidden; }
+  .bar > div { height: 100%; background: var(--ink); border-radius: 999px; transition: width .25s; }
+  .progress .n { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+  .todo { display: grid; grid-template-columns: 26px 1fr; gap: 10px; padding: 12px 18px; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .todo:last-child { border-bottom: 0; }
+  .todo:hover { background: var(--inset); }
+  .todo input { width: 16px; height: 16px; margin-top: 3px; accent-color: var(--ink); cursor: pointer; }
+  .todo .t { font-size: 13.5px; font-weight: 600; }
+  .todo.done .t { color: var(--faint); font-weight: 500; text-decoration: line-through; }
+  .todo .d { font-size: 12.5px; color: var(--muted); }
+  .grplabel { font-size: 11px; font-weight: 700; color: var(--faint); letter-spacing: .06em; padding: 18px 18px 6px; }
+
+  /* ================= test page ================= */
+  .testbox { padding: 20px; }
   .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   input[type=text], select {
-    font: inherit; font-size: 14.5px; color: var(--ink); background: var(--bg);
-    border: 1px solid var(--line); border-radius: 6px; padding: 9px 12px;
+    font: inherit; font-size: 14px; color: var(--ink); background: var(--inset);
+    border: 1px solid var(--line2); border-radius: 9px; padding: 10px 13px;
   }
   input[type=text] { flex: 1; min-width: 220px; }
-  input[type=text]:focus, select:focus { outline: 2px solid var(--blue); outline-offset: -1px; }
-  .btn {
-    font: inherit; font-size: 13.5px; font-weight: 600; border-radius: 6px; cursor: pointer;
-    padding: 8px 14px; border: 1px solid var(--line); background: var(--card); color: var(--ink);
-  }
-  .btn:hover { background: var(--hover); }
-  .btn.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
-  .btn.primary:hover { filter: brightness(1.06); }
-  .btn.ok { color: var(--ok); } .btn.part { color: var(--part); } .btn.miss { color: var(--miss); }
+  input[type=text]:focus, select:focus { outline: 2px solid var(--ink); outline-offset: -1px; }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-  .chip {
-    font: inherit; font-size: 12.5px; border-radius: 999px; padding: 4px 12px; cursor: pointer;
-    border: 1px solid var(--line); background: var(--sbg); color: var(--ink);
+  .chipbtn {
+    font: inherit; font-size: 12px; border-radius: 999px; padding: 4px 12px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--surface); color: var(--muted);
   }
-  .chip:hover { background: var(--hover); }
-  .links { display: none; margin-top: 16px; }
+  .chipbtn:hover { border-color: var(--line2); color: var(--ink); }
+  .links { display: none; margin-top: 18px; }
   .links.show { display: block; }
-  .links .qtext { font-size: 14px; background: var(--callout); border-radius: 6px; padding: 10px 14px; margin-bottom: 10px; }
-  .linkrow { display: flex; flex-wrap: wrap; gap: 8px; }
+  .qtext { font-size: 13.5px; background: var(--inset); border: 1px solid var(--line); border-radius: 9px; padding: 10px 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .linkgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
   .extlink {
-    display: inline-flex; align-items: center; gap: 7px; text-decoration: none;
-    font-size: 13.5px; font-weight: 600; color: var(--ink);
-    border: 1px solid var(--line); border-radius: 6px; padding: 8px 14px;
+    display: flex; align-items: center; gap: 9px; text-decoration: none;
+    font-size: 13px; font-weight: 600; color: var(--ink);
+    border: 1px solid var(--line2); border-radius: 9px; padding: 10px 13px; background: var(--surface);
   }
-  .extlink:hover { background: var(--hover); }
-  .record { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line); }
-  .record .lbl { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
-  .logtable td { font-size: 13px; }
-  .del { border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 13px; padding: 2px 6px; border-radius: 4px; }
-  .del:hover { background: var(--miss-bg); color: var(--miss); }
-  .empty { color: var(--muted); font-size: 13.5px; padding: 18px; text-align: center; }
+  .extlink .arr { margin-left: auto; color: var(--faint); font-size: 12px; }
+  .extlink:hover { border-color: var(--eng, var(--ink)); background: color-mix(in srgb, var(--eng, var(--ink)) 6%, var(--surface)); }
+  .record { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--line2); }
+  .record .lbl { font-size: 12.5px; color: var(--muted); margin-bottom: 10px; }
+  .resbtn { display: inline-flex; align-items: center; gap: 8px; }
+  .resbtn .glyph { font-size: 13px; line-height: 1; }
+  .del { border: 0; background: none; color: var(--faint); cursor: pointer; font-size: 13px; padding: 2px 7px; border-radius: 5px; }
+  .del:hover { background: var(--warn-bg); color: var(--warn); }
+  .empty { color: var(--muted); font-size: 13px; padding: 26px 18px; text-align: center; }
 
-  /* docs */
-  .doc { display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 12px 10px; border-radius: 6px; }
-  .doc:hover { background: var(--hover); }
-  .doc .ic { font-size: 18px; }
-  .doc .t { font-weight: 700; font-size: 14.5px; }
-  .doc .d { font-size: 13px; color: var(--muted); }
+  .callout { background: var(--inset); border: 1px solid var(--line); border-left: 3px solid var(--line2); border-radius: 0 10px 10px 0; padding: 13px 17px; font-size: 13px; color: var(--muted); margin: 16px 0; }
+  .callout.crit { border-left-color: var(--warn); }
+  .callout b { color: var(--ink); }
+  .callout .cap { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .07em; color: var(--faint); margin-bottom: 3px; }
+
+  .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 900px) { .cols2 { grid-template-columns: 1fr; } .strip { grid-template-columns: 1fr 1fr; } .strip .cell:nth-child(2) { border-right: 0; } .strip .cell:nth-child(-n+2) { border-bottom: 1px solid var(--line); } }
 
   .toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-    background: var(--ink); color: var(--bg); font-size: 13.5px; font-weight: 600;
-    padding: 10px 18px; border-radius: 8px; opacity: 0; pointer-events: none; transition: opacity .25s; z-index: 50;
+    background: var(--cta); color: var(--cta-ink); font-size: 13px; font-weight: 600;
+    padding: 10px 18px; border-radius: 9px; opacity: 0; pointer-events: none; transition: opacity .25s; z-index: 50;
   }
   .toast.show { opacity: 1; }
 
-  a { color: var(--blue); }
-  :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 4px; }
+  a { color: var(--ink); }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 4px; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
   @media (max-width: 760px) {
     .app { flex-direction: column; }
-    aside { width: 100%; height: auto; position: static; display: flex; overflow-x: auto; padding: 8px; gap: 2px; border-right: 0; border-bottom: 1px solid var(--line); }
-    .ws, .navlabel { display: none; }
-    .navitem { white-space: nowrap; width: auto; }
-    .content { padding: 24px 18px 80px; }
+    aside { width: 100%; height: auto; position: static; flex-direction: row; align-items: center; overflow-x: auto; padding: 8px 10px; gap: 2px; border-right: 0; border-bottom: 1px solid var(--line); }
+    .brand, .grp, .sig { display: none; }
+    .nav { white-space: nowrap; width: auto; }
+    .content { padding: 20px 16px 90px; }
+    .topbar { padding: 12px 16px 10px; }
+    .strip { grid-template-columns: 1fr 1fr; }
   }
 </style>
 
 <div class="app">
-  <aside>
-    <div class="ws"><span class="ic">🏥</span>유앤아이 김포점</div>
-    <div class="navlabel">워크스페이스</div>
-    <button class="navitem active" data-page="home"><span class="ic">📊</span>트래킹 보드</button>
-    <button class="navitem" data-page="p1"><span class="no">01</span><span class="ic">📋</span>기준 측정 결과</button>
-    <button class="navitem" data-page="p2"><span class="no">02</span><span class="ic">🩺</span>왜 안 나올까</button>
-    <button class="navitem" data-page="p3"><span class="no">03</span><span class="ic">🚀</span>실행 플랜</button>
-    <button class="navitem" data-page="p4"><span class="no">04</span><span class="ic">🔍</span>키워드 테스트</button>
-    <button class="navitem" data-page="docs"><span class="ic">✍️</span>콘텐츠 자료</button>
+  <aside id="sidebar">
+    <div class="brand">
+      <div class="nm">유앤아이의원 김포점</div>
+      <div class="sub">AI 검색 트래킹</div>
+    </div>
+    <button class="nav active" data-page="home"><svg viewBox="0 0 16 16"><path d="M2.5 6.5 8 2l5.5 4.5V13a1 1 0 0 1-1 1H9.8v-3.8H6.2V14H3.5a1 1 0 0 1-1-1z"/></svg>홈</button>
+    <div class="grp">분석</div>
+    <button class="nav" data-page="sov"><svg viewBox="0 0 16 16"><path d="M2 13.5h12M2.5 11l3-3.5 2.5 2L13.5 4"/></svg>노출 점유율</button>
+    <button class="nav" data-page="prompts"><svg viewBox="0 0 16 16"><circle cx="4" cy="4" r="1.4"/><circle cx="8" cy="4" r="1.4"/><circle cx="12" cy="4" r="1.4"/><circle cx="4" cy="8" r="1.4"/><circle cx="8" cy="8" r="1.4"/><circle cx="12" cy="8" r="1.4"/><circle cx="4" cy="12" r="1.4"/><circle cx="8" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/></svg>프롬프트<span class="bdg" id="bdgPrompts"></span></button>
+    <button class="nav" data-page="models"><svg viewBox="0 0 16 16"><path d="M2.5 13.5V9M6.2 13.5V5M9.8 13.5V7.5M13.5 13.5V3"/></svg>모델별 현황</button>
+    <button class="nav" data-page="sources"><svg viewBox="0 0 16 16"><path d="M6.5 9.5 9.5 6.5M5 11 3.6 12.4a2.2 2.2 0 0 1-3.1-3.1L3.9 5.9a2.2 2.2 0 0 1 3.1 0M11 5l1.4-1.4a2.2 2.2 0 0 1 3.1 3.1l-3.4 3.4a2.2 2.2 0 0 1-3.1 0" transform="scale(.88) translate(1,1)"/></svg>인용 출처</button>
+    <div class="grp">실행</div>
+    <button class="nav" data-page="test"><svg viewBox="0 0 16 16"><path d="M6 2h4M7 2v4.2L3.2 12a1.6 1.6 0 0 0 1.4 2.5h6.8a1.6 1.6 0 0 0 1.4-2.5L9 6.2V2"/></svg>키워드 테스트</button>
+    <button class="nav" data-page="plan"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2.6"/><path d="M8 2v1.8M8 12.2V14M2 8h1.8M12.2 8H14"/></svg>노출 기획<span class="bdg" id="bdgPlan"></span></button>
+    <div class="grp">발행</div>
+    <button class="nav" data-page="docs"><svg viewBox="0 0 16 16"><path d="M4 1.8h5.5L13 5.3V13a1.2 1.2 0 0 1-1.2 1.2H4A1.2 1.2 0 0 1 2.8 13V3A1.2 1.2 0 0 1 4 1.8zM9.3 2v3.5H13M5.4 8.2h5.2M5.4 10.8h5.2"/></svg>콘텐츠<span class="bdg" id="bdgDocs"></span></button>
+    <div class="grp">리포트</div>
+    <button class="nav" data-page="report"><svg viewBox="0 0 16 16"><path d="M3 1.8h10a.7.7 0 0 1 .7.7V13a1.2 1.2 0 0 1-1.2 1.2H3.5A1.2 1.2 0 0 1 2.3 13V2.5a.7.7 0 0 1 .7-.7zM5.2 5h5.6M5.2 7.6h5.6M5.2 10.2h3.4"/></svg>월간 리포트</button>
+    <div class="grp">계정</div>
+    <button class="nav" data-page="account"><svg viewBox="0 0 16 16"><path d="M3 14V5.5M13 14V5.5M1.8 5.5 3.4 2h9.2l1.6 3.5M1.8 5.5h12.4M6 14v-4h4v4M1.5 14h13"/></svg>브랜드 관리</button>
+    <div class="sig">
+      <div class="lbl">오늘의 신호</div>
+      <div class="leds" id="leds" title="오늘 노출이 기록된 AI만 켜집니다"></div>
+    </div>
   </aside>
 
   <main>
-    <div class="crumb">유앤아이 김포점 / <span id="crumbname">트래킹 보드</span></div>
+    <div class="topbar">
+      <h1 id="pagetitle">홈</h1>
+      <div class="right">
+        <span class="chip num">기준측정 <span id="baseDateChip">07/24</span></span>
+        <button class="btn sm" id="csvBtn2">기록 내보내기</button>
+      </div>
+    </div>
     <div class="content">
 
-      <!-- ============ 트래킹 보드 (메인) ============ -->
+      <!-- ================= 홈 ================= -->
       <section class="page active" id="page-home">
-        <div class="pageicon">📊</div>
-        <h1>AI 검색 트래킹 보드</h1>
-        <p class="pagesub">질의어별로 5개 AI(ChatGPT·Gemini·Perplexity·Grok·구글 AIO)와 네이버에서 유앤아이의원 김포점이 추천되는지를 날짜별 점으로 추적합니다. 04 키워드 테스트에서 결과를 기록하면 여기에 점이 찍힙니다.</p>
+        <p class="desc">유앤아이의원 김포점이 AI 검색(ChatGPT·Gemini·Perplexity·Grok·구글 AI 오버뷰)과 네이버에서 얼마나 추천되는지 추적하고, 노출을 늘리는 실행까지 한 곳에서 관리합니다.</p>
 
-        <div class="tiles">
-          <div class="tile"><div class="k">기준 노출률 (7/24 웹검색)</div><div class="v blue">23%</div><div class="d">11개 키워드 기준</div></div>
-          <div class="tile"><div class="k">내 테스트 기록</div><div class="v" id="statTotal">0</div><div class="d">건</div></div>
-          <div class="tile"><div class="k">내 측정 노출률</div><div class="v blue" id="statRate">–</div><div class="d">노출+부분×0.5</div></div>
-          <div class="tile"><div class="k">실행 플랜</div><div class="v" id="statPlan">0/10</div><div class="d">완료 항목</div></div>
+        <div class="panel strip">
+          <div class="cell">
+            <div class="k">노출 점유율</div>
+            <div class="v num" id="hSov">–</div>
+            <div class="d">기준 23% (7/24 웹검색)<span class="delta" id="hDelta"></span></div>
+            <div class="microbar"><div class="fill" id="hSovBar" style="width:0%"></div><div class="tick" style="left:23%"></div></div>
+          </div>
+          <div class="cell">
+            <div class="k">추적 프롬프트</div>
+            <div class="v num" id="hPrompts">12</div>
+            <div class="d">질의어 기준</div>
+          </div>
+          <div class="cell">
+            <div class="k">테스트 기록</div>
+            <div class="v num" id="hTests">0</div>
+            <div class="d">AI별 기록 누적</div>
+          </div>
+          <div class="cell">
+            <div class="k">노출 기획 진행</div>
+            <div class="v num" id="hPlan">0<span class="unit">/10</span></div>
+            <div class="d">완료 항목</div>
+            <div class="microbar"><div class="fill" id="hPlanBar" style="width:0%"></div></div>
+          </div>
         </div>
 
-        <div class="legend">
-          <span class="li"><span class="dot" style="background:#10A37F"></span>ChatGPT</span>
-          <span class="li"><span class="dot" style="background:#E8A33D"></span>Gemini</span>
-          <span class="li"><span class="dot" style="background:#8B5CF6"></span>Perplexity</span>
-          <span class="li"><span class="dot" style="background:#E24B77"></span>Grok</span>
-          <span class="li"><span class="dot" style="background:#4C8DF6"></span>AIO(구글)</span>
-          <span class="li"><span class="dot" style="background:#03C75A"></span>네이버</span>
-          <span class="li" style="margin-left:8px">●&nbsp;노출</span>
-          <span class="li"><span class="dot ring" style="color:#8B5CF6"></span>부분</span>
-          <span class="li"><span class="dot dash"></span>미노출</span>
+        <h2>노출 점유율 추이</h2>
+        <div class="panel chartcard">
+          <div class="chartwrap" id="homeChart"></div>
+          <div class="chart-cap">노출 점유율 = (노출 1점 + 부분 0.5점) ÷ 해당일 테스트 수. 7/24 기준점은 웹 인용 소스 측정값입니다.</div>
         </div>
 
-        <div id="board"></div>
-
-        <div class="callout"><span class="ic">➕</span><p>새 질의어를 추적하려면 04 키워드 테스트에서 키워드를 입력하고 결과를 한 번 기록하세요. 자동으로 카드가 추가됩니다.</p></div>
+        <div class="cols2" style="margin-top:26px">
+          <div>
+            <h2 style="margin-top:0">최근 테스트</h2>
+            <div class="panel" id="homeRecent"></div>
+          </div>
+          <div>
+            <h2 style="margin-top:0">바로 실행</h2>
+            <div class="panel">
+              <div class="rowitem" data-go="test"><div><div class="t">오늘의 키워드 테스트</div><div class="s">6개 AI에 질문을 던지고 결과를 기록하세요</div></div><div class="right"><span class="date">→</span></div></div>
+              <div class="rowitem" data-go="docs"><div><div class="t">콘텐츠 초안 5건 대기 중</div><div class="s">블로그 원고·템플릿·기술 요청서 — 복사해서 바로 사용</div></div><div class="right"><span class="date">→</span></div></div>
+              <div class="rowitem" data-go="plan"><div><div class="t">노출 기획 체크리스트</div><div class="s">플랫폼 등재·리뷰·블로그 발행 진행 관리</div></div><div class="right"><span class="date">→</span></div></div>
+              <div class="rowitem" data-go="report"><div><div class="t">7월 리포트 보기</div><div class="s">기준 측정 결과와 진단 — 다음 자동 측정 8/1</div></div><div class="right"><span class="date">→</span></div></div>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <!-- ============ 01 기준 측정 ============ -->
-      <section class="page" id="page-p1">
-        <div class="pageicon">📋</div>
-        <h1>01 · 기준 측정 결과</h1>
-        <p class="pagesub">2026년 7월 24일, AI가 답변에 인용하는 웹 소스 기준으로 측정한 결과입니다. 매달 1일 자동 재측정으로 갱신됩니다.</p>
-        <div class="tablewrap">
-          <table class="data">
-            <thead><tr><th>검색 질문</th><th>유형</th><th>결과</th><th>대신 노출되는 곳</th></tr></thead>
-            <tbody>
-              <tr><td class="q">유앤아이의원 김포점</td><td class="cat">브랜드</td><td><span class="pill ok">노출</span></td><td class="who">공식 홈페이지 최상단. 주소·전화·주차 정보 정확</td></tr>
-              <tr><td class="q">김포 레이저 제모 피부과</td><td class="cat">지역+시술</td><td><span class="pill ok">노출</span></td><td class="who">공식 블로그 글("김포 남자 수염 레이저제모") 상위 노출 · 미엘(제모데이), 플랜 함께 노출</td></tr>
-              <tr><td class="q">유앤아이의원 김포점 후기</td><td class="cat">브랜드+후기</td><td><span class="pill part">부분</span></td><td class="who">공식 사이트만. 후기 플랫폼엔 건대점·영등포점 등 타 지점만 등재</td></tr>
-              <tr><td class="q">김포 피부과 추천</td><td class="cat">지역+진료과</td><td><span class="pill miss">미노출</span></td><td class="who">리멤버·미소가인·해날·플랜·미엘 + 닥터나우·모두닥·나만의닥터 리스트</td></tr>
-              <tr><td class="q">김포 울쎄라 잘하는 곳</td><td class="cat">지역+시술</td><td><span class="pill miss">미노출</span></td><td class="who">에버스의원(검단), 리베리의원, 강남언니 이벤트 페이지</td></tr>
-              <tr><td class="q">김포 보톡스 가격</td><td class="cat">지역+시술+가격</td><td><span class="pill miss">미노출</span></td><td class="who">강남언니·모두닥·굿닥 가격 비교, 톡스앤필 체인</td></tr>
-              <tr><td class="q">김포 리프팅 잘하는 피부과</td><td class="cat">지역+시술</td><td><span class="pill miss">미노출</span></td><td class="who">미소가인, 리멤버 (전문의 구성이 근거로 인용)</td></tr>
-              <tr><td class="q">김포 스킨부스터 리쥬란</td><td class="cat">지역+시술</td><td><span class="pill miss">미노출</span></td><td class="who">톡스앤필, 닥터나우 매거진</td></tr>
-              <tr><td class="q">구래동 피부과 추천</td><td class="cat">동네 (소재지)</td><td><span class="pill miss">미노출</span></td><td class="who">리멤버·미엘 + 플랫폼. <strong>병원이 있는 동네인데도 안 나옴</strong></td></tr>
-              <tr><td class="q">운양동 피부과</td><td class="cat">동네</td><td><span class="pill miss">미노출</span></td><td class="who">델타피부과, 리멤버 (똑닥·당근·114 정보 인용)</td></tr>
-              <tr><td class="q">장기동 피부과 보톡스</td><td class="cat">동네+시술</td><td><span class="pill miss">미노출</span></td><td class="who">결과 자체가 빈약 — 선점 기회 키워드</td></tr>
-            </tbody>
+      <!-- ================= 노출 점유율 ================= -->
+      <section class="page" id="page-sov">
+        <p class="desc">잠재 환자의 질문에 대한 AI 답변에서 우리 병원이 언급된 비율입니다. 테스트를 기록할수록 정확해집니다.</p>
+        <div class="panel chartcard">
+          <div class="head">
+            <span class="bigv num" id="sovBig">–<span class="unit">%</span></span>
+            <span class="pill off num" id="sovCount">기록 0건</span>
+            <div class="seg" id="rangeSeg">
+              <button data-range="7">7일</button><button data-range="30">30일</button><button data-range="0" class="on">전체</button>
+            </div>
+          </div>
+          <div class="chartwrap" id="sovChart"></div>
+          <div class="chart-cap">기준선(점선) = 7/24 웹검색 기준 측정 23%. 노출 1점, 부분 0.5점으로 계산합니다.</div>
+        </div>
+
+        <h2>프롬프트별 현황<small>기준측정 + 내 기록 최신값</small></h2>
+        <div class="panel tablewrap">
+          <table class="data" id="sovTable" style="min-width:640px">
+            <thead><tr><th>프롬프트</th><th>유형</th><th>기준측정 (7/24)</th><th>내 최근 기록</th></tr></thead>
+            <tbody></tbody>
           </table>
         </div>
       </section>
 
-      <!-- ============ 02 진단 ============ -->
-      <section class="page" id="page-p2">
-        <div class="pageicon">🩺</div>
-        <h1>02 · 왜 안 나올까</h1>
-        <p class="pagesub">AI가 "김포 피부과 추천" 답변을 만들 때 실제로 인용한 소스를 역추적한 결과입니다.</p>
-
-        <h3>원인 1 — 비교 플랫폼에 김포점이 없다 <span class="pill miss">가장 큼</span></h3>
-        <p>AI 답변의 근거는 대부분 모두닥·닥터나우·나만의닥터·강남언니·굿닥·똑닥의 "김포 피부과 TOP10" 류 페이지입니다. 유앤아이는 건대점·영등포점 등 타 지점만 등재돼 있고 <strong>김포점은 이 목록들에 사실상 없습니다.</strong> 목록에 없으면 AI 답변에도 없습니다.</p>
-
-        <h3>원인 2 — 후기(리뷰) 데이터가 얇다</h3>
-        <p>경쟁 병원이 인용될 때 근거는 "전문의 5인", "리뷰 다수" 같은 구체적 데이터입니다. 김포점은 검색 가능한 후기 콘텐츠가 거의 잡히지 않아 AI가 추천의 근거로 삼을 재료가 없습니다.</p>
-
-        <h3>원인 3 — 동네 키워드 콘텐츠 공백</h3>
-        <p>구래동(소재지)·운양동·장기동 검색에서 전멸입니다. 홈페이지와 블로그가 "김포"라는 큰 단위로만 이야기하고, 실제 환자가 검색하는 동네 단위 언어를 쓰지 않고 있습니다.</p>
-
-        <hr>
-
-        <h3>증명된 강점 — 블로그는 이미 통한다 <span class="pill ok">기회</span></h3>
-        <p>"김포 남자 수염 레이저제모" 블로그 글 하나가 해당 키워드 검색을 뚫었습니다. 같은 방식이 울쎄라·리프팅·스킨부스터에는 아직 적용되지 않았을 뿐 — 이 채널을 늘리는 것이 가장 확실한 승부처입니다.</p>
-
-        <div class="callout"><span class="ic">⚠️</span><p><strong>확인 필요</strong> — 자동화 도구로 홈페이지 접속 시 403(차단)이 반환되는 정황이 있습니다. AI 크롤러(GPTBot 등)가 차단돼 있다면 어떤 콘텐츠를 올려도 ChatGPT가 읽지 못합니다. 콘텐츠 자료의 "웹업체 기술 요청서"를 웹 담당 업체에 전달해 확인하세요.</p></div>
+      <!-- ================= 프롬프트 ================= -->
+      <section class="page" id="page-prompts">
+        <p class="desc">질의어별로 어느 AI에서 언제 노출됐는지 날짜 그리드로 추적합니다. ● 노출 · ○ 부분 · – 미노출. 오늘 열이 강조됩니다.</p>
+        <div id="board"></div>
       </section>
 
-      <!-- ============ 03 실행 플랜 ============ -->
-      <section class="page" id="page-p3">
-        <div class="pageicon">🚀</div>
-        <h1>03 · 실행 플랜</h1>
-        <p class="pagesub">효과가 큰 순서입니다. 완료한 항목을 체크하면 저장되고 트래킹 보드에 진행률이 표시됩니다.</p>
-        <div class="progress"><div class="bar"><div id="planbar" style="width:0%"></div></div><span class="n" id="plancount">0 / 10 완료</span></div>
+      <!-- ================= 모델별 현황 ================= -->
+      <section class="page" id="page-models">
+        <p class="desc">AI 모델별로 우리 병원이 얼마나 언급되는지, 그리고 주요 질문에서 어떤 병원들이 대신 추천되고 있는지 봅니다.</p>
 
-        <div class="grouplabel">플랫폼 등재 — 효과 최상</div>
-        <label class="todo" data-todo="t1"><input type="checkbox"><span><span class="t">모두닥·굿닥·똑닥·닥터나우·나만의닥터에 김포점 등재</span><br><span class="d">AI가 인용하는 "김포 피부과 TOP10" 목록의 원천. 진료시간·시술·의료진·사진까지 채우기</span></span></label>
-        <label class="todo" data-todo="t2"><input type="checkbox"><span><span class="t">강남언니·바비톡에 울쎄라/리프팅/보톡스 이벤트 등록</span><br><span class="d">"김포 울쎄라" 검색의 주 인용원</span></span></label>
-        <label class="todo" data-todo="t3"><input type="checkbox"><span><span class="t">제모데이에 제모 기기·가격 등재</span><br><span class="d">이미 강한 제모 키워드 굳히기 (미엘이 이 방식으로 노출 중)</span></span></label>
+        <h2 style="margin-top:0">모델별 내 노출률<small>내 테스트 기록 기준</small></h2>
+        <div class="panel tablewrap">
+          <table class="data" id="modelTable" style="min-width:560px">
+            <thead><tr><th>모델</th><th>테스트</th><th>노출</th><th>부분</th><th>미노출</th><th>노출률</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
 
-        <div class="grouplabel">후기 만들기</div>
-        <label class="todo" data-todo="t4"><input type="checkbox"><span><span class="t">리뷰 요청 루틴 시작</span><br><span class="d">콘텐츠 자료의 템플릿으로 시술 후 카톡/문자 발송 + 데스크 안내판. 목표: 월 20건</span></span></label>
-
-        <div class="grouplabel">블로그 발행 — 효과 입증된 채널</div>
-        <label class="todo" data-todo="t5"><input type="checkbox"><span><span class="t">원고 1 발행: 김포 울쎄라 가이드</span><br><span class="d">"김포 울쎄라 잘하는 곳" 공략</span></span></label>
-        <label class="todo" data-todo="t6"><input type="checkbox"><span><span class="t">원고 2 발행: 구래동·장기동 동네 키워드 글</span><br><span class="d">"장기동 피부과"는 경쟁이 비어 있어 선점 가능</span></span></label>
-        <label class="todo" data-todo="t7"><input type="checkbox"><span><span class="t">원고 3 발행: 일요일·야간 진료 글</span><br><span class="d">실제 차별점인데 검색에서 미활용. 경쟁 병원 대부분 일요일 휴진</span></span></label>
-
-        <div class="grouplabel">프로필 정비</div>
-        <label class="todo" data-todo="t8"><input type="checkbox"><span><span class="t">네이버 플레이스 정비</span><br><span class="d">시술 메뉴·가격대·사진·소식 채우기</span></span></label>
-        <label class="todo" data-todo="t9"><input type="checkbox"><span><span class="t">구글 비즈니스 프로필 정비</span><br><span class="d">한국 병원 대부분 부실 — 채우기만 해도 상대 우위</span></span></label>
-
-        <div class="grouplabel">기술 기반</div>
-        <label class="todo" data-todo="t10"><input type="checkbox"><span><span class="t">웹업체에 기술 요청서 전달</span><br><span class="d">AI 크롤러(GPTBot 등) 허용 확인 + 병원 정보 구조화 데이터(JSON-LD) 추가. 요청서는 콘텐츠 자료에</span></span></label>
+        <h2>질문별 경쟁 구도<small>2026-07-24 웹 인용 소스 기준</small></h2>
+        <p class="desc" style="margin-bottom:12px">AI가 답변 근거로 인용하는 웹 소스에서 상위에 등장한 병원 순서입니다. 검은 칩이 우리 병원입니다.</p>
+        <div class="panel tablewrap">
+          <table class="data" id="competeTable" style="min-width:680px">
+            <thead><tr><th>프롬프트</th><th>#1</th><th>#2</th><th>#3</th><th>#4</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </section>
 
-      <!-- ============ 04 키워드 테스트 ============ -->
-      <section class="page" id="page-p4">
-        <div class="pageicon">🔍</div>
-        <h1>04 · 키워드 테스트</h1>
-        <p class="pagesub">키워드를 입력하면 각 AI에 질문이 입력된 상태로 열립니다. 답변에 우리 병원이 나오는지 보고 AI별로 결과를 기록하면 트래킹 보드에 점이 찍힙니다.</p>
+      <!-- ================= 인용 출처 ================= -->
+      <section class="page" id="page-sources">
+        <p class="desc">AI가 "김포 피부과" 답변을 만들 때 실제로 인용한 소스들입니다. 여기 등재되는 것이 노출을 늘리는 가장 빠른 길입니다.</p>
+        <div class="panel tablewrap">
+          <table class="data" id="sourceTable" style="min-width:720px">
+            <thead><tr><th>출처</th><th>어떤 질문에서 인용되나</th><th>우리 상태</th><th>해야 할 일</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="callout crit"><span class="cap">치명 원인</span><b>비교 플랫폼에 김포점이 없습니다.</b> AI 답변의 근거가 되는 "김포 피부과 TOP10" 류 목록에 유앤아이는 타 지점(건대·영등포)만 잡힙니다. 목록에 없으면 AI 답변에도 없습니다 — 등재가 1순위인 이유입니다.</div>
+        <div class="callout"><span class="cap">확인 필요</span>자동화 도구로 공식 홈페이지 접속 시 403이 반환되는 정황이 있습니다. GPTBot 등 AI 크롤러가 차단돼 있으면 어떤 콘텐츠를 올려도 ChatGPT가 읽지 못합니다. <b>콘텐츠 → 웹업체 기술 요청서</b>를 웹 담당 업체에 전달해 확인하세요.</div>
+      </section>
 
-        <div class="testbox">
+      <!-- ================= 키워드 테스트 ================= -->
+      <section class="page" id="page-test">
+        <p class="desc">키워드를 입력하면 각 AI에 질문이 입력된 상태로 열립니다. 답변에 "유앤아이의원 김포점"이 나오는지 보고 모델별로 기록하세요.</p>
+        <div class="panel testbox">
           <div class="row">
             <input type="text" id="kw" placeholder="예: 김포 울쎄라 잘하는 곳" aria-label="테스트할 키워드">
             <button class="btn primary" id="makeBtn">테스트 링크 만들기</button>
           </div>
           <div class="chips" id="chips"></div>
-
           <div class="links" id="links">
-            <div class="qtext">💬 <span id="qshow"></span> <button class="btn" id="copyBtn" style="padding:3px 10px;font-size:12px;margin-left:6px">복사</button></div>
-            <div class="linkrow">
-              <a class="extlink" id="lnkGpt" target="_blank" rel="noopener"><span class="dot" style="background:#10A37F"></span>ChatGPT</a>
-              <a class="extlink" id="lnkGem" target="_blank" rel="noopener"><span class="dot" style="background:#E8A33D"></span>Gemini</a>
-              <a class="extlink" id="lnkPpl" target="_blank" rel="noopener"><span class="dot" style="background:#8B5CF6"></span>Perplexity</a>
-              <a class="extlink" id="lnkGrk" target="_blank" rel="noopener"><span class="dot" style="background:#E24B77"></span>Grok</a>
-              <a class="extlink" id="lnkGgl" target="_blank" rel="noopener"><span class="dot" style="background:#4C8DF6"></span>구글 (AIO)</a>
-              <a class="extlink" id="lnkNvr" target="_blank" rel="noopener"><span class="dot" style="background:#03C75A"></span>네이버</a>
-            </div>
-            <p style="font-size:12px;color:var(--muted);margin:8px 0 0">Gemini는 질문 자동 입력이 안 됩니다 — 위 복사 버튼으로 붙여 넣으세요.</p>
+            <div class="qtext">💬 <b id="qshow"></b><button class="btn sm" id="copyBtn">복사</button><span style="font-size:11.5px;color:var(--faint)">Gemini는 자동 입력이 안 됩니다 — 복사해서 붙여 넣으세요</span></div>
+            <div class="linkgrid" id="linkgrid"></div>
             <div class="record">
-              <div class="lbl">답변에 "유앤아이의원 김포점"이 나왔나요? AI별로 기록하세요.</div>
+              <div class="lbl">결과 기록 — 답변 본문에 병원명이 나오면 <b>● 노출</b>, 링크·타지점만 나오면 <b>○ 부분</b>, 없으면 <b>– 미노출</b></div>
               <div class="row">
-                <select id="channel" aria-label="테스트한 AI">
-                  <option>ChatGPT</option><option>Gemini</option><option>Perplexity</option><option>Grok</option><option>AIO</option><option>네이버</option>
-                </select>
-                <button class="btn ok" data-result="노출">✅ 노출</button>
-                <button class="btn part" data-result="부분">⚠️ 부분</button>
-                <button class="btn miss" data-result="미노출">❌ 미노출</button>
+                <select id="channel" aria-label="테스트한 AI"></select>
+                <button class="btn resbtn" data-result="노출"><span class="glyph">●</span>노출</button>
+                <button class="btn resbtn" data-result="부분"><span class="glyph">○</span>부분</button>
+                <button class="btn resbtn" data-result="미노출"><span class="glyph">–</span>미노출</button>
               </div>
             </div>
           </div>
         </div>
-
-        <div class="callout"><span class="ic">📏</span><p><strong>판정 기준</strong> — 답변 본문에 병원명이 언급되면 <strong>노출</strong>, 출처 링크에만 있거나 타 지점(건대·영등포 등)만 나오면 <strong>부분</strong>, 전혀 없으면 <strong>미노출</strong>. AI 답변은 매번 조금씩 달라지므로 하루 한 번, 같은 시간대에 기록하면 추세가 정확해집니다.</p></div>
-
-        <h2>전체 기록 <button class="btn" id="csvBtn" style="font-size:12px;padding:4px 10px;margin-left:8px">CSV 내려받기</button></h2>
-        <div class="tablewrap"><table class="data logtable" style="min-width:560px">
-          <thead><tr><th>날짜</th><th>키워드</th><th>AI</th><th>결과</th><th></th></tr></thead>
-          <tbody id="logbody"></tbody>
-        </table></div>
+        <h2>전체 기록<small><button class="btn sm" id="csvBtn" style="margin-left:2px">CSV 내려받기</button></small></h2>
+        <div class="panel tablewrap">
+          <table class="data" id="logtable" style="min-width:560px">
+            <thead><tr><th>날짜</th><th>프롬프트</th><th>모델</th><th>결과</th><th></th></tr></thead>
+            <tbody id="logbody"></tbody>
+          </table>
+        </div>
       </section>
 
-      <!-- ============ 콘텐츠 자료 ============ -->
+      <!-- ================= 노출 기획 ================= -->
+      <section class="page" id="page-plan">
+        <p class="desc">효과가 큰 순서로 정리한 실행 체크리스트입니다. 완료를 체크하면 저장되고 홈에 진행률이 표시됩니다.</p>
+        <div class="progress"><div class="bar"><div id="planbar" style="width:0%"></div></div><span class="n num" id="plancount">0 / 10 완료</span></div>
+        <div class="panel" id="planlist"></div>
+      </section>
+
+      <!-- ================= 콘텐츠 ================= -->
       <section class="page" id="page-docs">
-        <div class="pageicon">✍️</div>
-        <h1>콘텐츠 자료</h1>
-        <p class="pagesub">실행 플랜을 바로 옮길 수 있게 준비된 자료들입니다. 전체 원고는 GitHub 저장소(Unianalysis)의 <code>content/</code>·<code>tech/</code> 폴더에 있고, 채팅에서 "원고 1 보여줘"라고 하면 바로 보여드립니다.</p>
+        <div id="docsList">
+          <p class="desc">AI가 인용하기 좋은 구조(질문형 제목 + 동네 키워드 + FAQ)로 작성된 초안입니다. 열어서 복사한 뒤 블로그·업체에 바로 사용하세요. 새 초안이 필요하면 채팅에서 요청하면 됩니다.</p>
+          <div class="panel" id="docRows"></div>
+        </div>
+        <div id="docDetail" style="display:none">
+          <div class="panel docview">
+            <button class="btn sm back" id="docBack">← 목록으로</button>
+            <h3 id="docTitle"></h3>
+            <div class="meta" id="docMeta"></div>
+            <div class="row" style="margin-bottom:16px"><button class="btn primary sm" id="docCopy">전문 복사</button></div>
+            <div class="docbody" id="docBody"></div>
+          </div>
+        </div>
+      </section>
 
-        <div class="doc"><span class="ic">📝</span><span><span class="t">블로그 원고 1 — 김포 울쎄라 가이드</span><br><span class="d">"김포 울쎄라 잘하는 곳" 공략. 샷 수·가격·정품 확인 + FAQ 5개 포함, 복사 후 바로 발행 가능</span></span></div>
-        <div class="doc"><span class="ic">📝</span><span><span class="t">블로그 원고 2 — 구래동·장기동 동네 피부과 체크리스트</span><br><span class="d">병원 소재지인데도 미노출인 동네 키워드 공략. 구래역·주차·야간진료 등 지역 정보 명시</span></span></div>
-        <div class="doc"><span class="ic">📝</span><span><span class="t">블로그 원고 3 — 김포 일요일·야간 진료 가이드</span><br><span class="d">실제 강점 키워드 선점. 발행 전 실제 진료시간 숫자만 채우면 됨</span></span></div>
-        <div class="doc"><span class="ic">💬</span><span><span class="t">환자 리뷰 요청 템플릿</span><br><span class="d">시술 당일·2주 후 카톡 문구, 데스크 안내판 문구, 채널 우선순위, 의료법 주의사항</span></span></div>
-        <div class="doc"><span class="ic">🔧</span><span><span class="t">웹업체 기술 요청서</span><br><span class="d">AI 크롤러 허용 robots.txt + 병원 정보 JSON-LD + FAQ 구조화 데이터 코드 포함. 그대로 전달만 하면 됨</span></span></div>
+      <!-- ================= 월간 리포트 ================= -->
+      <section class="page" id="page-report">
+        <p class="desc">2026년 7월 리포트 — 7/24 웹 인용 소스 기준 측정. 매달 1일 오전 9시에 자동 재측정되어 갱신됩니다. 즉시 재측정은 채팅에서 "지금 재측정 해줘"라고 요청하세요.</p>
 
-        <div class="callout blue"><span class="ic">🔁</span><p><strong>자동 재측정</strong> — 매달 1일에 기준 키워드 11개를 자동으로 재측정해 01 기준 측정 결과를 갱신합니다. 원할 때 채팅에서 "지금 재측정 해줘"라고 요청할 수도 있습니다.</p></div>
+        <div class="panel strip" style="grid-template-columns:repeat(3,1fr)">
+          <div class="cell"><div class="k">종합 노출률</div><div class="v num">23<span class="unit">%</span></div><div class="d">11개 프롬프트 기준</div></div>
+          <div class="cell"><div class="k">노출 / 부분 / 미노출</div><div class="v num">2 · 1 · 8</div><div class="d">브랜드·제모만 노출</div></div>
+          <div class="cell"><div class="k">다음 자동 측정</div><div class="v num">8/1</div><div class="d">오전 9시 (KST)</div></div>
+        </div>
+
+        <h2>프롬프트별 결과</h2>
+        <div class="panel tablewrap">
+          <table class="data" style="min-width:720px">
+            <thead><tr><th>검색 질문</th><th>유형</th><th>결과</th><th>대신 노출되는 곳</th></tr></thead>
+            <tbody>
+              <tr><td><b>유앤아이의원 김포점</b></td><td class="mono">브랜드</td><td><span class="pill ok">노출</span></td><td style="color:var(--muted)">공식 홈페이지 최상단. 주소·전화·주차 정보 정확</td></tr>
+              <tr><td><b>김포 레이저 제모 피부과</b></td><td class="mono">지역+시술</td><td><span class="pill ok">노출</span></td><td style="color:var(--muted)">공식 블로그 글("김포 남자 수염 레이저제모") 상위 노출</td></tr>
+              <tr><td><b>유앤아이의원 김포점 후기</b></td><td class="mono">브랜드+후기</td><td><span class="pill part">부분</span></td><td style="color:var(--muted)">공식 사이트만. 후기 플랫폼엔 건대·영등포점만 등재</td></tr>
+              <tr><td><b>김포 피부과 추천</b></td><td class="mono">지역+진료과</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">리멤버·미소가인·해날·플랜·미엘 + 플랫폼 리스트</td></tr>
+              <tr><td><b>김포 울쎄라 잘하는 곳</b></td><td class="mono">지역+시술</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">에버스(검단), 리베리, 강남언니 이벤트</td></tr>
+              <tr><td><b>김포 보톡스 가격</b></td><td class="mono">지역+시술+가격</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">강남언니·모두닥·굿닥 가격 비교, 톡스앤필</td></tr>
+              <tr><td><b>김포 리프팅 잘하는 피부과</b></td><td class="mono">지역+시술</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">미소가인, 리멤버 (전문의 구성이 근거로 인용)</td></tr>
+              <tr><td><b>김포 스킨부스터 리쥬란</b></td><td class="mono">지역+시술</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">톡스앤필, 닥터나우 매거진</td></tr>
+              <tr><td><b>구래동 피부과 추천</b></td><td class="mono">동네(소재지)</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">리멤버·미엘. <b>병원이 있는 동네인데도 안 나옴</b></td></tr>
+              <tr><td><b>운양동 피부과</b></td><td class="mono">동네</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">델타피부과, 리멤버</td></tr>
+              <tr><td><b>장기동 피부과 보톡스</b></td><td class="mono">동네+시술</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">결과 자체가 빈약 — 선점 기회</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>진단</h2>
+        <div class="callout crit"><span class="cap">원인 1 · 가장 큼</span><b>비교 플랫폼에 김포점이 없다.</b> AI 답변의 근거는 모두닥·닥터나우·나만의닥터·강남언니의 "김포 피부과 TOP10" 류 페이지인데, 김포점은 이 목록들에 사실상 없습니다.</div>
+        <div class="callout"><span class="cap">원인 2</span><b>후기 데이터가 얇다.</b> 경쟁 병원은 "전문의 5인, 리뷰 다수" 같은 구체적 데이터로 인용됩니다. 김포점은 검색 가능한 후기가 거의 잡히지 않습니다.</div>
+        <div class="callout"><span class="cap">원인 3</span><b>동네 키워드 공백.</b> 구래동(소재지)·운양동·장기동 검색에서 전멸 — 콘텐츠가 "김포" 단위로만 말하고 동네 단위 언어를 쓰지 않습니다.</div>
+        <div class="callout"><span class="cap">증명된 강점</span><b>블로그는 이미 통한다.</b> 제모 글 하나가 해당 키워드를 뚫었습니다. 같은 공식을 울쎄라·리프팅·동네 키워드에 복제하는 것이 가장 확실한 승부처입니다.</div>
+      </section>
+
+      <!-- ================= 브랜드 관리 ================= -->
+      <section class="page" id="page-account">
+        <p class="desc">추적 대상 브랜드와 경쟁 구도 정보입니다. 정보가 바뀌면 채팅에서 알려주세요.</p>
+        <div class="cols2">
+          <div class="panel" style="padding:20px">
+            <h2 style="margin:0 0 12px">우리 병원</h2>
+            <table class="data" style="font-size:13px">
+              <tbody>
+                <tr><td class="mono" style="width:90px">브랜드명</td><td><b>유앤아이의원 김포점</b></td></tr>
+                <tr><td class="mono">주소</td><td>김포시 김포한강4로 525 감두리빌딩 2층 (구래동)</td></tr>
+                <tr><td class="mono">전화</td><td>031-8049-6024</td></tr>
+                <tr><td class="mono">진료 특징</td><td>야간·일요일 진료 (경쟁 대비 차별점)</td></tr>
+                <tr><td class="mono">주차</td><td>건물 지하 3시간, 만차 시 구래 공영주차장</td></tr>
+                <tr><td class="mono">주력 시술</td><td>울쎄라 · 올리지오 · 보톡스 · 필러 · 실리프팅 · 스킨부스터 · 레이저 제모 · 색소</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="panel" style="padding:20px">
+            <h2 style="margin:0 0 12px">경쟁 병원<small>7/24 인용 소스 기준</small></h2>
+            <table class="data" style="font-size:13px">
+              <tbody>
+                <tr><td><b>리멤버피부과 김포점</b></td><td style="color:var(--muted)">전 의료진 피부과 전문의 5인 — 추천·동네 키워드 최다 등장</td></tr>
+                <tr><td><b>미소가인피부과 김포점</b></td><td style="color:var(--muted)">리프팅 장비 다수 보유로 인용</td></tr>
+                <tr><td><b>미엘피부과 김포점</b></td><td style="color:var(--muted)">제모데이 등재로 제모 키워드 강세</td></tr>
+                <tr><td><b>플랜피부과 (풍무)</b></td><td style="color:var(--muted)">전문의 진료 + 장비 인증 소개</td></tr>
+                <tr><td><b>델타피부과 (운양동)</b></td><td style="color:var(--muted)">운양동 키워드 선점, 플랫폼 등재 충실</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="callout"><span class="cap">데이터 저장 안내</span>테스트 기록과 체크리스트는 이 브라우저(localStorage)에 저장됩니다. 같은 기기·브라우저에서 기록해야 이어지며, <b>키워드 테스트 → CSV 내려받기</b>로 백업할 수 있습니다.</div>
       </section>
 
     </div>
@@ -400,218 +587,402 @@
 
 <script>
 (function () {
-  /* ===== data ===== */
+  "use strict";
+  /* ============ 데이터 ============ */
+  var ME = "유앤아이 김포점";
   var ENGINES = [
-    { id: "ChatGPT",    color: "#10A37F" },
-    { id: "Gemini",     color: "#E8A33D" },
-    { id: "Perplexity", color: "#8B5CF6" },
-    { id: "Grok",       color: "#E24B77" },
-    { id: "AIO",        color: "#4C8DF6" },
-    { id: "네이버",      color: "#03C75A" }
+    { id: "ChatGPT",    color: "#0FA37F" },
+    { id: "Gemini",     color: "#E8930C" },
+    { id: "Perplexity", color: "#7C5CE0" },
+    { id: "Grok",       color: "#E0447E" },
+    { id: "AIO",        color: "#2F7BE0" },
+    { id: "네이버",      color: "#06A94D" }
   ];
-  /* 기준 측정(웹검색 기반): 카드 헤더 배지로 표시 */
   var BASE_DATE = "2026-07-24";
-  var KEYWORDS = [
-    { q: "김포 피부과 추천해줘", base: "미노출" },
-    { q: "김포에서 울쎄라 잘하는 곳 알려줘", base: "미노출" },
-    { q: "김포 보톡스 가격 어느 정도야?", base: "미노출" },
-    { q: "김포 리프팅 잘하는 피부과 어디야?", base: "미노출" },
-    { q: "김포 레이저 제모 어디서 받는 게 좋아?", base: "노출" },
-    { q: "구래동 근처 피부과 추천해줘", base: "미노출" },
-    { q: "장기동 피부과 보톡스 어디가 좋아?", base: "미노출" },
-    { q: "운양동에서 갈 만한 피부과 있어?", base: "미노출" },
-    { q: "김포 리쥬란 스킨부스터 맞을 만한 곳?", base: "미노출" },
-    { q: "유앤아이의원 김포점 어때? 후기 있어?", base: "부분" },
-    { q: "김포 일요일 진료하는 피부과 알려줘", base: null }
+  var PROMPTS = [
+    { q: "김포 피부과 추천해줘", cat: "지역+진료과", base: "미노출" },
+    { q: "김포에서 울쎄라 잘하는 곳 알려줘", cat: "지역+시술", base: "미노출" },
+    { q: "김포 보톡스 가격 어느 정도야?", cat: "지역+시술+가격", base: "미노출" },
+    { q: "김포 리프팅 잘하는 피부과 어디야?", cat: "지역+시술", base: "미노출" },
+    { q: "김포 레이저 제모 어디서 받는 게 좋아?", cat: "지역+시술", base: "노출" },
+    { q: "구래동 근처 피부과 추천해줘", cat: "동네(소재지)", base: "미노출" },
+    { q: "장기동 피부과 보톡스 어디가 좋아?", cat: "동네+시술", base: "미노출" },
+    { q: "운양동에서 갈 만한 피부과 있어?", cat: "동네", base: "미노출" },
+    { q: "김포 리쥬란 스킨부스터 맞을 만한 곳?", cat: "지역+시술", base: "미노출" },
+    { q: "유앤아이의원 김포점 어때? 후기 있어?", cat: "브랜드+후기", base: "부분" },
+    { q: "유앤아이의원 김포점", cat: "브랜드", base: "노출" },
+    { q: "김포 일요일 진료하는 피부과 알려줘", cat: "지역+진료시간", base: null }
   ];
-  var LOG_KEY = "uni-testlog-v2", PLAN_KEY = "uni-plan-v1", PLAN_TOTAL = 10, DAYS = 21;
+  var COMPETE = [
+    { q: "김포 피부과 추천해줘", ranks: ["리멤버피부과", "미소가인피부과", "해날피부과", "플랜피부과"] },
+    { q: "김포에서 울쎄라 잘하는 곳 알려줘", ranks: ["에버스의원(검단)", "리베리의원", "강남언니(플랫폼)", ""] },
+    { q: "김포 보톡스 가격 어느 정도야?", ranks: ["강남언니(플랫폼)", "모두닥(플랫폼)", "굿닥(플랫폼)", "톡스앤필"] },
+    { q: "김포 리프팅 잘하는 피부과 어디야?", ranks: ["미소가인피부과", "리멤버피부과", "", ""] },
+    { q: "김포 레이저 제모 어디서 받는 게 좋아?", ranks: [ME, "미엘피부과", "플랜피부과", ""] },
+    { q: "구래동 근처 피부과 추천해줘", ranks: ["리멤버피부과", "미엘피부과", "", ""] },
+    { q: "운양동에서 갈 만한 피부과 있어?", ranks: ["델타피부과", "리멤버피부과", "", ""] },
+    { q: "김포 리쥬란 스킨부스터 맞을 만한 곳?", ranks: ["톡스앤필", "닥터나우 매거진", "", ""] },
+    { q: "유앤아이의원 김포점", ranks: [ME, "", "", ""] }
+  ];
+  var SOURCES = [
+    { name: "모두닥", role: "\"김포 피부과 TOP10\" — 추천 질문의 최다 인용원", status: "미등재", statusCls: "warn", action: "김포점 프로필 등재 + 후기 요청 루틴" },
+    { name: "닥터나우", role: "지역 인기 병원 TOP10 리스트", status: "미확인", statusCls: "off", action: "김포점 등재 여부 확인 후 등록" },
+    { name: "나만의닥터", role: "\"김포시 피부과 125개 비교\" — 전문의 비교 인용", status: "미확인", statusCls: "off", action: "프로필 정보(전문의·진료시간) 등재" },
+    { name: "강남언니 · 바비톡", role: "울쎄라·리프팅 등 시술 검색의 주 인용원", status: "미등재", statusCls: "warn", action: "시술 이벤트 등록 (울쎄라·보톡스·리프팅)" },
+    { name: "굿닥 · 똑닥", role: "예약·위치·후기 정보 인용", status: "타지점만", statusCls: "part", action: "김포점 등재 (건대·영등포점만 잡힘)" },
+    { name: "제모데이", role: "제모 기기·가격 비교 — 미엘이 이걸로 노출", status: "미등재", statusCls: "warn", action: "제모 기기(아포지 플러스)·가격 등재" },
+    { name: "네이버 플레이스", role: "지도형 질문 + 영수증 리뷰 인용", status: "정비 필요", statusCls: "part", action: "시술 메뉴·가격대·사진·소식 채우기" },
+    { name: "구글 비즈니스 프로필", role: "ChatGPT 등 해외 AI가 직접 참조", status: "정비 필요", statusCls: "part", action: "리뷰·사진·진료시간 채우기 (경쟁사 대부분 부실)" },
+    { name: "공식 블로그", role: "제모 글이 이미 키워드 검색을 뚫음", status: "활성", statusCls: "ok", action: "울쎄라·동네·일요일 키워드로 확장 (초안 준비됨)" }
+  ];
+  var PLAN = [
+    { id: "t1", g: "플랫폼 등재 — 효과 최상", t: "모두닥·굿닥·똑닥·닥터나우·나만의닥터에 김포점 등재", d: "AI가 인용하는 TOP10 목록의 원천. 진료시간·시술·의료진·사진까지" },
+    { id: "t2", g: "플랫폼 등재 — 효과 최상", t: "강남언니·바비톡에 울쎄라/리프팅/보톡스 이벤트 등록", d: "\"김포 울쎄라\" 검색의 주 인용원" },
+    { id: "t3", g: "플랫폼 등재 — 효과 최상", t: "제모데이에 제모 기기·가격 등재", d: "이미 강한 제모 키워드 굳히기" },
+    { id: "t4", g: "후기 만들기", t: "리뷰 요청 루틴 시작 (목표: 월 20건)", d: "콘텐츠의 템플릿으로 시술 후 카톡 발송 + 데스크 안내판" },
+    { id: "t5", g: "블로그 발행 — 효과 입증", t: "원고 1 발행: 김포 울쎄라 가이드", d: "\"김포 울쎄라 잘하는 곳\" 공략" },
+    { id: "t6", g: "블로그 발행 — 효과 입증", t: "원고 2 발행: 구래동·장기동 동네 키워드 글", d: "\"장기동 피부과\"는 경쟁이 비어 있어 선점 가능" },
+    { id: "t7", g: "블로그 발행 — 효과 입증", t: "원고 3 발행: 일요일·야간 진료 글", d: "실제 차별점인데 검색에서 미활용" },
+    { id: "t8", g: "프로필 정비", t: "네이버 플레이스 정비", d: "시술 메뉴·가격대·사진·소식" },
+    { id: "t9", g: "프로필 정비", t: "구글 비즈니스 프로필 정비", d: "채우기만 해도 상대 우위" },
+    { id: "t10", g: "기술 기반", t: "웹업체에 기술 요청서 전달", d: "AI 크롤러 허용 확인 + 구조화 데이터(JSON-LD) 추가" }
+  ];
+  var LOG_KEY = "uni-testlog-v2", PLAN_KEY = "uni-plan-v1";
 
+  /* ============ 유틸 ============ */
   function load(k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } }
   function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
-  function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+  function esc(s) { var d = document.createElement("div"); d.textContent = s == null ? "" : s; return d.innerHTML; }
+  function $(id) { return document.getElementById(id); }
   function toast(msg) {
-    var t = document.getElementById("toast"); t.textContent = msg; t.classList.add("show");
+    var t = $("toast"); t.textContent = msg; t.classList.add("show");
     clearTimeout(t._h); t._h = setTimeout(function () { t.classList.remove("show"); }, 2200);
   }
-  function fmt(d) {
-    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
-  }
+  function fmt(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
   function today() { return fmt(new Date()); }
-
-  /* v1 → v2 마이그레이션 (채널명 통일) */
-  (function migrate() {
-    if (localStorage.getItem(LOG_KEY)) return;
-    var old = load("uni-testlog-v1", null);
-    if (!old) return;
-    var map = { "퍼플렉시티": "Perplexity", "구글": "AIO", "기타": "ChatGPT" };
-    old.forEach(function (e) { e.ch = map[e.ch] || e.ch; });
-    save(LOG_KEY, old);
-  })();
+  function md(dstr) { return dstr.slice(5).replace("-", "/"); }
+  function engColor(id) { for (var i = 0; i < ENGINES.length; i++) if (ENGINES[i].id === id) return ENGINES[i].color; return "#888"; }
+  function score(r) { return r === "노출" ? 1 : r === "부분" ? 0.5 : 0; }
+  function glyph(r, color) {
+    if (r === "노출") return '<span class="dot" style="background:' + color + '"></span>';
+    if (r === "부분") return '<span class="dot ring" style="color:' + color + '"></span>';
+    return '<span class="dot dash"></span>';
+  }
 
   var log = load(LOG_KEY, []);
   var plan = load(PLAN_KEY, {});
+  var currentQ = "";
+  var lastRecordKey = null;
 
-  /* ===== navigation ===== */
-  var names = { home: "트래킹 보드", p1: "01 기준 측정 결과", p2: "02 왜 안 나올까", p3: "03 실행 플랜", p4: "04 키워드 테스트", docs: "콘텐츠 자료" };
+  /* ============ 내비 ============ */
+  var TITLES = { home: "홈", sov: "노출 점유율", prompts: "프롬프트", models: "모델별 현황", sources: "인용 출처", test: "키워드 테스트", plan: "노출 기획", docs: "콘텐츠", report: "월간 리포트", account: "브랜드 관리" };
   function goPage(id) {
-    document.querySelectorAll(".navitem").forEach(function (x) { x.classList.toggle("active", x.dataset.page === id); });
+    document.querySelectorAll(".nav").forEach(function (x) { x.classList.toggle("active", x.dataset.page === id); });
     document.querySelectorAll(".page").forEach(function (x) { x.classList.remove("active"); });
-    document.getElementById("page-" + id).classList.add("active");
-    document.getElementById("crumbname").textContent = names[id];
+    $("page-" + id).classList.add("active");
+    $("pagetitle").textContent = TITLES[id];
     window.scrollTo(0, 0);
   }
-  document.querySelectorAll(".navitem").forEach(function (b) {
-    b.addEventListener("click", function () { goPage(b.dataset.page); });
-  });
+  document.querySelectorAll(".nav").forEach(function (b) { b.addEventListener("click", function () { goPage(b.dataset.page); }); });
+  document.querySelectorAll("[data-go]").forEach(function (b) { b.addEventListener("click", function () { goPage(b.dataset.go); }); });
 
-  /* ===== tracking board ===== */
-  function allKeywords() {
-    var list = KEYWORDS.map(function (k) { return { q: k.q, base: k.base }; });
-    var known = {};
-    list.forEach(function (k) { known[k.q] = true; });
-    log.forEach(function (e) {
-      if (!known[e.kw]) { known[e.kw] = true; list.push({ q: e.kw, base: null }); }
+  /* ============ 점유율 계산 ============ */
+  function sovOf(entries) {
+    if (!entries.length) return null;
+    var s = 0; entries.forEach(function (e) { s += score(e.r); });
+    return Math.round(s / entries.length * 100);
+  }
+  function filterRange(days) {
+    if (!days) return log.slice();
+    var lim = new Date(); lim.setDate(lim.getDate() - days);
+    var limS = fmt(lim);
+    return log.filter(function (e) { return e.date >= limS; });
+  }
+
+  /* ============ 차트 ============ */
+  function chartSVG(entries, opts) {
+    var byDate = {};
+    entries.forEach(function (e) { (byDate[e.date] = byDate[e.date] || []).push(e); });
+    var pts = Object.keys(byDate).sort().map(function (d) { return { d: d, v: sovOf(byDate[d]) }; });
+    if (opts.baseline && !byDate[BASE_DATE]) pts.unshift({ d: BASE_DATE, v: 23, base: true });
+    pts.sort(function (a, b) { return a.d < b.d ? -1 : 1; });
+    var W = 620, H = 170, PL = 34, PR = 14, PT = 12, PB = 24;
+    var iw = W - PL - PR, ih = H - PT - PB;
+    function y(v) { return PT + ih - (v / 100) * ih; }
+    var t0 = new Date(pts.length ? pts[0].d : today()).getTime();
+    var t1 = new Date(pts.length ? pts[pts.length - 1].d : today()).getTime();
+    function x(dstr) {
+      if (t1 === t0) return PL + iw / 2;
+      return PL + (new Date(dstr).getTime() - t0) / (t1 - t0) * iw;
+    }
+    var s = '<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="노출 점유율 추이 차트">';
+    [0, 25, 50, 75, 100].forEach(function (v) {
+      s += '<line x1="' + PL + '" y1="' + y(v) + '" x2="' + (W - PR) + '" y2="' + y(v) + '" stroke="var(--line)" stroke-width="1"/>';
+      s += '<text x="' + (PL - 7) + '" y="' + (y(v) + 3.5) + '" text-anchor="end" font-size="9.5" fill="var(--faint)">' + v + "</text>";
     });
+    s += '<line x1="' + PL + '" y1="' + y(23) + '" x2="' + (W - PR) + '" y2="' + y(23) + '" stroke="var(--faint)" stroke-width="1" stroke-dasharray="3 4"/>';
+    s += '<text x="' + (PL + 5) + '" y="' + (y(23) - 5) + '" text-anchor="start" font-size="9.5" fill="var(--faint)">기준 23%</text>';
+    if (pts.length > 1) {
+      var path = pts.map(function (p, i) { return (i ? "L" : "M") + x(p.d).toFixed(1) + " " + y(p.v).toFixed(1); }).join(" ");
+      s += '<path d="' + path + ' L' + x(pts[pts.length - 1].d).toFixed(1) + " " + (PT + ih) + " L" + x(pts[0].d).toFixed(1) + " " + (PT + ih) + ' Z" fill="var(--wash)"/>';
+      s += '<path d="' + path + '" fill="none" stroke="var(--ink)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>';
+    }
+    pts.forEach(function (p, i) {
+      var last = i === pts.length - 1;
+      s += '<circle cx="' + x(p.d).toFixed(1) + '" cy="' + y(p.v).toFixed(1) + '" r="' + (last ? 4 : 2.7) + '" fill="' + (p.base ? "var(--faint)" : "var(--ink)") + '"' + (last ? ' stroke="var(--surface)" stroke-width="1.5"' : "") + '><title>' + p.d + " · " + p.v + "%" + (p.base ? " (기준측정)" : "") + "</title></circle>";
+      if (pts.length <= 8 || last || i === 0)
+        s += '<text x="' + x(p.d).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="9.5" fill="var(--faint)">' + md(p.d) + "</text>";
+    });
+    s += "</svg>";
+    return s;
+  }
+
+  /* ============ 트래킹 보드 (프롬프트) ============ */
+  function allPrompts() {
+    var list = PROMPTS.slice(); var known = {};
+    list.forEach(function (k) { known[k.q] = true; });
+    log.forEach(function (e) { if (!known[e.kw]) { known[e.kw] = true; list.push({ q: e.kw, cat: "직접 추가", base: null }); } });
     return list;
   }
   function boardDates() {
     var set = {};
     log.forEach(function (e) { set[e.date] = true; });
     var d = new Date();
-    for (var i = 0; i < DAYS; i++) { set[fmt(d)] = true; d.setDate(d.getDate() - 1); }
-    return Object.keys(set).sort().slice(-35);
+    for (var i = 0; i < 14; i++) { set[fmt(d)] = true; d.setDate(d.getDate() - 1); }
+    return Object.keys(set).sort().slice(-30);
   }
   function renderBoard() {
     var dates = boardDates(), td = today();
-    /* 빠른 조회: kw → engine → date → result (같은 날 여러 번이면 마지막 기록) */
     var idx = {};
     log.forEach(function (e) {
       idx[e.kw] = idx[e.kw] || {};
       idx[e.kw][e.ch] = idx[e.kw][e.ch] || {};
       idx[e.kw][e.ch][e.date] = e.r;
     });
-    var html = allKeywords().map(function (kw) {
-      var basePill = kw.base
-        ? '<span class="pill ' + (kw.base === "노출" ? "ok" : kw.base === "부분" ? "part" : "miss") + '">기준 ' + kw.base + "</span>"
-        : "";
-      var head = '<div class="kwhead"><span class="q">💬 ' + esc(kw.q) + "</span>" + basePill +
-        '<span class="base">기준측정 ' + BASE_DATE.slice(5).replace("-", "/") + "</span>" +
-        '<span class="spacer"></span><button class="btn testkw" data-kw="' + esc(kw.q) + '">테스트 →</button></div>';
+    $("board").innerHTML = allPrompts().map(function (kw) {
+      var mine = log.filter(function (e) { return e.kw === kw.q; });
+      var hits = mine.filter(function (e) { return e.r === "노출"; }).length;
+      var basePill = kw.base ? '<span class="pill ' + (kw.base === "노출" ? "ok" : kw.base === "부분" ? "part" : "off") + '">기준 ' + kw.base + "</span>" : '<span class="pill off">기준 미측정</span>';
+      var head = '<div class="kwhead"><span class="q">' + esc(kw.q) + "</span>" + basePill +
+        '<span class="meta num">' + (mine.length ? "내 기록 " + hits + "/" + mine.length + " 노출" : "") + "</span>" +
+        '<span class="spacer"></span><button class="btn sm testkw" data-kw="' + esc(kw.q) + '">테스트 →</button></div>';
       var thead = "<tr><th></th>" + dates.map(function (d) {
-        return '<th class="cell' + (d === td ? " today" : "") + '">' + d.slice(5).replace("-", "/") + "</th>";
+        var t = d === td;
+        return '<th class="cell' + (t ? " today todaybg" : "") + '">' + md(d) + "</th>";
       }).join("") + "</tr>";
       var rows = ENGINES.map(function (en) {
         var cells = dates.map(function (d) {
           var r = idx[kw.q] && idx[kw.q][en.id] && idx[kw.q][en.id][d];
-          var inner = "–";
-          if (r === "노출") inner = '<span class="dot" style="background:' + en.color + '" title="' + d + " " + en.id + ' 노출"></span>';
-          else if (r === "부분") inner = '<span class="dot ring" style="color:' + en.color + '" title="' + d + " " + en.id + ' 부분 노출"></span>';
+          var t = d === td;
+          var inner = '<span class="dot none"></span>';
+          var isNew = lastRecordKey === kw.q + "|" + en.id + "|" + d;
+          if (r === "노출") inner = '<span class="dot' + (isNew ? " new" : "") + '" style="background:' + en.color + (t ? ";box-shadow:0 0 7px " + en.color + "66" : "") + '" title="' + d + " " + en.id + ' 노출"></span>';
+          else if (r === "부분") inner = '<span class="dot ring' + (isNew ? " new" : "") + '" style="color:' + en.color + '" title="' + d + " " + en.id + ' 부분 노출"></span>';
           else if (r === "미노출") inner = '<span class="dot dash" title="' + d + " " + en.id + ' 미노출"></span>';
-          else inner = "";
-          return '<td class="cell' + (d === td ? " today" : "") + '">' + inner + "</td>";
+          return '<td class="cell' + (t ? " today" : "") + '">' + inner + "</td>";
         }).join("");
         return '<tr><td class="eng"><span class="dot" style="background:' + en.color + '"></span>' + en.id + "</td>" + cells + "</tr>";
       }).join("");
-      return '<div class="kwcard">' + head + '<div class="matrixwrap"><table class="matrix"><thead>' + thead + "</thead><tbody>" + rows + "</tbody></table></div></div>";
+      return '<div class="panel kwcard">' + head + '<div class="matrixwrap"><table class="matrix"><thead>' + thead + "</thead><tbody>" + rows + "</tbody></table></div></div>";
     }).join("");
-    document.getElementById("board").innerHTML = html;
     document.querySelectorAll(".testkw").forEach(function (b) {
-      b.addEventListener("click", function () {
-        goPage("p4");
-        document.getElementById("kw").value = b.dataset.kw;
-        makeLinks();
+      b.addEventListener("click", function () { goPage("test"); $("kw").value = b.dataset.kw; makeLinks(); });
+    });
+    lastRecordKey = null;
+  }
+
+  /* ============ 모델별 / 경쟁 / 출처 ============ */
+  function renderModels() {
+    var tb = $("modelTable").querySelector("tbody");
+    tb.innerHTML = ENGINES.map(function (en) {
+      var mine = log.filter(function (e) { return e.ch === en.id; });
+      var ok = mine.filter(function (e) { return e.r === "노출"; }).length;
+      var part = mine.filter(function (e) { return e.r === "부분"; }).length;
+      var miss = mine.filter(function (e) { return e.r === "미노출"; }).length;
+      var rate = mine.length ? Math.round((ok + part * 0.5) / mine.length * 100) : null;
+      return '<tr class="rowhover"><td><span class="dot" style="background:' + en.color + ';margin-right:8px"></span><b>' + en.id + "</b></td>" +
+        '<td class="mono">' + (mine.length || "–") + "</td>" +
+        '<td class="mono">' + (mine.length ? ok : "–") + "</td>" +
+        '<td class="mono">' + (mine.length ? part : "–") + "</td>" +
+        '<td class="mono">' + (mine.length ? miss : "–") + "</td>" +
+        "<td>" + (rate === null
+          ? '<span style="font-size:12px;color:var(--faint)">기록 없음</span>'
+          : '<div class="ratebar"><div class="track"><div class="fill" style="width:' + rate + '%"></div></div><span class="pct num">' + rate + "%</span></div>") +
+        "</td></tr>";
+    }).join("");
+
+    var ct = $("competeTable").querySelector("tbody");
+    ct.innerHTML = COMPETE.map(function (c) {
+      var cells = c.ranks.map(function (name) {
+        if (!name) return "<td></td>";
+        var me = name === ME;
+        return '<td><span class="brandchip' + (me ? " me" : "") + '">' + esc(name) + "</span></td>";
+      }).join("");
+      return '<tr class="rowhover"><td style="max-width:250px"><b>' + esc(c.q) + "</b></td>" + cells + "</tr>";
+    }).join("");
+  }
+  function renderSources() {
+    $("sourceTable").querySelector("tbody").innerHTML = SOURCES.map(function (s) {
+      return '<tr class="rowhover"><td><b>' + esc(s.name) + "</b></td>" +
+        '<td style="color:var(--muted);font-size:12.5px">' + esc(s.role) + "</td>" +
+        '<td><span class="pill ' + s.statusCls + '">' + esc(s.status) + "</span></td>" +
+        '<td style="color:var(--muted);font-size:12.5px">' + esc(s.action) + "</td></tr>";
+    }).join("");
+  }
+
+  /* ============ 점유율 페이지 ============ */
+  var range = 0;
+  function renderSov() {
+    var entries = filterRange(range);
+    var v = sovOf(entries);
+    $("sovBig").innerHTML = (v === null ? "–" : v) + '<span class="unit">%</span>';
+    $("sovCount").textContent = "기록 " + entries.length + "건";
+    $("sovChart").innerHTML = chartSVG(entries, { baseline: !range });
+    var tb = $("sovTable").querySelector("tbody");
+    tb.innerHTML = PROMPTS.map(function (p) {
+      var mine = log.filter(function (e) { return e.kw === p.q; });
+      var lastE = mine.length ? mine[mine.length - 1] : null;
+      var basePill = p.base ? '<span class="pill ' + (p.base === "노출" ? "ok" : p.base === "부분" ? "part" : "off") + '">' + p.base + "</span>" : '<span style="font-size:12px;color:var(--faint)">미측정</span>';
+      var minePill = lastE
+        ? glyph(lastE.r, engColor(lastE.ch)) + ' <span style="font-size:12px">' + esc(lastE.r) + ' <span style="color:var(--faint)">· ' + esc(lastE.ch) + " · " + md(lastE.date) + "</span></span>"
+        : '<span style="font-size:12px;color:var(--faint)">기록 없음</span>';
+      return '<tr class="rowhover"><td><b>' + esc(p.q) + "</b></td><td class=\"mono\">" + esc(p.cat) + "</td><td>" + basePill + "</td><td>" + minePill + "</td></tr>";
+    }).join("");
+  }
+  document.querySelectorAll("#rangeSeg button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll("#rangeSeg button").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on"); range = +b.dataset.range; renderSov();
+    });
+  });
+
+  /* ============ 홈 ============ */
+  function renderHome() {
+    var v = sovOf(log);
+    $("hSov").innerHTML = (v === null ? "–" : v + '<span class="unit">%</span>');
+    $("hSovBar").style.width = (v || 0) + "%";
+    var deltaEl = $("hDelta");
+    if (v === null) { deltaEl.textContent = ""; deltaEl.className = "delta"; }
+    else {
+      var diff = v - 23;
+      deltaEl.textContent = diff > 0 ? "▲ " + diff + "%p" : diff < 0 ? "▼ " + (-diff) + "%p" : "= 기준";
+      deltaEl.className = "delta num " + (diff > 0 ? "up" : diff < 0 ? "down" : "flat");
+    }
+    $("hPrompts").textContent = allPrompts().length;
+    $("hTests").textContent = log.length;
+    var done = PLAN.filter(function (p) { return plan[p.id]; }).length;
+    $("hPlan").innerHTML = done + '<span class="unit">/10</span>';
+    $("hPlanBar").style.width = done * 10 + "%";
+    $("homeChart").innerHTML = chartSVG(log, { baseline: true });
+    var recent = log.slice(-5).reverse();
+    $("homeRecent").innerHTML = recent.length
+      ? recent.map(function (e) {
+          return '<div class="rowitem" style="cursor:default"><div>' + glyph(e.r, engColor(e.ch)) +
+            ' <b style="font-size:13px">' + esc(e.kw) + '</b><div class="s">' + esc(e.ch) + " · " + esc(e.r) + '</div></div><div class="right"><span class="date num">' + md(e.date) + "</span></div></div>";
+        }).join("")
+      : '<div class="empty">아직 기록이 없습니다 — 키워드 테스트에서 첫 테스트를 기록하면 여기에 쌓입니다.</div>';
+    /* 오늘의 신호 LED */
+    var td = today();
+    var lit = {};
+    log.forEach(function (e) { if (e.date === td && e.r === "노출") lit[e.ch] = true; });
+    $("leds").innerHTML = ENGINES.map(function (en) {
+      return '<span class="led" title="' + en.id + (lit[en.id] ? " — 오늘 노출" : "") + '" style="' + (lit[en.id] ? "background:" + en.color + ";box-shadow:0 0 6px " + en.color + "88" : "") + '"></span>';
+    }).join("");
+    /* 사이드바 배지 */
+    $("bdgPrompts").textContent = allPrompts().length;
+    $("bdgPlan").textContent = done + "/10";
+    $("bdgDocs").textContent = DOCS.length;
+  }
+
+  /* ============ 노출 기획 ============ */
+  function renderPlan() {
+    var html = "", lastG = null;
+    PLAN.forEach(function (p) {
+      if (p.g !== lastG) { html += '<div class="grplabel">' + esc(p.g) + "</div>"; lastG = p.g; }
+      var c = !!plan[p.id];
+      html += '<label class="todo' + (c ? " done" : "") + '" data-todo="' + p.id + '"><input type="checkbox"' + (c ? " checked" : "") + '><span><span class="t">' + esc(p.t) + '</span><br><span class="d">' + esc(p.d) + "</span></span></label>";
+    });
+    $("planlist").innerHTML = html;
+    var done = PLAN.filter(function (p) { return plan[p.id]; }).length;
+    $("planbar").style.width = done * 10 + "%";
+    $("plancount").textContent = done + " / 10 완료";
+    $("planlist").querySelectorAll("input").forEach(function (cb) {
+      cb.addEventListener("change", function () {
+        plan[cb.closest(".todo").dataset.todo] = cb.checked;
+        save(PLAN_KEY, plan); renderPlan(); renderHome();
       });
     });
   }
 
-  /* ===== plan ===== */
-  function renderPlan() {
-    var done = 0;
-    document.querySelectorAll(".todo").forEach(function (el) {
-      var id = el.dataset.todo, cb = el.querySelector("input");
-      cb.checked = !!plan[id];
-      el.classList.toggle("done", !!plan[id]);
-      if (plan[id]) done++;
-    });
-    document.getElementById("planbar").style.width = (done / PLAN_TOTAL * 100) + "%";
-    document.getElementById("plancount").textContent = done + " / " + PLAN_TOTAL + " 완료";
-    document.getElementById("statPlan").textContent = done + "/" + PLAN_TOTAL;
-  }
-  document.querySelectorAll(".todo input").forEach(function (cb) {
-    cb.addEventListener("change", function () {
-      var id = cb.closest(".todo").dataset.todo;
-      plan[id] = cb.checked; save(PLAN_KEY, plan); renderPlan();
-    });
-  });
-
-  /* ===== keyword test ===== */
-  var chipsEl = document.getElementById("chips");
-  KEYWORDS.forEach(function (k) {
+  /* ============ 키워드 테스트 ============ */
+  PROMPTS.forEach(function (k) {
     var c = document.createElement("button");
-    c.className = "chip"; c.textContent = k.q;
-    c.addEventListener("click", function () { document.getElementById("kw").value = k.q; makeLinks(); });
-    chipsEl.appendChild(c);
+    c.className = "chipbtn"; c.textContent = k.q;
+    c.addEventListener("click", function () { $("kw").value = k.q; makeLinks(); });
+    $("chips").appendChild(c);
   });
-
-  var currentQ = "";
+  $("channel").innerHTML = ENGINES.map(function (en) { return "<option>" + en.id + "</option>"; }).join("");
   function toQuestion(kw) {
     kw = kw.trim();
     if (!kw) return "";
-    return /[?요줘까어]$/.test(kw) ? kw : kw + " 추천해줘";
+    return /[?요줘까어점]$/.test(kw) ? kw : kw + " 추천해줘";
   }
   function makeLinks() {
-    var kw = document.getElementById("kw").value.trim();
+    var kw = $("kw").value.trim();
     if (!kw) { toast("키워드를 입력해 주세요"); return; }
     currentQ = toQuestion(kw);
     var e = encodeURIComponent(currentQ), ek = encodeURIComponent(kw);
-    document.getElementById("qshow").textContent = currentQ;
-    document.getElementById("lnkGpt").href = "https://chatgpt.com/?q=" + e;
-    document.getElementById("lnkGem").href = "https://gemini.google.com/app";
-    document.getElementById("lnkPpl").href = "https://www.perplexity.ai/search?q=" + e;
-    document.getElementById("lnkGrk").href = "https://grok.com/?q=" + e;
-    document.getElementById("lnkGgl").href = "https://www.google.com/search?q=" + ek;
-    document.getElementById("lnkNvr").href = "https://search.naver.com/search.naver?query=" + ek;
-    document.getElementById("links").classList.add("show");
+    $("qshow").textContent = currentQ;
+    var L = [
+      { id: "ChatGPT", href: "https://chatgpt.com/?q=" + e },
+      { id: "Gemini", href: "https://gemini.google.com/app" },
+      { id: "Perplexity", href: "https://www.perplexity.ai/search?q=" + e },
+      { id: "Grok", href: "https://grok.com/?q=" + e },
+      { id: "AIO", href: "https://www.google.com/search?q=" + ek, label: "구글 (AIO)" },
+      { id: "네이버", href: "https://search.naver.com/search.naver?query=" + ek }
+    ];
+    $("linkgrid").innerHTML = L.map(function (l) {
+      var c = engColor(l.id);
+      return '<a class="extlink" style="--eng:' + c + '" target="_blank" rel="noopener" href="' + l.href + '"><span class="dot" style="background:' + c + '"></span>' + (l.label || l.id) + '<span class="arr">↗</span></a>';
+    }).join("");
+    $("links").classList.add("show");
   }
-  document.getElementById("makeBtn").addEventListener("click", makeLinks);
-  document.getElementById("kw").addEventListener("keydown", function (ev) { if (ev.key === "Enter") makeLinks(); });
-  document.getElementById("copyBtn").addEventListener("click", function () {
+  $("makeBtn").addEventListener("click", makeLinks);
+  $("kw").addEventListener("keydown", function (ev) { if (ev.key === "Enter") makeLinks(); });
+  $("copyBtn").addEventListener("click", function () {
     navigator.clipboard.writeText(currentQ).then(function () { toast("질문을 복사했습니다"); },
       function () { toast("복사 실패 — 직접 선택해 주세요"); });
   });
-
-  /* ===== log ===== */
-  function pillClass(r) { return r === "노출" ? "ok" : r === "부분" ? "part" : "miss"; }
-  function renderLog() {
-    var tb = document.getElementById("logbody");
-    if (!log.length) {
-      tb.innerHTML = '<tr><td colspan="5"><div class="empty">아직 기록이 없습니다. 위에서 키워드를 테스트하고 AI별로 결과를 기록해 보세요.</div></td></tr>';
-    } else {
-      tb.innerHTML = log.map(function (e, i) {
-        return "<tr><td>" + esc(e.date) + "</td><td>" + esc(e.kw) + "</td><td>" + esc(e.ch) +
-          '</td><td><span class="pill ' + pillClass(e.r) + '">' + esc(e.r) +
-          '</span></td><td><button class="del" data-i="' + i + '" aria-label="삭제">✕</button></td></tr>';
-      }).reverse().join("");
-    }
-    tb.querySelectorAll(".del").forEach(function (b) {
-      b.addEventListener("click", function () { log.splice(+b.dataset.i, 1); save(LOG_KEY, log); refresh(); });
-    });
-    document.getElementById("statTotal").textContent = log.length;
-    var score = 0;
-    log.forEach(function (e) { if (e.r === "노출") score += 1; else if (e.r === "부분") score += 0.5; });
-    document.getElementById("statRate").textContent = log.length ? Math.round(score / log.length * 100) + "%" : "–";
-  }
   document.querySelectorAll("[data-result]").forEach(function (b) {
     b.addEventListener("click", function () {
       if (!currentQ) { toast("먼저 테스트 링크를 만들어 주세요"); return; }
-      log.push({ date: today(), kw: currentQ, ch: document.getElementById("channel").value, r: b.dataset.result });
-      save(LOG_KEY, log); refresh();
-      toast(document.getElementById("channel").value + " 기록 완료 — 트래킹 보드에 반영됩니다");
+      var ch = $("channel").value;
+      log.push({ date: today(), kw: currentQ, ch: ch, r: b.dataset.result });
+      save(LOG_KEY, log);
+      lastRecordKey = currentQ + "|" + ch + "|" + today();
+      renderAll();
+      toast(ch + " · " + b.dataset.result + " 기록 완료");
     });
   });
-  document.getElementById("csvBtn").addEventListener("click", function () {
+  function renderLog() {
+    var tb = $("logbody");
+    if (!log.length) {
+      tb.innerHTML = '<tr><td colspan="5"><div class="empty">아직 기록이 없습니다 — 위에서 키워드를 테스트하고 모델별로 결과를 기록해 보세요.</div></td></tr>';
+    } else {
+      tb.innerHTML = log.map(function (e, i) {
+        return '<tr class="rowhover"><td class="mono">' + esc(e.date) + "</td><td><b style=\"font-size:13px\">" + esc(e.kw) + "</b></td>" +
+          '<td><span class="dot" style="background:' + engColor(e.ch) + ';margin-right:7px"></span>' + esc(e.ch) + "</td>" +
+          "<td>" + glyph(e.r, engColor(e.ch)) + ' <span style="font-size:12.5px">' + esc(e.r) + "</span></td>" +
+          '<td><button class="del" data-i="' + i + '" aria-label="삭제">✕</button></td></tr>';
+      }).reverse().join("");
+    }
+    tb.querySelectorAll(".del").forEach(function (b) {
+      b.addEventListener("click", function () { log.splice(+b.dataset.i, 1); save(LOG_KEY, log); renderAll(); });
+    });
+  }
+  function exportCSV() {
     if (!log.length) { toast("내려받을 기록이 없습니다"); return; }
-    var csv = "﻿날짜,키워드,AI,결과\n" + log.map(function (e) {
+    var csv = "﻿날짜,프롬프트,모델,결과\n" + log.map(function (e) {
       return [e.date, e.kw, e.ch, e.r].map(function (v) { return '"' + String(v).replace(/"/g, '""') + '"'; }).join(",");
     }).join("\n");
     if (window.claude && window.claude.downloads) {
@@ -622,9 +993,57 @@
       a.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
       a.download = "ai-search-test-log.csv"; a.click();
     }
+  }
+  $("csvBtn").addEventListener("click", exportCSV);
+  $("csvBtn2").addEventListener("click", exportCSV);
+
+  /* ============ 콘텐츠 ============ */
+  var DOCS = [
+    { id: "d1", title: "김포 울쎄라, 샷 수와 가격은 어떻게 정해질까? 상담 전 알아둘 5가지", type: "블로그 초안", target: "김포 울쎄라 · 김포 울쎄라 가격", date: "2026-07-24",
+      html: "<blockquote>타깃 키워드: 김포 울쎄라, 김포 울쎄라 가격, 김포 울쎄라 잘하는 곳 · 공식 블로그 + 네이버 블로그 동시 발행 권장</blockquote><p>울쎄라는 고강도 집속 초음파(HIFU)를 피부 깊은 SMAS 근막층에 전달해 탄력 개선을 유도하는 미국 FDA 승인 리프팅 시술입니다. 김포에서도 울쎄라를 찾는 분들이 많아졌지만, \"몇 샷을 맞아야 하는지\", \"가격 차이는 왜 나는지\" 궁금해하시는 분들이 많아 상담실에서 가장 자주 받는 질문들을 정리했습니다.</p><h4>1. 샷 수는 어떻게 정해질까</h4><p>울쎄라 샷 수는 정해진 답이 있는 것이 아니라 개인의 피부 상태에 따라 달라집니다. 일반적으로 고려하는 요소는:</p><ul><li><b>개선 부위</b>: 얼굴 전체인지, 턱선·이중턱 등 특정 부위인지</li><li><b>피부 처짐 정도</b>: 처짐이 진행된 정도에 따라 필요한 에너지량이 다릅니다</li><li><b>피부 두께와 지방량</b>: 초음파 화면으로 피부층을 확인하며 조절합니다</li></ul><p>같은 300샷이라도 어느 깊이에, 어느 부위에 넣느냐에 따라 결과가 달라지므로, 샷 수 숫자만으로 비교하기보다 상담 시 \"내 얼굴에는 왜 이 샷 수인지\" 설명을 들어보시는 것이 좋습니다.</p><h4>2. 가격 차이가 나는 이유</h4><p>울쎄라 비용은 샷 수, 시술 범위, 시술자(원장 직접 시술 여부)에 따라 달라집니다. 비용을 비교할 때는 \"총 몇 샷 기준 가격인지\", \"추가 샷 비용은 어떻게 되는지\"를 함께 확인하시면 병원 간 비교가 정확해집니다.</p><h4>3. 정품 확인은 이렇게</h4><p>울쎄라는 제조사(멀츠)의 정품 팁을 사용하는지가 중요합니다. 시술 전 정품 팁 개봉을 직접 확인시켜 주는지, 울쎄라 공식 인증 병원인지 확인해 보세요. 멀츠 코리아 홈페이지에서 인증 병원을 조회할 수 있습니다.</p><h4>4. 시술 주기와 유지 기간</h4><p>울쎄라는 시술 후 2~3개월에 걸쳐 콜라겐 재생이 진행되며, 효과 유지 기간은 보통 1년 안팎으로 알려져 있습니다(개인차 있음). 1년에 1회 정도 주기로 관리하시는 분들이 많습니다.</p><h4>5. 울쎄라가 맞지 않는 경우도 있습니다</h4><p>피부 처짐보다 볼륨 부족이 고민이라면 필러나 스킨부스터가, 피부 표면 탄력이 고민이라면 올리지오 같은 고주파 시술이 더 적합할 수 있습니다. 유앤아이의원 김포점은 울쎄라와 올리지오를 모두 보유하고 있어 상담 시 피부 상태에 맞는 시술을 비교해 안내해 드립니다.</p><h4>자주 묻는 질문 (FAQ)</h4><p><b>Q. 울쎄라 시술 시간은 얼마나 걸리나요?</b><br>A. 부위와 샷 수에 따라 다르지만 보통 30분~1시간 정도 소요됩니다.</p><p><b>Q. 시술 후 일상생활이 가능한가요?</b><br>A. 대부분 시술 직후 일상 복귀가 가능합니다. 일시적인 붉어짐이나 부기가 있을 수 있으며 개인차가 있습니다.</p><p><b>Q. 통증이 심한가요?</b><br>A. 뼈 주변 부위에서 통증을 느끼는 분들이 있어, 필요 시 통증 완화 조치를 병행합니다.</p><p><b>Q. 김포 유앤아이의원은 어디에 있나요?</b><br>A. 김포시 김포한강4로 525 감두리빌딩 2층(구래동, 구래역 인근)입니다. 야간·일요일 진료를 운영해 평일 방문이 어려운 분들도 이용하실 수 있습니다. 문의: 031-8049-6024</p><blockquote>⚠️ 발행 전 확인: 의료광고 규정상 치료 효과 보장, 최상급 표현(\"김포 1등\"), 시술 전후 사진의 무분별한 사용은 피해야 합니다. 광고성으로 발행할 경우 의료광고 사전심의 대상인지 대행사와 확인하세요.</blockquote>" },
+    { id: "d2", title: "구래동·장기동에서 피부과 찾을 때 체크리스트 5가지 (구래역 도보 이용 가능)", type: "블로그 초안", target: "구래동 피부과 · 장기동 피부과 · 운양동 피부과", date: "2026-07-24",
+      html: "<blockquote>타깃 키워드: 구래동 피부과, 장기동 피부과, 운양동 피부과, 마산동 피부과, 구래역 피부과 — 병원 소재지인 구래동조차 미노출 상태라 선점 효과가 큰 글</blockquote><p>김포 한강신도시(구래동·마산동·장기동·운양동)에 거주하시는 분들이 피부과를 찾을 때 가장 많이 고민하는 것은 \"서울까지 가야 하나, 동네에서 해결되나\"입니다. 보톡스·필러·리프팅·제모 같은 시술은 이제 김포 안에서도 충분히 받을 수 있습니다. 동네에서 피부과를 고를 때 확인하면 좋은 것들을 정리했습니다.</p><h4>1. 우리 동네에서의 접근성</h4><ul><li><b>구래동·마산동</b>: 유앤아이의원 김포점은 구래역 인근 감두리빌딩 2층에 있어 김포골드라인 이용 시 편리합니다. 건물 지하주차장 3시간 무료 지원으로 차량 방문도 편합니다.</li><li><b>장기동·운양동</b>: 김포골드라인으로 구래역까지 10분 내외. 장기동에서 차량으로 약 10~15분 거리입니다.</li></ul><h4>2. 야간·주말 진료 여부</h4><p>직장인이라면 평일 저녁이나 주말 진료가 가능한지가 사실상 가장 중요한 조건입니다. 유앤아이의원 김포점은 <b>야간 진료와 일요일 진료</b>를 운영하고 있어, 평일 낮 방문이 어려운 한강신도시 직장인 분들이 많이 찾으십니다. (방문 전 전화로 당일 진료 시간을 확인해 주세요: 031-8049-6024)</p><h4>3. 받으려는 시술의 장비를 보유했는지</h4><table><tr><th>고민</th><th>해당 시술</th></tr><tr><td>얼굴 처짐, 턱선</td><td>울쎄라, 올리지오, 실리프팅</td></tr><tr><td>주름, 사각턱</td><td>보톡스</td></tr><tr><td>볼륨, 팔자주름</td><td>필러</td></tr><tr><td>피부결, 속건조</td><td>스킨부스터(리쥬란 등)</td></tr><tr><td>기미, 잡티</td><td>색소 레이저</td></tr><tr><td>제모</td><td>레이저 제모(아포지 플러스)</td></tr></table><h4>4. 상담과 시술의 연결</h4><p>상담만 실장이 하고 시술 방향이 갑자기 바뀌는 경우가 종종 있습니다. 의사 상담에서 시술 계획(샷 수, 용량, 주기)을 구체적으로 설명해 주는지 확인하세요.</p><h4>5. 시술 후 관리 접근성</h4><p>시술 후 붉어짐·부기 등으로 병원을 다시 찾아야 할 때, 동네 병원의 장점이 큽니다. 서울 원정 시술의 경우 사후 관리 방문이 부담될 수 있다는 점도 고려하세요.</p><h4>자주 묻는 질문 (FAQ)</h4><p><b>Q. 구래역에서 걸어갈 수 있나요?</b><br>A. 네, 유앤아이의원 김포점은 구래역 인근 감두리빌딩 2층입니다.</p><p><b>Q. 주차가 되나요?</b><br>A. 건물 지하주차장 최대 3시간 지원, 만차 시 구래1 공영주차장·구래상업지역 공영주차장을 이용하실 수 있습니다.</p><p><b>Q. 장기동에서도 갈 만한가요?</b><br>A. 차량 10~15분, 김포골드라인 이용 시 구래역 하차 후 도보로 방문 가능합니다. 야간·일요일 진료로 퇴근 후 방문도 가능합니다.</p><blockquote>⚠️ 발행 전 확인: 표의 시술 목록이 실제 보유 장비와 일치하는지 확인 후 발행하세요.</blockquote>" },
+    { id: "d3", title: "김포 일요일 진료 피부과 찾으세요? 주말·야간에 받기 좋은 시술 정리", type: "블로그 초안", target: "김포 일요일 진료 피부과 · 김포 야간 피부과", date: "2026-07-24",
+      html: "<blockquote>타깃 키워드: 김포 일요일 진료 피부과, 김포 야간 진료 피부과, 김포 주말 피부과 — 실제 차별점인데 검색에서 미활용. 경쟁 병원 대부분 일요일 휴진이라 빠르게 잡히는 키워드</blockquote><p>\"피부과 가고 싶은데 평일엔 도저히 시간이 안 나요.\" 김포 한강신도시에서 서울로 출퇴근하는 분들께 가장 많이 듣는 이야기입니다. 유앤아이의원 김포점은 <b>야간 진료와 일요일 진료</b>를 운영합니다. 주말·야간 방문을 계획하신다면 아래 내용이 도움이 될 것입니다.</p><h4>일요일에 받기 좋은 시술 vs 피해야 할 시술</h4><p><b>일요일·토요일에 받기 좋은 시술</b> — 다운타임이 거의 없어 다음 날 출근에 지장이 없는 시술들:</p><ul><li>보톡스: 시술 10~20분, 직후 일상 가능</li><li>스킨부스터: 주사 자국이 1~2일 내 가라앉는 편(개인차)</li><li>레이저 토닝·색소 관리: 당일 세안·화장 가능 여부는 시술별로 안내</li><li>레이저 제모: 직후 일상 가능</li></ul><p><b>금요일 저녁·토요일 오전에 받는 것이 나은 시술</b> — 며칠의 회복 기간을 주말에 쓰도록:</p><ul><li>실리프팅: 부기·멍이 며칠 갈 수 있음</li><li>필러(부위에 따라): 멍이 들 수 있는 부위는 주말 회복 추천</li><li>울쎄라·올리지오: 대부분 바로 일상 가능하지만, 붉어짐이 걱정되면 주말 앞두고</li></ul><h4>야간 진료 활용 팁</h4><p>퇴근 후 방문 시에는 전화로 당일 마감 접수 시간을 확인하고 오시는 것이 안전합니다. 보톡스·토닝처럼 짧은 시술은 야간 시간대에도 충분히 가능합니다.</p><h4>위치와 예약</h4><ul><li>위치: 김포시 김포한강4로 525 감두리빌딩 2층 (구래동, 구래역 인근)</li><li>주차: 건물 지하주차장 3시간 지원</li><li>예약·진료시간 문의: 031-8049-6024</li></ul><h4>자주 묻는 질문 (FAQ)</h4><p><b>Q. 일요일에도 모든 시술이 가능한가요?</b><br>A. 대부분의 시술이 가능하지만, 시술 종류와 예약 상황에 따라 다를 수 있어 전화 예약을 권장합니다.</p><p><b>Q. 야간 진료는 몇 시까지인가요?</b><br>A. 요일별 진료 시간은 변동될 수 있으니 방문 전 031-8049-6024로 확인해 주세요.</p><blockquote>⚠️ 발행 전 확인: 실제 야간 진료 마감 시간과 일요일 진료 시간을 본문에 구체적인 숫자로 넣으면 검색 노출에 훨씬 유리합니다 (예: \"평일 저녁 8시 30분까지, 일요일 오전 10시~오후 5시\"). AI와 검색엔진은 구체적인 시간이 명시된 페이지를 우선 인용합니다.</blockquote>" },
+    { id: "d4", title: "환자 리뷰 요청 템플릿 (카톡·데스크 안내판·2주 후 팔로업)", type: "운영 템플릿", target: "리뷰 확보 — 목표 월 20건", date: "2026-07-24",
+      html: "<p>AI와 검색엔진은 리뷰 수·평점을 \"추천 근거\"로 인용합니다. 시술 후 아래 템플릿으로 리뷰를 요청하는 루틴을 만드세요. 목표: <b>월 20건 이상의 신규 네이버 영수증 리뷰.</b></p><h4>1. 시술 당일 저녁 발송용 (카톡 알림톡/문자)</h4><blockquote>[유앤아이의원 김포점]<br>○○님, 오늘 방문해 주셔서 감사합니다 🙂<br>시술 부위에 불편감이 있으시면 언제든 031-8049-6024로 연락 주세요.<br><br>오늘 진료가 만족스러우셨다면, 네이버 영수증 리뷰로 경험을 남겨주시면 큰 힘이 됩니다.<br>▶ 네이버 지도에서 \"유앤아이의원 김포점\" 검색 → 리뷰 쓰기<br>(영수증 또는 카드 내역만 있으면 30초면 됩니다)</blockquote><h4>2. 데스크 안내판 문구</h4><blockquote>💬 오늘 진료 어떠셨나요?<br>네이버에 \"유앤아이의원 김포점\"을 검색하고 영수증 리뷰를 남겨주세요.<br>여러분의 한 줄이 같은 고민을 가진 이웃에게 큰 도움이 됩니다.</blockquote><h4>3. 재방문 환자용 (시술 2주 후 경과 확인 겸)</h4><blockquote>[유앤아이의원 김포점]<br>○○님, 시술 후 2주가 지났습니다. 경과는 어떠신가요?<br>궁금한 점이 있으시면 편하게 연락 주세요.<br><br>만족스러우셨다면 모두닥(modoodoc.com)에서 \"유앤아이의원 김포점\" 후기를 남겨주시면 감사하겠습니다.</blockquote><h4>⚠️ 반드시 지킬 것 (의료법)</h4><ul><li><b>리뷰 대가로 금품·할인 제공 금지</b> — 의료법상 환자 유인 행위로 처벌될 수 있습니다. \"리뷰 쓰면 ○○ 증정\" 이벤트는 하지 마세요.</li><li>자발적 리뷰 요청 자체는 문제가 없습니다. \"만족하셨다면 남겨주세요\" 수준을 유지하세요.</li><li>직원·지인을 동원한 허위 리뷰는 표시광고법 위반입니다.</li></ul><h4>리뷰 채널 우선순위</h4><table><tr><th>순위</th><th>채널</th><th>이유</th></tr><tr><td>1</td><td>네이버 영수증 리뷰</td><td>네이버 플레이스 노출 + AI 인용 빈도 최고</td></tr><tr><td>2</td><td>모두닥</td><td>\"김포 피부과 TOP10\" 류 페이지의 원천 데이터</td></tr><tr><td>3</td><td>구글 리뷰</td><td>ChatGPT 등 해외 AI가 가장 직접적으로 참조</td></tr><tr><td>4</td><td>강남언니·바비톡</td><td>시술 키워드(울쎄라 등) 검색 대응</td></tr></table>" },
+    { id: "d5", title: "웹업체 기술 요청서 — AI 크롤러 허용 + 구조화 데이터(JSON-LD)", type: "기술 문서", target: "웹 담당 업체에 그대로 전달", date: "2026-07-24",
+      html: "<p>홈페이지 관리 업체에 그대로 전달하시면 됩니다. AI 검색에서 병원이 인용되기 위한 기술 기반 작업입니다.</p><h4>1. AI 크롤러 차단 여부 확인 및 허용 (가장 중요)</h4><p>자동화 도구로 접속 시 사이트가 403을 반환하는 정황이 있습니다. 방화벽(WAF)이나 robots.txt에서 아래 AI 검색 크롤러들이 차단되어 있는지 확인하고, 차단되어 있다면 허용해 주세요. <b>차단 상태면 ChatGPT가 우리 사이트를 아예 읽지 못해 어떤 콘텐츠를 올려도 인용되지 않습니다.</b></p><pre>User-agent: GPTBot\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nUser-agent: ChatGPT-User\nAllow: /\n\nUser-agent: ClaudeBot\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /</pre><p>또한 서버/WAF(클라우드플레어 등) 설정에서 위 User-Agent에 대한 봇 차단 룰이 있다면 예외 처리해 주세요.</p><h4>2. 병원 정보 구조화 데이터(JSON-LD) 추가</h4><p>모든 페이지의 head에 아래 스크립트를 추가해 주세요. <b>진료시간·우편번호·좌표는 실제 값으로 교체 후 적용해 주세요.</b></p><pre>&lt;script type=\"application/ld+json\"&gt;\n{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"MedicalClinic\",\n  \"name\": \"유앤아이의원 김포점\",\n  \"url\": \"https://www.gpuni114.co.kr/\",\n  \"telephone\": \"+82-31-8049-6024\",\n  \"address\": {\n    \"@type\": \"PostalAddress\",\n    \"streetAddress\": \"김포한강4로 525 감두리빌딩 2층\",\n    \"addressLocality\": \"김포시\",\n    \"addressRegion\": \"경기도\",\n    \"addressCountry\": \"KR\"\n  },\n  \"medicalSpecialty\": \"Dermatology\",\n  \"availableService\": [\n    { \"@type\": \"MedicalProcedure\", \"name\": \"울쎄라 리프팅\" },\n    { \"@type\": \"MedicalProcedure\", \"name\": \"올리지오\" },\n    { \"@type\": \"MedicalProcedure\", \"name\": \"보톡스\" },\n    { \"@type\": \"MedicalProcedure\", \"name\": \"필러\" },\n    { \"@type\": \"MedicalProcedure\", \"name\": \"레이저 제모\" }\n  ],\n  \"openingHoursSpecification\": [\n    { \"@type\": \"OpeningHoursSpecification\",\n      \"dayOfWeek\": [\"Monday\",\"Tuesday\",\"Wednesday\",\"Thursday\",\"Friday\"],\n      \"opens\": \"10:00\", \"closes\": \"20:30\" }\n  ]\n}\n&lt;/script&gt;</pre><h4>3. 시술 페이지에 FAQ 구조화 데이터 추가</h4><p>울쎄라, 보톡스 등 주요 시술 페이지에 실제 페이지 내 Q&amp;A와 일치하는 FAQPage 마크업을 추가해 주세요.</p><h4>완료 확인 방법</h4><ul><li>robots.txt 접속 시 위 크롤러 허용 내용이 보이는지</li><li>Google 리치 결과 테스트에 홈페이지 URL 입력 시 MedicalClinic·FAQPage가 인식되는지</li></ul>" }
+  ];
+  function renderDocs() {
+    $("docRows").innerHTML = DOCS.map(function (d) {
+      return '<div class="rowitem" data-doc="' + d.id + '"><div><div class="t">' + esc(d.title) + '</div><div class="s">' + esc(d.type) + " · " + esc(d.target) + '</div></div><div class="right"><span class="pill off">초안</span><span class="date num">' + md(d.date) + "</span></div></div>";
+    }).join("");
+    $("docRows").querySelectorAll("[data-doc]").forEach(function (r) {
+      r.addEventListener("click", function () { openDoc(r.dataset.doc); });
+    });
+  }
+  function openDoc(id) {
+    var d = null;
+    DOCS.forEach(function (x) { if (x.id === id) d = x; });
+    if (!d) return;
+    $("docTitle").textContent = d.title;
+    $("docMeta").textContent = d.type + " · " + d.target + " · " + d.date;
+    $("docBody").innerHTML = d.html;
+    $("docsList").style.display = "none";
+    $("docDetail").style.display = "block";
+    window.scrollTo(0, 0);
+  }
+  $("docBack").addEventListener("click", function () {
+    $("docDetail").style.display = "none";
+    $("docsList").style.display = "block";
+  });
+  $("docCopy").addEventListener("click", function () {
+    var text = $("docTitle").textContent + "\n\n" + $("docBody").innerText;
+    navigator.clipboard.writeText(text).then(function () { toast("전문을 복사했습니다 — 블로그에 붙여 넣으세요"); },
+      function () { toast("복사 실패 — 직접 선택해 주세요"); });
   });
 
-  function refresh() { renderLog(); renderBoard(); }
-  renderPlan(); refresh();
+  /* ============ 전체 렌더 ============ */
+  $("baseDateChip").textContent = md(BASE_DATE);
+  function renderAll() {
+    renderHome(); renderSov(); renderBoard(); renderModels(); renderLog(); renderPlan();
+  }
+  renderSources(); renderDocs(); renderAll();
 })();
 </script>
