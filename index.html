@@ -428,7 +428,15 @@
       <!-- ================= 프롬프트 ================= -->
       <section class="page" id="page-prompts">
         <p class="desc">질의어별로 어느 AI에서 언제 노출됐는지 날짜 그리드로 추적합니다. ● 노출 · ○ 부분 · <b>–</b> 미노출 · 옅은 점은 미테스트. 측정은 7/24에 시작되어 아직 하루치입니다 — 매일 아침 자동측정 점이 한 칸씩 쌓입니다.</p>
+        <div class="panel testbox" style="margin-bottom:14px">
+          <div class="row">
+            <input type="text" id="newkw" placeholder="추적할 검색어 추가 (예: 김포 리프팅 가격)" aria-label="추적할 프롬프트 추가">
+            <button class="btn primary" id="addKwBtn">프롬프트 추가</button>
+          </div>
+          <p style="font-size:12px;color:var(--faint);margin:8px 0 0">직접 추가한 프롬프트는 이 브라우저에 저장됩니다. 아라의 자동측정에도 포함하려면 채팅에서 "OO도 자동측정에 넣어줘"라고 말씀해 주세요. 카드 오른쪽 ✕는 보드에서 숨기기입니다.</p>
+        </div>
         <div id="board"></div>
+        <div id="hiddenBox"></div>
       </section>
 
       <!-- ================= 모델별 현황 ================= -->
@@ -631,7 +639,9 @@
       "김포 여드름 피부과 추천해줘": "미노출",
       "김포 기미 잡티 레이저 어디가 좋아?": "미노출",
       "구래역 피부과 알려줘": "노출",
-      "마산동 피부과 어디 있어?": "미노출"
+      "마산동 피부과 어디 있어?": "미노출",
+      "김포 써마지 잘하는 곳 알려줘": "미노출",
+      "김포 실리프팅 어디가 좋아?": "노출"
     } }
   ];
   function measureRate(m) {
@@ -657,7 +667,9 @@
     { q: "김포 여드름 피부과 추천해줘", cat: "지역+진료", base: "미노출" },
     { q: "김포 기미 잡티 레이저 어디가 좋아?", cat: "지역+시술", base: "미노출" },
     { q: "구래역 피부과 알려줘", cat: "역세권(소재지)", base: "노출" },
-    { q: "마산동 피부과 어디 있어?", cat: "동네", base: "미노출" }
+    { q: "마산동 피부과 어디 있어?", cat: "동네", base: "미노출" },
+    { q: "김포 써마지 잘하는 곳 알려줘", cat: "장비(보유)", base: "미노출" },
+    { q: "김포 실리프팅 어디가 좋아?", cat: "지역+시술", base: "노출" }
   ];
   var COMPETE = [
     { q: "김포 피부과 추천해줘", ranks: ["리멤버피부과", "미소가인피부과", "해날피부과", "플랜피부과"] },
@@ -674,7 +686,9 @@
     { q: "김포 여드름 피부과 추천해줘", ranks: ["리멤버피부과", "미엘피부과", "플랜피부과", ""] },
     { q: "김포 기미 잡티 레이저 어디가 좋아?", ranks: ["미소가인피부과", "리멤버피부과", "플랜피부과", ""] },
     { q: "구래역 피부과 알려줘", ranks: [ME, "리멤버피부과", "", ""] },
-    { q: "마산동 피부과 어디 있어?", ranks: ["결과 거의 없음 — 선점 기회", "", "", ""] }
+    { q: "마산동 피부과 어디 있어?", ranks: ["결과 거의 없음 — 선점 기회", "", "", ""] },
+    { q: "김포 써마지 잘하는 곳 알려줘", ranks: ["김포 결과 거의 없음 — 선점 기회", "", "", ""] },
+    { q: "김포 실리프팅 어디가 좋아?", ranks: ["리멤버피부과", ME, "다시봄날의원", "화사한의원"] }
   ];
   var SOURCES = [
     { name: "모두닥", role: "\"김포 피부과 TOP10\" — 추천 질문의 최다 인용원", status: "미등재", statusCls: "warn", action: "김포점 프로필 등재 + 후기 요청 루틴" },
@@ -729,6 +743,12 @@
   if (!Array.isArray(log)) log = [];
   var plan = load(PLAN_KEY, {});
   if (typeof plan !== "object" || plan === null || Array.isArray(plan)) plan = {};
+  var CUSTOM_KEY = "uni-custom-v1";
+  var custom = load(CUSTOM_KEY, { added: [], hidden: [] });
+  if (typeof custom !== "object" || custom === null || Array.isArray(custom)) custom = { added: [], hidden: [] };
+  if (!Array.isArray(custom.added)) custom.added = [];
+  if (!Array.isArray(custom.hidden)) custom.hidden = [];
+  function isHidden(q) { return custom.hidden.indexOf(q) !== -1; }
   var currentQ = "";
   var lastRecordKey = null;
 
@@ -829,9 +849,10 @@
 
   /* ============ 트래킹 보드 (프롬프트) ============ */
   function allPrompts() {
-    var list = PROMPTS.slice(); var known = {};
-    list.forEach(function (k) { known[k.q] = true; });
-    log.forEach(function (e) { if (!known[e.kw]) { known[e.kw] = true; list.push({ q: e.kw, cat: "직접 추가", base: null }); } });
+    var list = [], known = {};
+    PROMPTS.forEach(function (k) { if (!isHidden(k.q)) { known[k.q] = true; list.push(k); } });
+    custom.added.forEach(function (k) { if (!known[k.q] && !isHidden(k.q)) { known[k.q] = true; list.push({ q: k.q, cat: "직접 추가", base: null }); } });
+    log.forEach(function (e) { if (!known[e.kw] && !isHidden(e.kw)) { known[e.kw] = true; list.push({ q: e.kw, cat: "직접 추가", base: null }); } });
     return list;
   }
   function boardDates() {
@@ -859,7 +880,8 @@
       var basePill = kw.base ? '<span class="pill ' + (kw.base === "노출" ? "ok" : kw.base === "부분" ? "part" : "off") + '">기준 ' + kw.base + "</span>" : '<span class="pill off">기준 미측정</span>';
       var head = '<div class="kwhead"><span class="q">' + esc(kw.q) + "</span>" + basePill +
         '<span class="meta num">' + (mine.length ? "내 기록 " + hits + "/" + mine.length + " 노출" : "") + "</span>" +
-        '<span class="spacer"></span><button class="btn sm testkw" data-kw="' + esc(kw.q) + '">테스트 →</button></div>';
+        '<span class="spacer"></span><button class="btn sm testkw" data-kw="' + esc(kw.q) + '">테스트 →</button>' +
+        '<button class="btn sm hidekw" data-kw="' + esc(kw.q) + '" title="보드에서 숨기기" aria-label="보드에서 숨기기">✕</button></div>';
       var thead = "<tr><th></th>" + dates.map(function (d) {
         var t = d === td;
         return '<th class="cell' + (t ? " today todaybg" : "") + '">' + md(d) + "</th>";
@@ -893,6 +915,25 @@
     }).join("");
     document.querySelectorAll(".testkw").forEach(function (b) {
       b.addEventListener("click", function () { goPage("test"); $("kw").value = b.dataset.kw; makeLinks(); });
+    });
+    document.querySelectorAll(".hidekw").forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (custom.hidden.indexOf(b.dataset.kw) === -1) custom.hidden.push(b.dataset.kw);
+        save(CUSTOM_KEY, custom); renderAll();
+        toast("보드에서 숨겼습니다 — 아래에서 복원할 수 있어요");
+      });
+    });
+    var hb = $("hiddenBox");
+    hb.innerHTML = custom.hidden.length
+      ? '<div class="callout" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><b>숨긴 프롬프트</b>' +
+        custom.hidden.map(function (q) { return '<button class="btn sm restore" data-kw="' + esc(q) + '">↩ ' + esc(q) + "</button>"; }).join("") + "</div>"
+      : "";
+    hb.querySelectorAll(".restore").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var i = custom.hidden.indexOf(b.dataset.kw);
+        if (i !== -1) custom.hidden.splice(i, 1);
+        save(CUSTOM_KEY, custom); renderAll();
+      });
     });
     lastRecordKey = null;
   }
@@ -945,7 +986,7 @@
     $("sovCount").textContent = "자동 측정 " + auto2.length + "회 · 수동 기록 " + log.length + "건";
     $("sovChart").innerHTML = chartSVG({ range: range, width: $("sovChart").clientWidth });
     var tb = $("sovTable").querySelector("tbody");
-    tb.innerHTML = PROMPTS.map(function (p) {
+    tb.innerHTML = allPrompts().map(function (p) {
       var mine = log.filter(function (e) { return e.kw === p.q; });
       var lastE = mine.length ? mine[mine.length - 1] : null;
       var basePill = p.base ? '<span class="pill ' + (p.base === "노출" ? "ok" : p.base === "부분" ? "part" : "off") + '">' + p.base + "</span>" : '<span style="font-size:12px;color:var(--faint)">미측정</span>';
@@ -1024,12 +1065,15 @@
   }
 
   /* ============ 키워드 테스트 ============ */
-  PROMPTS.forEach(function (k) {
-    var c = document.createElement("button");
-    c.className = "chipbtn"; c.textContent = k.q;
-    c.addEventListener("click", function () { $("kw").value = k.q; makeLinks(); });
-    $("chips").appendChild(c);
-  });
+  function renderChips() {
+    var el = $("chips"); el.innerHTML = "";
+    allPrompts().forEach(function (k) {
+      var c = document.createElement("button");
+      c.className = "chipbtn"; c.textContent = k.q;
+      c.addEventListener("click", function () { $("kw").value = k.q; makeLinks(); });
+      el.appendChild(c);
+    });
+  }
   $("channel").innerHTML = ENGINES.map(function (en) { return "<option>" + en.id + "</option>"; }).join("");
   function toQuestion(kw) {
     kw = kw.trim();
@@ -1150,8 +1194,20 @@
 
   /* ============ 전체 렌더 ============ */
   $("baseDateChip").textContent = md(BASE_DATE);
+  $("addKwBtn").addEventListener("click", function () {
+    var q = $("newkw").value.trim();
+    if (!q) { toast("추가할 검색어를 입력해 주세요"); return; }
+    q = toQuestion(q);
+    var i = custom.hidden.indexOf(q);
+    if (i !== -1) custom.hidden.splice(i, 1);
+    var exists = allPrompts().some(function (k) { return k.q === q; });
+    if (!exists) custom.added.push({ q: q });
+    save(CUSTOM_KEY, custom); $("newkw").value = ""; renderAll();
+    toast('"' + q + '" 추적 시작 — 키워드 테스트에서 기록해 보세요');
+  });
+  $("newkw").addEventListener("keydown", function (ev) { if (ev.key === "Enter") $("addKwBtn").click(); });
   function renderAll() {
-    renderHome(); renderSov(); renderBoard(); renderModels(); renderLog(); renderPlan();
+    renderHome(); renderSov(); renderBoard(); renderModels(); renderLog(); renderPlan(); renderChips();
   }
   renderSources(); renderDocs(); renderAll();
 })();
