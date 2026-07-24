@@ -143,8 +143,8 @@
   /* dot vocabulary — 색은 데이터에만 */
   .dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; flex-shrink: 0; }
   .dot.ring { background: transparent !important; border: 2px solid currentColor; width: 8px; height: 8px; }
-  .dot.dash { width: 9px; height: 2.5px; border-radius: 2px; background: var(--line2); }
-  .dot.none { width: 3px; height: 3px; background: var(--line); }
+  .dot.dash { width: 10px; height: 3px; border-radius: 2px; background: var(--faint); }
+  .dot.none { width: 3.5px; height: 3.5px; background: var(--line2); }
 
   /* ================= chart ================= */
   .chartcard { padding: 20px 22px 14px; }
@@ -427,7 +427,7 @@
 
       <!-- ================= 프롬프트 ================= -->
       <section class="page" id="page-prompts">
-        <p class="desc">질의어별로 어느 AI에서 언제 노출됐는지 날짜 그리드로 추적합니다. ● 노출 · ○ 부분 · – 미노출. 오늘 열이 강조됩니다.</p>
+        <p class="desc">질의어별로 어느 AI에서 언제 노출됐는지 날짜 그리드로 추적합니다. ● 노출 · ○ 부분 · <b>–</b> 미노출 · 옅은 점은 미테스트. 측정은 7/24에 시작되어 아직 하루치입니다 — 매일 아침 자동측정 점이 한 칸씩 쌓입니다.</p>
         <div id="board"></div>
       </section>
 
@@ -819,9 +819,13 @@
   function boardDates() {
     var set = {};
     log.forEach(function (e) { set[e.date] = true; });
-    var d = new Date();
-    for (var i = 0; i < 14; i++) { set[fmt(d)] = true; d.setDate(d.getDate() - 1); }
-    return Object.keys(set).sort().slice(-30);
+    MEASURE.forEach(function (m) { set[m.date] = true; });
+    var first = Object.keys(set).sort()[0] || today();
+    var d = new Date(), dates = [];
+    while (dates.length < 30 && (fmt(d) >= first || dates.length < 7)) {
+      dates.push(fmt(d)); d.setDate(d.getDate() - 1);
+    }
+    return dates.sort();
   }
   function renderBoard() {
     var dates = boardDates(), td = today();
