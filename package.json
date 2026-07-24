@@ -1,0 +1,12 @@
+{
+  "name": "unianalysis",
+  "version": "1.0.0",
+  "private": true,
+  "description": "유앤아이의원 김포점 AI 검색 트래킹 대시보드",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

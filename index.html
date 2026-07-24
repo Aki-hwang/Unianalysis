@@ -114,6 +114,7 @@
   .strip { display: grid; grid-template-columns: repeat(4, 1fr); }
   .strip .cell { padding: 18px 22px 16px; border-right: 1px solid var(--line); min-width: 0; }
   .strip .cell:last-child { border-right: 0; }
+  .strip3 { grid-template-columns: repeat(3, 1fr); }
   .cell .k { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: .05em; }
   .cell .v { font-size: 34px; font-weight: 700; letter-spacing: -.02em; line-height: 1.25; margin-top: 2px; }
   .cell .v .unit { font-size: 15px; font-weight: 600; color: var(--muted); margin-left: 1px; }
@@ -234,6 +235,9 @@
   .todo .t { font-size: 13.5px; font-weight: 600; }
   .todo.done .t { color: var(--faint); font-weight: 500; text-decoration: line-through; }
   .todo .d { font-size: 12.5px; color: var(--muted); }
+  .todo .steps { margin: 7px 0 2px; padding-left: 17px; font-size: 12.5px; color: var(--muted); }
+  .todo .steps li { margin: 3px 0; }
+  .todo.done .steps { display: none; }
   .grplabel { font-size: 11px; font-weight: 700; color: var(--faint); letter-spacing: .06em; padding: 18px 18px 6px; }
 
   /* ================= test page ================= */
@@ -276,7 +280,15 @@
   .callout .cap { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .07em; color: var(--faint); margin-bottom: 3px; }
 
   .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  @media (max-width: 900px) { .cols2 { grid-template-columns: 1fr; } .strip { grid-template-columns: 1fr 1fr; } .strip .cell:nth-child(2) { border-right: 0; } .strip .cell:nth-child(-n+2) { border-bottom: 1px solid var(--line); } }
+  @media (max-width: 900px) {
+    .cols2 { grid-template-columns: 1fr; }
+    .strip { grid-template-columns: 1fr 1fr; }
+    .strip .cell:nth-child(2) { border-right: 0; }
+    .strip .cell:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    .strip3 { grid-template-columns: 1fr; }
+    .strip3 .cell { border-right: 0; border-bottom: 1px solid var(--line); }
+    .strip3 .cell:last-child { border-bottom: 0; }
+  }
 
   .toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
@@ -345,8 +357,8 @@
           <div class="cell">
             <div class="k">노출 점유율</div>
             <div class="v num" id="hSov">–</div>
-            <div class="d">기준 23% (7/24 웹검색)<span class="delta" id="hDelta"></span></div>
-            <div class="microbar"><div class="fill" id="hSovBar" style="width:0%"></div><div class="tick" style="left:23%"></div></div>
+            <div class="d"><span id="hBaseTxt">자동 측정 대기</span><span class="delta" id="hDelta"></span></div>
+            <div class="microbar"><div class="fill" id="hSovBar" style="width:0%"></div><div class="tick" id="hTick" style="left:23%"></div></div>
           </div>
           <div class="cell">
             <div class="k">추적 프롬프트</div>
@@ -369,7 +381,7 @@
         <h2>노출 점유율 추이</h2>
         <div class="panel chartcard">
           <div class="chartwrap" id="homeChart"></div>
-          <div class="chart-cap">노출 점유율 = (노출 1점 + 부분 0.5점) ÷ 해당일 테스트 수. 7/24 기준점은 웹 인용 소스 측정값입니다.</div>
+          <div class="chart-cap">검은 실선 = 매일 자동 측정(웹 인용 소스 기준, AI 비서가 실행) · 회색 점선 = 내 수동 기록. 노출 1점 + 부분 0.5점 ÷ 테스트 수.</div>
         </div>
 
         <div class="cols2" style="margin-top:26px">
@@ -401,7 +413,7 @@
             </div>
           </div>
           <div class="chartwrap" id="sovChart"></div>
-          <div class="chart-cap">기준선(점선) = 7/24 웹검색 기준 측정 23%. 노출 1점, 부분 0.5점으로 계산합니다.</div>
+          <div class="chart-cap">가로 점선 = 첫 측정값. 검은 실선 = 매일 자동 측정, 회색 점선 = 내 수동 기록. 노출 1점, 부분 0.5점으로 계산합니다.</div>
         </div>
 
         <h2>프롬프트별 현황<small>기준측정 + 내 기록 최신값</small></h2>
@@ -432,7 +444,7 @@
         </div>
 
         <h2>질문별 경쟁 구도<small>2026-07-24 웹 인용 소스 기준</small></h2>
-        <p class="desc" style="margin-bottom:12px">AI가 답변 근거로 인용하는 웹 소스에서 상위에 등장한 병원 순서입니다. 검은 칩이 우리 병원입니다.</p>
+        <p class="desc" style="margin-bottom:12px">AI가 답변 근거로 인용하는 웹 소스에서 상위에 등장한 병원 순서입니다. 강조 표시된 칩이 우리 병원입니다.</p>
         <div class="panel tablewrap">
           <table class="data" id="competeTable" style="min-width:680px">
             <thead><tr><th>프롬프트</th><th>#1</th><th>#2</th><th>#3</th><th>#4</th></tr></thead>
@@ -512,12 +524,12 @@
 
       <!-- ================= 월간 리포트 ================= -->
       <section class="page" id="page-report">
-        <p class="desc">2026년 7월 리포트 — 7/24 웹 인용 소스 기준 측정. 매달 1일 오전 9시에 자동 재측정되어 갱신됩니다. 즉시 재측정은 채팅에서 "지금 재측정 해줘"라고 요청하세요.</p>
+        <p class="desc">2026년 7월 리포트 — 웹 인용 소스 기준. 매일 아침 9시에 자동 측정되어 갱신됩니다. 즉시 재측정은 채팅에서 "지금 재측정 해줘"라고 요청하세요.</p>
 
-        <div class="panel strip" style="grid-template-columns:repeat(3,1fr)">
+        <div class="panel strip strip3">
           <div class="cell"><div class="k">종합 노출률</div><div class="v num">23<span class="unit">%</span></div><div class="d">11개 프롬프트 기준</div></div>
           <div class="cell"><div class="k">노출 / 부분 / 미노출</div><div class="v num">2 · 1 · 8</div><div class="d">브랜드·제모만 노출</div></div>
-          <div class="cell"><div class="k">다음 자동 측정</div><div class="v num">8/1</div><div class="d">오전 9시 (KST)</div></div>
+          <div class="cell"><div class="k">자동 측정 주기</div><div class="v num">매일</div><div class="d">오전 9시 (KST) · AI 비서가 실행</div></div>
         </div>
 
         <h2>프롬프트별 결과</h2>
@@ -558,7 +570,7 @@
                 <tr><td class="mono" style="width:90px">브랜드명</td><td><b>유앤아이의원 김포점</b></td></tr>
                 <tr><td class="mono">주소</td><td>김포시 김포한강4로 525 감두리빌딩 2층 (구래동)</td></tr>
                 <tr><td class="mono">전화</td><td>031-8049-6024</td></tr>
-                <tr><td class="mono">진료 특징</td><td>야간·일요일 진료 (경쟁 대비 차별점)</td></tr>
+                <tr><td class="mono">진료 특징</td><td>평일 야간 진료 (일요일 휴진 — 요일별 마감 시간은 확인 후 기입)</td></tr>
                 <tr><td class="mono">주차</td><td>건물 지하 3시간, 만차 시 구래 공영주차장</td></tr>
                 <tr><td class="mono">주력 시술</td><td>울쎄라 · 올리지오 · 보톡스 · 필러 · 실리프팅 · 스킨부스터 · 레이저 제모 · 색소</td></tr>
               </tbody>
@@ -599,6 +611,28 @@
     { id: "네이버",      color: "#06A94D" }
   ];
   var BASE_DATE = "2026-07-24";
+  /* 자동 측정 이력 — 매일 아침 웹 인용 소스 기준으로 측정해 여기에 한 줄씩 추가됩니다 */
+  var MEASURE = [
+    { date: "2026-07-24", results: {
+      "김포 피부과 추천해줘": "미노출",
+      "김포에서 울쎄라 잘하는 곳 알려줘": "미노출",
+      "김포 보톡스 가격 어느 정도야?": "미노출",
+      "김포 리프팅 잘하는 피부과 어디야?": "미노출",
+      "김포 레이저 제모 어디서 받는 게 좋아?": "노출",
+      "구래동 근처 피부과 추천해줘": "미노출",
+      "장기동 피부과 보톡스 어디가 좋아?": "미노출",
+      "운양동에서 갈 만한 피부과 있어?": "미노출",
+      "김포 리쥬란 스킨부스터 맞을 만한 곳?": "미노출",
+      "유앤아이의원 김포점 어때? 후기 있어?": "부분",
+      "유앤아이의원 김포점": "노출",
+      "김포 야간 진료 피부과 어디 있어?": "미노출"
+    } }
+  ];
+  function measureRate(m) {
+    var ks = Object.keys(m.results), s = 0;
+    ks.forEach(function (k) { s += score(m.results[k]); });
+    return ks.length ? Math.round(s / ks.length * 100) : null;
+  }
   var PROMPTS = [
     { q: "김포 피부과 추천해줘", cat: "지역+진료과", base: "미노출" },
     { q: "김포에서 울쎄라 잘하는 곳 알려줘", cat: "지역+시술", base: "미노출" },
@@ -611,7 +645,7 @@
     { q: "김포 리쥬란 스킨부스터 맞을 만한 곳?", cat: "지역+시술", base: "미노출" },
     { q: "유앤아이의원 김포점 어때? 후기 있어?", cat: "브랜드+후기", base: "부분" },
     { q: "유앤아이의원 김포점", cat: "브랜드", base: "노출" },
-    { q: "김포 일요일 진료하는 피부과 알려줘", cat: "지역+진료시간", base: null }
+    { q: "김포 야간 진료 피부과 어디 있어?", cat: "지역+진료시간", base: "미노출" }
   ];
   var COMPETE = [
     { q: "김포 피부과 추천해줘", ranks: ["리멤버피부과", "미소가인피부과", "해날피부과", "플랜피부과"] },
@@ -633,26 +667,30 @@
     { name: "제모데이", role: "제모 기기·가격 비교 — 미엘이 이걸로 노출", status: "미등재", statusCls: "warn", action: "제모 기기(아포지 플러스)·가격 등재" },
     { name: "네이버 플레이스", role: "지도형 질문 + 영수증 리뷰 인용", status: "정비 필요", statusCls: "part", action: "시술 메뉴·가격대·사진·소식 채우기" },
     { name: "구글 비즈니스 프로필", role: "ChatGPT 등 해외 AI가 직접 참조", status: "정비 필요", statusCls: "part", action: "리뷰·사진·진료시간 채우기 (경쟁사 대부분 부실)" },
-    { name: "공식 블로그", role: "제모 글이 이미 키워드 검색을 뚫음", status: "활성", statusCls: "ok", action: "울쎄라·동네·일요일 키워드로 확장 (초안 준비됨)" }
+    { name: "공식 블로그", role: "제모 글이 이미 키워드 검색을 뚫음", status: "활성", statusCls: "ok", action: "울쎄라·동네·야간 키워드로 확장 (초안 준비됨)" }
   ];
   var PLAN = [
-    { id: "t1", g: "플랫폼 등재 — 효과 최상", t: "모두닥·굿닥·똑닥·닥터나우·나만의닥터에 김포점 등재", d: "AI가 인용하는 TOP10 목록의 원천. 진료시간·시술·의료진·사진까지" },
-    { id: "t2", g: "플랫폼 등재 — 효과 최상", t: "강남언니·바비톡에 울쎄라/리프팅/보톡스 이벤트 등록", d: "\"김포 울쎄라\" 검색의 주 인용원" },
-    { id: "t3", g: "플랫폼 등재 — 효과 최상", t: "제모데이에 제모 기기·가격 등재", d: "이미 강한 제모 키워드 굳히기" },
-    { id: "t4", g: "후기 만들기", t: "리뷰 요청 루틴 시작 (목표: 월 20건)", d: "콘텐츠의 템플릿으로 시술 후 카톡 발송 + 데스크 안내판" },
-    { id: "t5", g: "블로그 발행 — 효과 입증", t: "원고 1 발행: 김포 울쎄라 가이드", d: "\"김포 울쎄라 잘하는 곳\" 공략" },
-    { id: "t6", g: "블로그 발행 — 효과 입증", t: "원고 2 발행: 구래동·장기동 동네 키워드 글", d: "\"장기동 피부과\"는 경쟁이 비어 있어 선점 가능" },
-    { id: "t7", g: "블로그 발행 — 효과 입증", t: "원고 3 발행: 일요일·야간 진료 글", d: "실제 차별점인데 검색에서 미활용" },
-    { id: "t8", g: "프로필 정비", t: "네이버 플레이스 정비", d: "시술 메뉴·가격대·사진·소식" },
-    { id: "t9", g: "프로필 정비", t: "구글 비즈니스 프로필 정비", d: "채우기만 해도 상대 우위" },
-    { id: "t10", g: "기술 기반", t: "웹업체에 기술 요청서 전달", d: "AI 크롤러 허용 확인 + 구조화 데이터(JSON-LD) 추가" }
+    { id: "p01", g: "1. 플랫폼 등재 — 효과 최상 · 목표 2주 내", t: "모두닥에 김포점 등재", d: "AI가 인용하는 \"김포 피부과 TOP10\"의 원천 데이터", s: ["modoodoc.com 하단 \"병원 등록·제휴\" 문의 (사업자등록증·개설신고증 사본 준비)", "프로필 작성: 진료시간(야간 명시)·시술 메뉴·의료진 약력·원내 사진 10장 이상", "완료 기준: 모두닥에서 \"유앤아이의원 김포점\" 검색 시 프로필 노출"] },
+    { id: "p02", g: "1. 플랫폼 등재 — 효과 최상 · 목표 2주 내", t: "굿닥·똑닥에 김포점 등재", d: "예약·후기 데이터가 AI 답변 근거로 인용됨 (현재 타 지점만 잡힘)", s: ["굿닥 파트너센터(partner.goodoc.co.kr)·똑닥 병원 등록 신청", "야간 진료 요일·시간 정확히 표기 — \"야간 피부과\" 필터 노출 조건"] },
+    { id: "p03", g: "1. 플랫폼 등재 — 효과 최상 · 목표 2주 내", t: "닥터나우·나만의닥터 등재 확인", d: "\"김포시 피부과 인기 TOP10\" 류 리스트의 소스", s: ["두 앱에서 병원명 검색 → 없으면 앱 내 병원 등록 요청", "있으면 정보 인증 받고 진료시간·시술 항목 보완"] },
+    { id: "p04", g: "1. 플랫폼 등재 — 효과 최상 · 목표 2주 내", t: "강남언니·바비톡 입점 + 이벤트 3건", d: "\"김포 울쎄라\" 등 시술 검색의 주 인용원", s: ["파트너 입점 신청 (강남언니 partner.gangnamunni.com)", "울쎄라·리프팅·보톡스 이벤트 등록 — 샷 수·가격 명시", "가격 노출 이벤트는 의료광고 사전심의 대상인지 대행사 확인"] },
+    { id: "p05", g: "1. 플랫폼 등재 — 효과 최상 · 목표 2주 내", t: "제모데이에 기기·가격 등재", d: "미엘이 이 경로로 제모 키워드 노출 중 — 우리 강점 키워드 굳히기", s: ["jemoday.com 병원 입점 문의", "보유 기기(아포지 플러스)·부위별 가격 등록"] },
+    { id: "p06", g: "2. 후기 만들기 — 지속 루틴", t: "네이버 영수증 리뷰 루틴 가동", d: "AI가 \"리뷰 다수\"를 추천 근거로 인용 — 목표 주 5건 · 월 20건", s: ["데스크 안내판 설치 (문구는 콘텐츠 → 리뷰 템플릿)", "시술 당일 저녁 알림톡 발송 루틴 시작", "주의: 리뷰 대가 금품·할인 제공은 의료법 위반 — 요청만 하기"] },
+    { id: "p07", g: "2. 후기 만들기 — 지속 루틴", t: "모두닥·구글 리뷰 확보", d: "모두닥 후기는 TOP10 순위에, 구글 리뷰는 ChatGPT가 직접 참조", s: ["시술 2주 후 경과 확인 문자에 모두닥·구글 리뷰 링크 포함", "구글 리뷰 5개 확보를 1차 목표로"] },
+    { id: "p08", g: "3. 블로그 — 진행 중, 키워드 타게팅 강화", t: "준비된 원고 3편 발행 (울쎄라·동네·야간)", d: "콘텐츠 탭에서 전문 복사 → 블로그에 발행. 제목의 동네·시술 키워드 유지", s: ["원고 1: 김포 울쎄라 가이드 — \"김포 울쎄라\" 공략", "원고 2: 구래동·장기동 체크리스트 — 소재지 키워드 선점", "원고 3: 야간 진료 가이드 — 실제 진료시간 숫자 채워서 발행"] },
+    { id: "p09", g: "3. 블로그 — 진행 중, 키워드 타게팅 강화", t: "기존 글 리터칭 (월 2편)", d: "이미 쓰는 블로그의 노출력을 키우는 가장 싼 방법", s: ["제목을 \"동네+시술+질문형\"으로 수정 (예: \"구래동 보톡스 어디서? 가격 기준 정리\")", "글 끝에 FAQ 3개 추가 — AI가 질문-답변 형식을 가장 잘 인용", "본문에 구래동·장기동·운양동·마산동 중 해당 동네명 명시"] },
+    { id: "p10", g: "3. 블로그 — 진행 중, 키워드 타게팅 강화", t: "주 1편 발행 주기 유지 + 빈 키워드 선점", d: "제모 글이 증명한 공식을 반복", s: ["다음 추천 키워드: \"장기동 보톡스\" \"김포 올리지오\" \"마산동 피부과\" (경쟁 빈약 확인됨)", "매주 프롬프트 페이지에서 미노출 키워드 확인 후 글감 선정"] },
+    { id: "p11", g: "4. 지도·프로필 정비", t: "네이버 플레이스 정비", d: "\"근처 피부과\" 지도형 질문 + 영수증 리뷰의 기반", s: ["스마트플레이스에서 시술 메뉴·가격대 등록", "원내·장비 사진 20장 이상, \"소식\" 월 2회 발행", "네이버 예약 버튼 활성화"] },
+    { id: "p12", g: "4. 지도·프로필 정비", t: "구글 비즈니스 프로필 정비", d: "ChatGPT 등 해외 AI가 직접 참조 — 경쟁사 대부분 부실해 채우면 바로 우위", s: ["business.google.com에서 소유권 인증(우편/전화)", "진료시간·사진·시술 서비스 목록 등록", "구글 리뷰 5개 확보와 병행"] },
+    { id: "p13", g: "5. 기술 기반 — 웹업체 1회 요청", t: "웹업체에 기술 요청서 전달", d: "AI 크롤러가 사이트를 못 읽으면 모든 콘텐츠가 무효 — 콘텐츠 탭의 요청서 그대로 전달", s: ["robots.txt·방화벽에서 GPTBot·ClaudeBot·PerplexityBot 허용 확인 요청", "병원 정보 JSON-LD(MedicalClinic) + 시술 페이지 FAQ 마크업 추가 요청"] },
+    { id: "p14", g: "5. 기술 기반 — 웹업체 1회 요청", t: "작업 완료 검증", d: "요청만 하고 확인 안 하면 안 된 것과 같음", s: ["gpuni114.co.kr/robots.txt 접속해 허용 목록 확인", "구글 리치 결과 테스트에 홈페이지 URL 입력 → MedicalClinic 인식 확인", "완료되면 채팅으로 알려주기 — 재측정으로 효과 확인"] }
   ];
   var LOG_KEY = "uni-testlog-v2", PLAN_KEY = "uni-plan-v1";
 
   /* ============ 유틸 ============ */
   function load(k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } }
   function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
-  function esc(s) { var d = document.createElement("div"); d.textContent = s == null ? "" : s; return d.innerHTML; }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"\x27]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "\x27": "&#39;" }[c]; }); }
   function $(id) { return document.getElementById(id); }
   function toast(msg) {
     var t = $("toast"); t.textContent = msg; t.classList.add("show");
@@ -670,7 +708,9 @@
   }
 
   var log = load(LOG_KEY, []);
+  if (!Array.isArray(log)) log = [];
   var plan = load(PLAN_KEY, {});
+  if (typeof plan !== "object" || plan === null || Array.isArray(plan)) plan = {};
   var currentQ = "";
   var lastRecordKey = null;
 
@@ -682,8 +722,12 @@
     $("page-" + id).classList.add("active");
     $("pagetitle").textContent = TITLES[id];
     window.scrollTo(0, 0);
+    if (id === "home") renderHome();
+    else if (id === "sov") renderSov();
   }
   document.querySelectorAll(".nav").forEach(function (b) { b.addEventListener("click", function () { goPage(b.dataset.page); }); });
+  var _rz;
+  window.addEventListener("resize", function () { clearTimeout(_rz); _rz = setTimeout(function () { renderHome(); renderSov(); }, 200); });
   document.querySelectorAll("[data-go]").forEach(function (b) { b.addEventListener("click", function () { goPage(b.dataset.go); }); });
 
   /* ============ 점유율 계산 ============ */
@@ -700,38 +744,66 @@
   }
 
   /* ============ 차트 ============ */
-  function chartSVG(entries, opts) {
+  function autoSeries() {
+    return MEASURE.map(function (m) { return { d: m.date, v: measureRate(m) }; })
+      .filter(function (p) { return p.v !== null; })
+      .sort(function (a, b) { return a.d < b.d ? -1 : 1; });
+  }
+  function manualSeries(entries) {
     var byDate = {};
     entries.forEach(function (e) { (byDate[e.date] = byDate[e.date] || []).push(e); });
-    var pts = Object.keys(byDate).sort().map(function (d) { return { d: d, v: sovOf(byDate[d]) }; });
-    if (opts.baseline && !byDate[BASE_DATE]) pts.unshift({ d: BASE_DATE, v: 23, base: true });
-    pts.sort(function (a, b) { return a.d < b.d ? -1 : 1; });
-    var W = 620, H = 170, PL = 34, PR = 14, PT = 12, PB = 24;
+    return Object.keys(byDate).sort().map(function (d) { return { d: d, v: sovOf(byDate[d]) }; });
+  }
+  function chartSVG(opts) {
+    function inRange(p) {
+      if (!opts.range) return true;
+      var lim = new Date(); lim.setDate(lim.getDate() - opts.range);
+      return p.d >= fmt(lim);
+    }
+    var auto = autoSeries().filter(inRange);
+    var manual = manualSeries(log).filter(inRange);
+    var all = auto.concat(manual);
+    var W = Math.max(320, opts.width || 620), H = 170, PL = 36, PR = 14, PT = 12, PB = 24;
     var iw = W - PL - PR, ih = H - PT - PB;
     function y(v) { return PT + ih - (v / 100) * ih; }
-    var t0 = new Date(pts.length ? pts[0].d : today()).getTime();
-    var t1 = new Date(pts.length ? pts[pts.length - 1].d : today()).getTime();
+    var dsort = all.map(function (p) { return p.d; }).sort();
+    var t0 = new Date(dsort.length ? dsort[0] : today()).getTime();
+    var t1 = new Date(dsort.length ? dsort[dsort.length - 1] : today()).getTime();
     function x(dstr) {
       if (t1 === t0) return PL + iw / 2;
       return PL + (new Date(dstr).getTime() - t0) / (t1 - t0) * iw;
     }
+    var refV = autoSeries().length ? autoSeries()[0].v : null;
     var s = '<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="노출 점유율 추이 차트">';
     [0, 25, 50, 75, 100].forEach(function (v) {
       s += '<line x1="' + PL + '" y1="' + y(v) + '" x2="' + (W - PR) + '" y2="' + y(v) + '" stroke="var(--line)" stroke-width="1"/>';
-      s += '<text x="' + (PL - 7) + '" y="' + (y(v) + 3.5) + '" text-anchor="end" font-size="9.5" fill="var(--faint)">' + v + "</text>";
+      s += '<text x="' + (PL - 7) + '" y="' + (y(v) + 3.5) + '" text-anchor="end" font-size="10.5" fill="var(--faint)">' + v + "</text>";
     });
-    s += '<line x1="' + PL + '" y1="' + y(23) + '" x2="' + (W - PR) + '" y2="' + y(23) + '" stroke="var(--faint)" stroke-width="1" stroke-dasharray="3 4"/>';
-    s += '<text x="' + (PL + 5) + '" y="' + (y(23) - 5) + '" text-anchor="start" font-size="9.5" fill="var(--faint)">기준 23%</text>';
-    if (pts.length > 1) {
-      var path = pts.map(function (p, i) { return (i ? "L" : "M") + x(p.d).toFixed(1) + " " + y(p.v).toFixed(1); }).join(" ");
-      s += '<path d="' + path + ' L' + x(pts[pts.length - 1].d).toFixed(1) + " " + (PT + ih) + " L" + x(pts[0].d).toFixed(1) + " " + (PT + ih) + ' Z" fill="var(--wash)"/>';
-      s += '<path d="' + path + '" fill="none" stroke="var(--ink)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>';
+    if (refV !== null) {
+      s += '<line x1="' + PL + '" y1="' + y(refV) + '" x2="' + (W - PR) + '" y2="' + y(refV) + '" stroke="var(--faint)" stroke-width="1" stroke-dasharray="3 4"/>';
+      s += '<text x="' + (PL + 5) + '" y="' + (y(refV) - 5) + '" text-anchor="start" font-size="10.5" fill="var(--faint)">첫 측정 ' + refV + "%</text>";
     }
-    pts.forEach(function (p, i) {
-      var last = i === pts.length - 1;
-      s += '<circle cx="' + x(p.d).toFixed(1) + '" cy="' + y(p.v).toFixed(1) + '" r="' + (last ? 4 : 2.7) + '" fill="' + (p.base ? "var(--faint)" : "var(--ink)") + '"' + (last ? ' stroke="var(--surface)" stroke-width="1.5"' : "") + '><title>' + p.d + " · " + p.v + "%" + (p.base ? " (기준측정)" : "") + "</title></circle>";
-      if (pts.length <= 8 || last || i === 0)
-        s += '<text x="' + x(p.d).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="9.5" fill="var(--faint)">' + md(p.d) + "</text>";
+    function drawLine(pts, stroke, dash, fillArea) {
+      if (pts.length > 1) {
+        var path = pts.map(function (p, i) { return (i ? "L" : "M") + x(p.d).toFixed(1) + " " + y(p.v).toFixed(1); }).join(" ");
+        if (fillArea)
+          s += '<path d="' + path + ' L' + x(pts[pts.length - 1].d).toFixed(1) + " " + (PT + ih) + " L" + x(pts[0].d).toFixed(1) + " " + (PT + ih) + ' Z" fill="var(--wash)"/>';
+        s += '<path d="' + path + '" fill="none" stroke="' + stroke + '" stroke-width="1.8"' + (dash ? ' stroke-dasharray="4 4"' : "") + ' stroke-linejoin="round" stroke-linecap="round"/>';
+      }
+    }
+    drawLine(manual, "var(--faint)", true, false);
+    drawLine(auto, "var(--ink)", false, true);
+    manual.forEach(function (p) {
+      s += '<circle cx="' + x(p.d).toFixed(1) + '" cy="' + y(p.v).toFixed(1) + '" r="2.7" fill="var(--surface)" stroke="var(--faint)" stroke-width="1.4"><title>' + p.d + " · 수동 기록 " + p.v + "%</title></circle>";
+    });
+    auto.forEach(function (p, i) {
+      var last = i === auto.length - 1;
+      s += '<circle cx="' + x(p.d).toFixed(1) + '" cy="' + y(p.v).toFixed(1) + '" r="' + (last ? 4 : 2.7) + '" fill="var(--ink)"' + (last ? ' stroke="var(--surface)" stroke-width="1.5"' : "") + '><title>' + p.d + " · 자동 측정 " + p.v + "%</title></circle>";
+    });
+    var labels = auto.length ? auto : manual;
+    labels.forEach(function (p, i) {
+      if (labels.length <= 8 || i === labels.length - 1 || i === 0)
+        s += '<text x="' + x(p.d).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10.5" fill="var(--faint)">' + md(p.d) + "</text>";
     });
     s += "</svg>";
     return s;
@@ -770,7 +842,19 @@
         var t = d === td;
         return '<th class="cell' + (t ? " today todaybg" : "") + '">' + md(d) + "</th>";
       }).join("") + "</tr>";
-      var rows = ENGINES.map(function (en) {
+      var autoCells = dates.map(function (d) {
+        var m = null;
+        MEASURE.forEach(function (mm) { if (mm.date === d) m = mm; });
+        var r = m && m.results[kw.q];
+        var t = d === td;
+        var inner = '<span class="dot none"></span>';
+        if (r === "노출") inner = '<span class="dot" style="background:var(--ink)" title="' + d + ' 자동측정 노출"></span>';
+        else if (r === "부분") inner = '<span class="dot ring" style="color:var(--ink)" title="' + d + ' 자동측정 부분"></span>';
+        else if (r === "미노출") inner = '<span class="dot dash" title="' + d + ' 자동측정 미노출"></span>';
+        return '<td class="cell' + (t ? " today" : "") + '">' + inner + "</td>";
+      }).join("");
+      var autoRow = '<tr><td class="eng"><span class="dot" style="background:var(--ink)"></span>자동측정</td>' + autoCells + "</tr>";
+      var rows = autoRow + ENGINES.map(function (en) {
         var cells = dates.map(function (d) {
           var r = idx[kw.q] && idx[kw.q][en.id] && idx[kw.q][en.id][d];
           var t = d === td;
@@ -833,11 +917,11 @@
   /* ============ 점유율 페이지 ============ */
   var range = 0;
   function renderSov() {
-    var entries = filterRange(range);
-    var v = sovOf(entries);
-    $("sovBig").innerHTML = (v === null ? "–" : v) + '<span class="unit">%</span>';
-    $("sovCount").textContent = "기록 " + entries.length + "건";
-    $("sovChart").innerHTML = chartSVG(entries, { baseline: !range });
+    var auto2 = autoSeries();
+    var latest2 = auto2.length ? auto2[auto2.length - 1].v : null;
+    $("sovBig").innerHTML = (latest2 === null ? "–" : latest2) + '<span class="unit">%</span>';
+    $("sovCount").textContent = "자동 측정 " + auto2.length + "회 · 수동 기록 " + log.length + "건";
+    $("sovChart").innerHTML = chartSVG({ range: range, width: $("sovChart").clientWidth });
     var tb = $("sovTable").querySelector("tbody");
     tb.innerHTML = PROMPTS.map(function (p) {
       var mine = log.filter(function (e) { return e.kw === p.q; });
@@ -858,22 +942,25 @@
 
   /* ============ 홈 ============ */
   function renderHome() {
-    var v = sovOf(log);
-    $("hSov").innerHTML = (v === null ? "–" : v + '<span class="unit">%</span>');
-    $("hSovBar").style.width = (v || 0) + "%";
+    var auto = autoSeries();
+    var latest = auto.length ? auto[auto.length - 1].v : null;
+    var first = auto.length ? auto[0].v : null;
+    $("hSov").innerHTML = (latest === null ? "–" : latest + '<span class="unit">%</span>');
+    $("hSovBar").style.width = (latest || 0) + "%";
+    if (first !== null) { $("hTick").style.left = first + "%"; $("hBaseTxt").textContent = "첫 측정 " + first + "% (" + md(BASE_DATE) + ") 대비"; }
     var deltaEl = $("hDelta");
-    if (v === null) { deltaEl.textContent = ""; deltaEl.className = "delta"; }
+    if (latest === null || first === null) { deltaEl.textContent = ""; deltaEl.className = "delta"; }
     else {
-      var diff = v - 23;
-      deltaEl.textContent = diff > 0 ? "▲ " + diff + "%p" : diff < 0 ? "▼ " + (-diff) + "%p" : "= 기준";
+      var diff = latest - first;
+      deltaEl.textContent = diff > 0 ? "▲ " + diff + "%p" : diff < 0 ? "▼ " + (-diff) + "%p" : "=";
       deltaEl.className = "delta num " + (diff > 0 ? "up" : diff < 0 ? "down" : "flat");
     }
     $("hPrompts").textContent = allPrompts().length;
     $("hTests").textContent = log.length;
     var done = PLAN.filter(function (p) { return plan[p.id]; }).length;
-    $("hPlan").innerHTML = done + '<span class="unit">/10</span>';
-    $("hPlanBar").style.width = done * 10 + "%";
-    $("homeChart").innerHTML = chartSVG(log, { baseline: true });
+    $("hPlan").innerHTML = done + '<span class="unit">/' + PLAN.length + '</span>';
+    $("hPlanBar").style.width = (done / PLAN.length * 100) + "%";
+    $("homeChart").innerHTML = chartSVG({ range: 0, width: $("homeChart").clientWidth });
     var recent = log.slice(-5).reverse();
     $("homeRecent").innerHTML = recent.length
       ? recent.map(function (e) {
@@ -890,7 +977,7 @@
     }).join("");
     /* 사이드바 배지 */
     $("bdgPrompts").textContent = allPrompts().length;
-    $("bdgPlan").textContent = done + "/10";
+    $("bdgPlan").textContent = done + "/" + PLAN.length;
     $("bdgDocs").textContent = DOCS.length;
   }
 
@@ -900,12 +987,12 @@
     PLAN.forEach(function (p) {
       if (p.g !== lastG) { html += '<div class="grplabel">' + esc(p.g) + "</div>"; lastG = p.g; }
       var c = !!plan[p.id];
-      html += '<label class="todo' + (c ? " done" : "") + '" data-todo="' + p.id + '"><input type="checkbox"' + (c ? " checked" : "") + '><span><span class="t">' + esc(p.t) + '</span><br><span class="d">' + esc(p.d) + "</span></span></label>";
+      html += '<label class="todo' + (c ? " done" : "") + '" data-todo="' + p.id + '"><input type="checkbox"' + (c ? " checked" : "") + '><span><span class="t">' + esc(p.t) + '</span><br><span class="d">' + esc(p.d) + "</span>" + (p.s ? '<ul class="steps">' + p.s.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "") + "</span></label>";
     });
     $("planlist").innerHTML = html;
     var done = PLAN.filter(function (p) { return plan[p.id]; }).length;
-    $("planbar").style.width = done * 10 + "%";
-    $("plancount").textContent = done + " / 10 완료";
+    $("planbar").style.width = (done / PLAN.length * 100) + "%";
+    $("plancount").textContent = done + " / " + PLAN.length + " 완료";
     $("planlist").querySelectorAll("input").forEach(function (cb) {
       cb.addEventListener("change", function () {
         plan[cb.closest(".todo").dataset.todo] = cb.checked;
@@ -1000,11 +1087,11 @@
   /* ============ 콘텐츠 ============ */
   var DOCS = [
     { id: "d1", title: "김포 울쎄라, 샷 수와 가격은 어떻게 정해질까? 상담 전 알아둘 5가지", type: "블로그 초안", target: "김포 울쎄라 · 김포 울쎄라 가격", date: "2026-07-24",
-      html: "<blockquote>타깃 키워드: 김포 울쎄라, 김포 울쎄라 가격, 김포 울쎄라 잘하는 곳 · 공식 블로그 + 네이버 블로그 동시 발행 권장</blockquote><p>울쎄라는 고강도 집속 초음파(HIFU)를 피부 깊은 SMAS 근막층에 전달해 탄력 개선을 유도하는 미국 FDA 승인 리프팅 시술입니다. 김포에서도 울쎄라를 찾는 분들이 많아졌지만, \"몇 샷을 맞아야 하는지\", \"가격 차이는 왜 나는지\" 궁금해하시는 분들이 많아 상담실에서 가장 자주 받는 질문들을 정리했습니다.</p><h4>1. 샷 수는 어떻게 정해질까</h4><p>울쎄라 샷 수는 정해진 답이 있는 것이 아니라 개인의 피부 상태에 따라 달라집니다. 일반적으로 고려하는 요소는:</p><ul><li><b>개선 부위</b>: 얼굴 전체인지, 턱선·이중턱 등 특정 부위인지</li><li><b>피부 처짐 정도</b>: 처짐이 진행된 정도에 따라 필요한 에너지량이 다릅니다</li><li><b>피부 두께와 지방량</b>: 초음파 화면으로 피부층을 확인하며 조절합니다</li></ul><p>같은 300샷이라도 어느 깊이에, 어느 부위에 넣느냐에 따라 결과가 달라지므로, 샷 수 숫자만으로 비교하기보다 상담 시 \"내 얼굴에는 왜 이 샷 수인지\" 설명을 들어보시는 것이 좋습니다.</p><h4>2. 가격 차이가 나는 이유</h4><p>울쎄라 비용은 샷 수, 시술 범위, 시술자(원장 직접 시술 여부)에 따라 달라집니다. 비용을 비교할 때는 \"총 몇 샷 기준 가격인지\", \"추가 샷 비용은 어떻게 되는지\"를 함께 확인하시면 병원 간 비교가 정확해집니다.</p><h4>3. 정품 확인은 이렇게</h4><p>울쎄라는 제조사(멀츠)의 정품 팁을 사용하는지가 중요합니다. 시술 전 정품 팁 개봉을 직접 확인시켜 주는지, 울쎄라 공식 인증 병원인지 확인해 보세요. 멀츠 코리아 홈페이지에서 인증 병원을 조회할 수 있습니다.</p><h4>4. 시술 주기와 유지 기간</h4><p>울쎄라는 시술 후 2~3개월에 걸쳐 콜라겐 재생이 진행되며, 효과 유지 기간은 보통 1년 안팎으로 알려져 있습니다(개인차 있음). 1년에 1회 정도 주기로 관리하시는 분들이 많습니다.</p><h4>5. 울쎄라가 맞지 않는 경우도 있습니다</h4><p>피부 처짐보다 볼륨 부족이 고민이라면 필러나 스킨부스터가, 피부 표면 탄력이 고민이라면 올리지오 같은 고주파 시술이 더 적합할 수 있습니다. 유앤아이의원 김포점은 울쎄라와 올리지오를 모두 보유하고 있어 상담 시 피부 상태에 맞는 시술을 비교해 안내해 드립니다.</p><h4>자주 묻는 질문 (FAQ)</h4><p><b>Q. 울쎄라 시술 시간은 얼마나 걸리나요?</b><br>A. 부위와 샷 수에 따라 다르지만 보통 30분~1시간 정도 소요됩니다.</p><p><b>Q. 시술 후 일상생활이 가능한가요?</b><br>A. 대부분 시술 직후 일상 복귀가 가능합니다. 일시적인 붉어짐이나 부기가 있을 수 있으며 개인차가 있습니다.</p><p><b>Q. 통증이 심한가요?</b><br>A. 뼈 주변 부위에서 통증을 느끼는 분들이 있어, 필요 시 통증 완화 조치를 병행합니다.</p><p><b>Q. 김포 유앤아이의원은 어디에 있나요?</b><br>A. 김포시 김포한강4로 525 감두리빌딩 2층(구래동, 구래역 인근)입니다. 야간·일요일 진료를 운영해 평일 방문이 어려운 분들도 이용하실 수 있습니다. 문의: 031-8049-6024</p><blockquote>⚠️ 발행 전 확인: 의료광고 규정상 치료 효과 보장, 최상급 표현(\"김포 1등\"), 시술 전후 사진의 무분별한 사용은 피해야 합니다. 광고성으로 발행할 경우 의료광고 사전심의 대상인지 대행사와 확인하세요.</blockquote>" },
+      html: "<blockquote>타깃 키워드: 김포 울쎄라, 김포 울쎄라 가격, 김포 울쎄라 잘하는 곳 · 공식 블로그 + 네이버 블로그 동시 발행 권장</blockquote><p>울쎄라는 고강도 집속 초음파(HIFU)를 피부 깊은 SMAS 근막층에 전달해 탄력 개선을 유도하는 미국 FDA 허가 리프팅 시술입니다. 김포에서도 울쎄라를 찾는 분들이 많아졌지만, \"몇 샷을 맞아야 하는지\", \"가격 차이는 왜 나는지\" 궁금해하시는 분들이 많아 상담실에서 가장 자주 받는 질문들을 정리했습니다.</p><h4>1. 샷 수는 어떻게 정해질까</h4><p>울쎄라 샷 수는 정해진 답이 있는 것이 아니라 개인의 피부 상태에 따라 달라집니다. 일반적으로 고려하는 요소는:</p><ul><li><b>개선 부위</b>: 얼굴 전체인지, 턱선·이중턱 등 특정 부위인지</li><li><b>피부 처짐 정도</b>: 처짐이 진행된 정도에 따라 필요한 에너지량이 다릅니다</li><li><b>피부 두께와 지방량</b>: 초음파 화면으로 피부층을 확인하며 조절합니다</li></ul><p>같은 300샷이라도 어느 깊이에, 어느 부위에 넣느냐에 따라 결과가 달라지므로, 샷 수 숫자만으로 비교하기보다 상담 시 \"내 얼굴에는 왜 이 샷 수인지\" 설명을 들어보시는 것이 좋습니다.</p><h4>2. 가격 차이가 나는 이유</h4><p>울쎄라 비용은 샷 수, 시술 범위, 시술자(원장 직접 시술 여부)에 따라 달라집니다. 비용을 비교할 때는 \"총 몇 샷 기준 가격인지\", \"추가 샷 비용은 어떻게 되는지\"를 함께 확인하시면 병원 간 비교가 정확해집니다.</p><h4>3. 정품 확인은 이렇게</h4><p>울쎄라는 제조사(멀츠)의 정품 팁을 사용하는지가 중요합니다. 시술 전 정품 팁 개봉을 직접 확인시켜 주는지, 울쎄라 공식 인증 병원인지 확인해 보세요. 멀츠 코리아 홈페이지에서 인증 병원을 조회할 수 있습니다.</p><h4>4. 시술 주기와 유지 기간</h4><p>울쎄라는 시술 후 2~3개월에 걸쳐 콜라겐 재생이 진행되며, 효과 유지 기간은 보통 1년 안팎으로 알려져 있습니다(개인차 있음). 1년에 1회 정도 주기로 관리하시는 분들이 많습니다.</p><h4>5. 울쎄라가 맞지 않는 경우도 있습니다</h4><p>피부 처짐보다 볼륨 부족이 고민이라면 필러나 스킨부스터가, 피부 표면 탄력이 고민이라면 올리지오 같은 고주파 시술이 더 적합할 수 있습니다. 유앤아이의원 김포점은 울쎄라와 올리지오를 모두 보유하고 있어 상담 시 피부 상태에 맞는 시술을 비교해 안내해 드립니다.</p><h4>자주 묻는 질문 (FAQ)</h4><p><b>Q. 울쎄라 시술 시간은 얼마나 걸리나요?</b><br>A. 부위와 샷 수에 따라 다르지만 보통 30분~1시간 정도 소요됩니다.</p><p><b>Q. 시술 후 일상생활이 가능한가요?</b><br>A. 대부분 시술 직후 일상 복귀가 가능합니다. 일시적인 붉어짐이나 부기가 있을 수 있으며 개인차가 있습니다.</p><p><b>Q. 통증이 심한가요?</b><br>A. 뼈 주변 부위에서 통증을 느끼는 분들이 있어, 필요 시 통증 완화 조치를 병행합니다.</p><p><b>Q. 김포 유앤아이의원은 어디에 있나요?</b><br>A. 김포시 김포한강4로 525 감두리빌딩 2층(구래동, 구래역 인근)입니다. 평일 야간 진료를 운영해 낮 방문이 어려운 분들도 이용하실 수 있습니다(일요일 휴진). 문의: 031-8049-6024</p><blockquote>⚠️ 발행 전 확인: 의료광고 규정상 치료 효과 보장, 최상급 표현(\"김포 1등\"), 시술 전후 사진의 무분별한 사용은 피해야 합니다. 광고성으로 발행할 경우 의료광고 사전심의 대상인지 대행사와 확인하세요.</blockquote>" },
     { id: "d2", title: "구래동·장기동에서 피부과 찾을 때 체크리스트 5가지 (구래역 도보 이용 가능)", type: "블로그 초안", target: "구래동 피부과 · 장기동 피부과 · 운양동 피부과", date: "2026-07-24",
-      html: "<blockquote>타깃 키워드: 구래동 피부과, 장기동 피부과, 운양동 피부과, 마산동 피부과, 구래역 피부과 — 병원 소재지인 구래동조차 미노출 상태라 선점 효과가 큰 글</blockquote><p>김포 한강신도시(구래동·마산동·장기동·운양동)에 거주하시는 분들이 피부과를 찾을 때 가장 많이 고민하는 것은 \"서울까지 가야 하나, 동네에서 해결되나\"입니다. 보톡스·필러·리프팅·제모 같은 시술은 이제 김포 안에서도 충분히 받을 수 있습니다. 동네에서 피부과를 고를 때 확인하면 좋은 것들을 정리했습니다.</p><h4>1. 우리 동네에서의 접근성</h4><ul><li><b>구래동·마산동</b>: 유앤아이의원 김포점은 구래역 인근 감두리빌딩 2층에 있어 김포골드라인 이용 시 편리합니다. 건물 지하주차장 3시간 무료 지원으로 차량 방문도 편합니다.</li><li><b>장기동·운양동</b>: 김포골드라인으로 구래역까지 10분 내외. 장기동에서 차량으로 약 10~15분 거리입니다.</li></ul><h4>2. 야간·주말 진료 여부</h4><p>직장인이라면 평일 저녁이나 주말 진료가 가능한지가 사실상 가장 중요한 조건입니다. 유앤아이의원 김포점은 <b>야간 진료와 일요일 진료</b>를 운영하고 있어, 평일 낮 방문이 어려운 한강신도시 직장인 분들이 많이 찾으십니다. (방문 전 전화로 당일 진료 시간을 확인해 주세요: 031-8049-6024)</p><h4>3. 받으려는 시술의 장비를 보유했는지</h4><table><tr><th>고민</th><th>해당 시술</th></tr><tr><td>얼굴 처짐, 턱선</td><td>울쎄라, 올리지오, 실리프팅</td></tr><tr><td>주름, 사각턱</td><td>보톡스</td></tr><tr><td>볼륨, 팔자주름</td><td>필러</td></tr><tr><td>피부결, 속건조</td><td>스킨부스터(리쥬란 등)</td></tr><tr><td>기미, 잡티</td><td>색소 레이저</td></tr><tr><td>제모</td><td>레이저 제모(아포지 플러스)</td></tr></table><h4>4. 상담과 시술의 연결</h4><p>상담만 실장이 하고 시술 방향이 갑자기 바뀌는 경우가 종종 있습니다. 의사 상담에서 시술 계획(샷 수, 용량, 주기)을 구체적으로 설명해 주는지 확인하세요.</p><h4>5. 시술 후 관리 접근성</h4><p>시술 후 붉어짐·부기 등으로 병원을 다시 찾아야 할 때, 동네 병원의 장점이 큽니다. 서울 원정 시술의 경우 사후 관리 방문이 부담될 수 있다는 점도 고려하세요.</p><h4>자주 묻는 질문 (FAQ)</h4><p><b>Q. 구래역에서 걸어갈 수 있나요?</b><br>A. 네, 유앤아이의원 김포점은 구래역 인근 감두리빌딩 2층입니다.</p><p><b>Q. 주차가 되나요?</b><br>A. 건물 지하주차장 최대 3시간 지원, 만차 시 구래1 공영주차장·구래상업지역 공영주차장을 이용하실 수 있습니다.</p><p><b>Q. 장기동에서도 갈 만한가요?</b><br>A. 차량 10~15분, 김포골드라인 이용 시 구래역 하차 후 도보로 방문 가능합니다. 야간·일요일 진료로 퇴근 후 방문도 가능합니다.</p><blockquote>⚠️ 발행 전 확인: 표의 시술 목록이 실제 보유 장비와 일치하는지 확인 후 발행하세요.</blockquote>" },
-    { id: "d3", title: "김포 일요일 진료 피부과 찾으세요? 주말·야간에 받기 좋은 시술 정리", type: "블로그 초안", target: "김포 일요일 진료 피부과 · 김포 야간 피부과", date: "2026-07-24",
-      html: "<blockquote>타깃 키워드: 김포 일요일 진료 피부과, 김포 야간 진료 피부과, 김포 주말 피부과 — 실제 차별점인데 검색에서 미활용. 경쟁 병원 대부분 일요일 휴진이라 빠르게 잡히는 키워드</blockquote><p>\"피부과 가고 싶은데 평일엔 도저히 시간이 안 나요.\" 김포 한강신도시에서 서울로 출퇴근하는 분들께 가장 많이 듣는 이야기입니다. 유앤아이의원 김포점은 <b>야간 진료와 일요일 진료</b>를 운영합니다. 주말·야간 방문을 계획하신다면 아래 내용이 도움이 될 것입니다.</p><h4>일요일에 받기 좋은 시술 vs 피해야 할 시술</h4><p><b>일요일·토요일에 받기 좋은 시술</b> — 다운타임이 거의 없어 다음 날 출근에 지장이 없는 시술들:</p><ul><li>보톡스: 시술 10~20분, 직후 일상 가능</li><li>스킨부스터: 주사 자국이 1~2일 내 가라앉는 편(개인차)</li><li>레이저 토닝·색소 관리: 당일 세안·화장 가능 여부는 시술별로 안내</li><li>레이저 제모: 직후 일상 가능</li></ul><p><b>금요일 저녁·토요일 오전에 받는 것이 나은 시술</b> — 며칠의 회복 기간을 주말에 쓰도록:</p><ul><li>실리프팅: 부기·멍이 며칠 갈 수 있음</li><li>필러(부위에 따라): 멍이 들 수 있는 부위는 주말 회복 추천</li><li>울쎄라·올리지오: 대부분 바로 일상 가능하지만, 붉어짐이 걱정되면 주말 앞두고</li></ul><h4>야간 진료 활용 팁</h4><p>퇴근 후 방문 시에는 전화로 당일 마감 접수 시간을 확인하고 오시는 것이 안전합니다. 보톡스·토닝처럼 짧은 시술은 야간 시간대에도 충분히 가능합니다.</p><h4>위치와 예약</h4><ul><li>위치: 김포시 김포한강4로 525 감두리빌딩 2층 (구래동, 구래역 인근)</li><li>주차: 건물 지하주차장 3시간 지원</li><li>예약·진료시간 문의: 031-8049-6024</li></ul><h4>자주 묻는 질문 (FAQ)</h4><p><b>Q. 일요일에도 모든 시술이 가능한가요?</b><br>A. 대부분의 시술이 가능하지만, 시술 종류와 예약 상황에 따라 다를 수 있어 전화 예약을 권장합니다.</p><p><b>Q. 야간 진료는 몇 시까지인가요?</b><br>A. 요일별 진료 시간은 변동될 수 있으니 방문 전 031-8049-6024로 확인해 주세요.</p><blockquote>⚠️ 발행 전 확인: 실제 야간 진료 마감 시간과 일요일 진료 시간을 본문에 구체적인 숫자로 넣으면 검색 노출에 훨씬 유리합니다 (예: \"평일 저녁 8시 30분까지, 일요일 오전 10시~오후 5시\"). AI와 검색엔진은 구체적인 시간이 명시된 페이지를 우선 인용합니다.</blockquote>" },
+      html: "<blockquote>타깃 키워드: 구래동 피부과, 장기동 피부과, 운양동 피부과, 마산동 피부과, 구래역 피부과 — 병원 소재지인 구래동조차 미노출 상태라 선점 효과가 큰 글</blockquote><p>김포 한강신도시(구래동·마산동·장기동·운양동)에 거주하시는 분들이 피부과를 찾을 때 가장 많이 고민하는 것은 \"서울까지 가야 하나, 동네에서 해결되나\"입니다. 보톡스·필러·리프팅·제모 같은 시술은 이제 김포 안에서도 충분히 받을 수 있습니다. 동네에서 피부과를 고를 때 확인하면 좋은 것들을 정리했습니다.</p><h4>1. 우리 동네에서의 접근성</h4><ul><li><b>구래동·마산동</b>: 유앤아이의원 김포점은 구래역 인근 감두리빌딩 2층에 있어 김포골드라인 이용 시 편리합니다. 건물 지하주차장 3시간 무료 지원으로 차량 방문도 편합니다.</li><li><b>장기동·운양동</b>: 김포골드라인으로 구래역까지 10분 내외. 장기동에서 차량으로 약 10~15분 거리입니다.</li></ul><h4>2. 야간·주말 진료 여부</h4><p>직장인이라면 평일 저녁이나 주말 진료가 가능한지가 사실상 가장 중요한 조건입니다. 유앤아이의원 김포점은 <b>평일 야간 진료</b>를 운영하고 있어, 낮 방문이 어려운 한강신도시 직장인 분들이 많이 찾으십니다(일요일 휴진). (방문 전 전화로 당일 진료 시간을 확인해 주세요: 031-8049-6024)</p><h4>3. 받으려는 시술의 장비를 보유했는지</h4><table><tr><th>고민</th><th>해당 시술</th></tr><tr><td>얼굴 처짐, 턱선</td><td>울쎄라, 올리지오, 실리프팅</td></tr><tr><td>주름, 사각턱</td><td>보톡스</td></tr><tr><td>볼륨, 팔자주름</td><td>필러</td></tr><tr><td>피부결, 속건조</td><td>스킨부스터(리쥬란 등)</td></tr><tr><td>기미, 잡티</td><td>색소 레이저</td></tr><tr><td>제모</td><td>레이저 제모(아포지 플러스)</td></tr></table><h4>4. 상담과 시술의 연결</h4><p>상담만 실장이 하고 시술 방향이 갑자기 바뀌는 경우가 종종 있습니다. 의사 상담에서 시술 계획(샷 수, 용량, 주기)을 구체적으로 설명해 주는지 확인하세요.</p><h4>5. 시술 후 관리 접근성</h4><p>시술 후 붉어짐·부기 등으로 병원을 다시 찾아야 할 때, 동네 병원의 장점이 큽니다. 서울 원정 시술의 경우 사후 관리 방문이 부담될 수 있다는 점도 고려하세요.</p><h4>자주 묻는 질문 (FAQ)</h4><p><b>Q. 구래역에서 걸어갈 수 있나요?</b><br>A. 네, 유앤아이의원 김포점은 구래역 인근 감두리빌딩 2층입니다.</p><p><b>Q. 주차가 되나요?</b><br>A. 건물 지하주차장 최대 3시간 지원, 만차 시 구래1 공영주차장·구래상업지역 공영주차장을 이용하실 수 있습니다.</p><p><b>Q. 장기동에서도 갈 만한가요?</b><br>A. 차량 10~15분, 김포골드라인 이용 시 구래역 하차 후 도보로 방문 가능합니다. 평일 야간 진료로 퇴근 후 방문도 가능합니다.</p><blockquote>⚠️ 발행 전 확인: 표의 시술 목록이 실제 보유 장비와 일치하는지 확인 후 발행하세요.</blockquote>" },
+    { id: "d3", title: "김포 야간 진료 피부과 찾으세요? 퇴근 후에 받기 좋은 시술 정리", type: "블로그 초안", target: "김포 야간 피부과 · 김포 저녁 진료 피부과", date: "2026-07-24",
+      html: "<blockquote>타깃 키워드: 김포 야간 진료 피부과, 김포 저녁 피부과, 구래동 야간 피부과 — 해날·리멤버·미엘이 야간 키워드에 노출 중이므로 구래역·퇴근 동선을 앞세워 차별화</blockquote><p>\"피부과 가고 싶은데 평일 낮엔 도저히 시간이 안 나요.\" 김포 한강신도시에서 서울로 출퇴근하는 분들께 가장 많이 듣는 이야기입니다. 유앤아이의원 김포점은 <b>평일 야간 진료</b>를 운영합니다(일요일 휴진). 퇴근 후 방문을 계획하신다면 아래 내용이 도움이 될 것입니다.</p><h4>퇴근 후에 받기 좋은 시술</h4><p>다운타임이 거의 없어 다음 날 출근에 지장이 없는 시술들:</p><ul><li>보톡스: 시술 10~20분, 직후 일상 가능</li><li>스킨부스터: 주사 자국이 1~2일 내 가라앉는 편(개인차)</li><li>레이저 토닝·색소 관리: 당일 세안·화장 가능 여부는 시술별로 안내</li><li>레이저 제모: 직후 일상 가능</li></ul><p><b>금요일 저녁에 받는 것이 나은 시술</b> — 며칠의 회복 기간을 주말에 쓰도록:</p><ul><li>실리프팅: 부기·멍이 며칠 갈 수 있음</li><li>필러(부위에 따라): 멍이 들 수 있는 부위는 주말 회복 추천</li><li>울쎄라·올리지오: 대부분 바로 일상 가능하지만, 붉어짐이 걱정되면 금요일 저녁 추천</li></ul><h4>야간 진료 활용 팁</h4><p>퇴근 후 방문 시에는 전화로 당일 마감 접수 시간을 확인하고 오시는 것이 안전합니다. 보톡스·토닝처럼 짧은 시술은 야간 시간대에도 충분히 가능합니다. 구래역 인근이라 김포골드라인 퇴근 동선에서 바로 들를 수 있습니다.</p><h4>위치와 예약</h4><ul><li>위치: 김포시 김포한강4로 525 감두리빌딩 2층 (구래동, 구래역 인근)</li><li>주차: 건물 지하주차장 3시간 지원</li><li>예약·진료시간 문의: 031-8049-6024 (일요일 휴진)</li></ul><h4>자주 묻는 질문 (FAQ)</h4><p><b>Q. 야간에도 모든 시술이 가능한가요?</b><br>A. 대부분의 시술이 가능하지만, 시술 종류와 예약 상황에 따라 다를 수 있어 전화 예약을 권장합니다.</p><p><b>Q. 야간 진료는 몇 시까지인가요?</b><br>A. 요일별 진료 시간은 변동될 수 있으니 방문 전 031-8049-6024로 확인해 주세요.</p><p><b>Q. 주말 진료도 하나요?</b><br>A. 토요일 진료 시간은 전화로 확인해 주세요. 일요일은 휴진입니다.</p><blockquote>⚠️ 발행 전 확인: 실제 야간 진료 요일과 마감 시간을 본문에 구체적인 숫자로 넣으면 검색 노출에 훨씬 유리합니다 (예: \"화·금 저녁 8시 30분까지\"). AI와 검색엔진은 구체적인 시간이 명시된 페이지를 우선 인용합니다.</blockquote>" },
     { id: "d4", title: "환자 리뷰 요청 템플릿 (카톡·데스크 안내판·2주 후 팔로업)", type: "운영 템플릿", target: "리뷰 확보 — 목표 월 20건", date: "2026-07-24",
       html: "<p>AI와 검색엔진은 리뷰 수·평점을 \"추천 근거\"로 인용합니다. 시술 후 아래 템플릿으로 리뷰를 요청하는 루틴을 만드세요. 목표: <b>월 20건 이상의 신규 네이버 영수증 리뷰.</b></p><h4>1. 시술 당일 저녁 발송용 (카톡 알림톡/문자)</h4><blockquote>[유앤아이의원 김포점]<br>○○님, 오늘 방문해 주셔서 감사합니다 🙂<br>시술 부위에 불편감이 있으시면 언제든 031-8049-6024로 연락 주세요.<br><br>오늘 진료가 만족스러우셨다면, 네이버 영수증 리뷰로 경험을 남겨주시면 큰 힘이 됩니다.<br>▶ 네이버 지도에서 \"유앤아이의원 김포점\" 검색 → 리뷰 쓰기<br>(영수증 또는 카드 내역만 있으면 30초면 됩니다)</blockquote><h4>2. 데스크 안내판 문구</h4><blockquote>💬 오늘 진료 어떠셨나요?<br>네이버에 \"유앤아이의원 김포점\"을 검색하고 영수증 리뷰를 남겨주세요.<br>여러분의 한 줄이 같은 고민을 가진 이웃에게 큰 도움이 됩니다.</blockquote><h4>3. 재방문 환자용 (시술 2주 후 경과 확인 겸)</h4><blockquote>[유앤아이의원 김포점]<br>○○님, 시술 후 2주가 지났습니다. 경과는 어떠신가요?<br>궁금한 점이 있으시면 편하게 연락 주세요.<br><br>만족스러우셨다면 모두닥(modoodoc.com)에서 \"유앤아이의원 김포점\" 후기를 남겨주시면 감사하겠습니다.</blockquote><h4>⚠️ 반드시 지킬 것 (의료법)</h4><ul><li><b>리뷰 대가로 금품·할인 제공 금지</b> — 의료법상 환자 유인 행위로 처벌될 수 있습니다. \"리뷰 쓰면 ○○ 증정\" 이벤트는 하지 마세요.</li><li>자발적 리뷰 요청 자체는 문제가 없습니다. \"만족하셨다면 남겨주세요\" 수준을 유지하세요.</li><li>직원·지인을 동원한 허위 리뷰는 표시광고법 위반입니다.</li></ul><h4>리뷰 채널 우선순위</h4><table><tr><th>순위</th><th>채널</th><th>이유</th></tr><tr><td>1</td><td>네이버 영수증 리뷰</td><td>네이버 플레이스 노출 + AI 인용 빈도 최고</td></tr><tr><td>2</td><td>모두닥</td><td>\"김포 피부과 TOP10\" 류 페이지의 원천 데이터</td></tr><tr><td>3</td><td>구글 리뷰</td><td>ChatGPT 등 해외 AI가 가장 직접적으로 참조</td></tr><tr><td>4</td><td>강남언니·바비톡</td><td>시술 키워드(울쎄라 등) 검색 대응</td></tr></table>" },
     { id: "d5", title: "웹업체 기술 요청서 — AI 크롤러 허용 + 구조화 데이터(JSON-LD)", type: "기술 문서", target: "웹 담당 업체에 그대로 전달", date: "2026-07-24",
