@@ -444,13 +444,14 @@
       <section class="page" id="page-models">
         <p class="desc">AI 모델별로 우리 병원이 얼마나 언급되는지, 그리고 주요 질문에서 어떤 병원들이 대신 추천되고 있는지 봅니다.</p>
 
-        <h2 style="margin-top:0">모델별 노출률<small>수동 기록 + API 자동측정 기준</small></h2>
+        <h2 style="margin-top:0">모델별 노출률<small>익명 실측(API)과 내 계정 기록(수동)은 조건이 달라 분리 표시</small></h2>
         <div class="panel tablewrap">
-          <table class="data" id="modelTable" style="min-width:560px">
-            <thead><tr><th>모델</th><th>테스트</th><th>노출</th><th>부분</th><th>미노출</th><th>노출률</th></tr></thead>
+          <table class="data" id="modelTable" style="min-width:640px">
+            <thead><tr><th>모델</th><th>익명 실측 (API)</th><th>내 계정 기록 (수동)</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
+        <div class="callout"><span class="cap">해석 기준</span><b>익명 실측</b>이 신규 잠재 환자가 보는 화면에 가깝습니다. 내 계정 기록은 기억·위치 개인화로 노출이 부풀 수 있어 참고용입니다. 두 수치의 격차가 크면 "아는 사람에겐 보이지만 새 고객에겐 안 보인다"는 뜻입니다.</div>
 
         <h2>질문별 경쟁 구도<small>2026-07-24 웹 인용 소스 기준</small></h2>
         <p class="desc" style="margin-bottom:12px">AI가 답변 근거로 인용하는 웹 소스에서 상위에 등장한 병원 순서입니다. 강조 표시된 칩이 우리 병원입니다.</p>
@@ -1108,22 +1109,25 @@
   /* ============ 모델별 / 경쟁 / 출처 ============ */
   function renderModels() {
     var tb = $("modelTable").querySelector("tbody");
-    var pool = engineEntries();
+    function rateCell(entries) {
+      if (!entries.length) return '<span style="font-size:12px;color:var(--faint)">기록 없음</span>';
+      var sc = 0;
+      entries.forEach(function (e) { sc += score(e.r); });
+      var rate = Math.round(sc / entries.length * 100);
+      return '<div class="ratebar"><div class="track"><div class="fill" style="width:' + rate + '%"></div></div><span class="pct num">' + rate + '%</span></div><div style="font-size:11px;color:var(--faint);margin-top:2px">' + entries.length + "회 테스트</div>";
+    }
     tb.innerHTML = ENGINES.map(function (en) {
-      var mine = pool.filter(function (e) { return e.ch === en.id; });
-      var ok = mine.filter(function (e) { return e.r === "노출"; }).length;
-      var part = mine.filter(function (e) { return e.r === "부분"; }).length;
-      var miss = mine.filter(function (e) { return e.r === "미노출"; }).length;
-      var rate = mine.length ? Math.round((ok + part * 0.5) / mine.length * 100) : null;
+      var auto = [];
+      AI_MEASURE.forEach(function (am) {
+        if (am.engine !== en.id) return;
+        Object.keys(am.results).forEach(function (q) {
+          if (am.results[q] !== "오류") auto.push({ r: am.results[q] });
+        });
+      });
+      var manual = log.filter(function (e) { return e.ch === en.id; });
       return '<tr class="rowhover"><td><span class="dot" style="background:' + en.color + ';margin-right:8px"></span><b>' + en.id + "</b></td>" +
-        '<td class="mono">' + (mine.length || "–") + "</td>" +
-        '<td class="mono">' + (mine.length ? ok : "–") + "</td>" +
-        '<td class="mono">' + (mine.length ? part : "–") + "</td>" +
-        '<td class="mono">' + (mine.length ? miss : "–") + "</td>" +
-        "<td>" + (rate === null
-          ? '<span style="font-size:12px;color:var(--faint)">기록 없음</span>'
-          : '<div class="ratebar"><div class="track"><div class="fill" style="width:' + rate + '%"></div></div><span class="pct num">' + rate + "%</span></div>") +
-        "</td></tr>";
+        "<td>" + rateCell(auto) + "</td>" +
+        "<td>" + rateCell(manual) + "</td></tr>";
     }).join("");
 
     var ct = $("competeTable").querySelector("tbody");
