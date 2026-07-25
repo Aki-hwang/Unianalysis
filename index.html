@@ -381,7 +381,7 @@
         <h2>노출 점유율 추이</h2>
         <div class="panel chartcard">
           <div class="chartwrap" id="homeChart"></div>
-          <div class="chart-cap">검은 실선 = 매일 자동 측정(웹 인용 소스 기준, AI 비서가 실행) · 회색 점선 = 내 수동 기록. 노출 1점 + 부분 0.5점 ÷ 테스트 수.</div>
+          <div class="chart-cap">검은 실선 = 자동 측정(2일 1회 새벽 3시, 웹 인용 소스 기준, AI 비서가 실행) · 회색 점선 = 내 수동 기록. 노출 1점 + 부분 0.5점 ÷ 테스트 수.</div>
         </div>
 
         <div class="cols2" style="margin-top:26px">
@@ -413,7 +413,7 @@
             </div>
           </div>
           <div class="chartwrap" id="sovChart"></div>
-          <div class="chart-cap">가로 점선 = 첫 측정값. 검은 실선 = 매일 자동 측정, 회색 점선 = 내 수동 기록. 노출 1점, 부분 0.5점으로 계산합니다.</div>
+          <div class="chart-cap">가로 점선 = 첫 측정값. 검은 실선 = 자동 측정(2일 1회), 회색 점선 = 내 수동 기록. 노출 1점, 부분 0.5점으로 계산합니다.</div>
         </div>
 
         <h2>프롬프트별 현황<small>기준측정 + 내 기록 최신값</small></h2>
@@ -427,7 +427,7 @@
 
       <!-- ================= 프롬프트 ================= -->
       <section class="page" id="page-prompts">
-        <p class="desc">질의어별로 어느 AI에서 언제 노출됐는지 날짜 그리드로 추적합니다. ● 노출 · ○ 부분 · <b>–</b> 미노출 · 옅은 점은 미테스트. 측정은 7/24에 시작되어 아직 하루치입니다 — 매일 아침 자동측정 점이 한 칸씩 쌓입니다.</p>
+        <p class="desc">질의어별로 어느 AI에서 언제 노출됐는지 날짜 그리드로 추적합니다. ● 노출 · ○ 부분 · <b>–</b> 미노출 · 옅은 점은 미테스트. 측정은 7/24에 시작됐습니다 — 2일에 한 번 새벽 3시 자동측정 점이 쌓입니다.</p>
         <div class="panel testbox" style="margin-bottom:14px">
           <div class="row">
             <input type="text" id="newkw" placeholder="추적할 검색어 추가 (예: 김포 리프팅 가격)" aria-label="추적할 프롬프트 추가">
@@ -532,12 +532,12 @@
 
       <!-- ================= 월간 리포트 ================= -->
       <section class="page" id="page-report">
-        <p class="desc">2026년 7월 리포트 — 웹 인용 소스 기준. 매일 아침 9시에 자동 측정되어 갱신됩니다. 즉시 재측정은 채팅에서 "지금 재측정 해줘"라고 요청하세요.</p>
+        <p class="desc">2026년 7월 리포트 — 웹 인용 소스 기준. 2일에 한 번 새벽 3시(KST)에 자동 측정되어 갱신됩니다. 즉시 재측정은 채팅에서 "지금 재측정 해줘"라고 요청하세요.</p>
 
         <div class="panel strip strip3">
           <div class="cell"><div class="k">종합 노출률</div><div class="v num">23<span class="unit">%</span></div><div class="d">11개 프롬프트 기준</div></div>
           <div class="cell"><div class="k">노출 / 부분 / 미노출</div><div class="v num">2 · 1 · 8</div><div class="d">브랜드·제모만 노출</div></div>
-          <div class="cell"><div class="k">자동 측정 주기</div><div class="v num">매일</div><div class="d">오전 9시 (KST) · AI 비서가 실행</div></div>
+          <div class="cell"><div class="k">자동 측정 주기</div><div class="v num">2일 1회</div><div class="d">새벽 3시 (KST) · AI 비서가 실행</div></div>
         </div>
 
         <h2>프롬프트별 결과</h2>
@@ -619,7 +619,7 @@
     { id: "네이버",      color: "#06A94D" }
   ];
   var BASE_DATE = "2026-07-24";
-  /* 자동 측정 이력 — 매일 아침 웹 인용 소스 기준으로 측정해 여기에 한 줄씩 추가됩니다 */
+  /* 자동 측정 이력 — 2일에 한 번 새벽 3시(KST) 웹 인용 소스 기준으로 측정해 추가됩니다 */
   var MEASURE = [
     { date: "2026-07-24", results: {
       "김포 피부과 추천해줘": "미노출",
@@ -1229,7 +1229,7 @@
     { id: "d5", title: "웹업체 기술 요청서 — AI 크롤러 허용 + 구조화 데이터(JSON-LD)", type: "기술 문서", target: "웹 담당 업체에 그대로 전달", date: "2026-07-24",
       html: "<p>홈페이지 관리 업체에 그대로 전달하시면 됩니다. AI 검색에서 병원이 인용되기 위한 기술 기반 작업입니다.</p><h4>1. AI 크롤러 차단 여부 확인 및 허용 (가장 중요)</h4><p>자동화 도구로 접속 시 사이트가 403을 반환하는 정황이 있습니다. 방화벽(WAF)이나 robots.txt에서 아래 AI 검색 크롤러들이 차단되어 있는지 확인하고, 차단되어 있다면 허용해 주세요. <b>차단 상태면 ChatGPT가 우리 사이트를 아예 읽지 못해 어떤 콘텐츠를 올려도 인용되지 않습니다.</b></p><pre>User-agent: GPTBot\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nUser-agent: ChatGPT-User\nAllow: /\n\nUser-agent: ClaudeBot\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /</pre><p>또한 서버/WAF(클라우드플레어 등) 설정에서 위 User-Agent에 대한 봇 차단 룰이 있다면 예외 처리해 주세요.</p><h4>2. 병원 정보 구조화 데이터(JSON-LD) 추가</h4><p>모든 페이지의 head에 아래 스크립트를 추가해 주세요. <b>진료시간·우편번호·좌표는 실제 값으로 교체 후 적용해 주세요.</b></p><pre>&lt;script type=\"application/ld+json\"&gt;\n{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"MedicalClinic\",\n  \"name\": \"유앤아이의원 김포점\",\n  \"url\": \"https://www.gpuni114.co.kr/\",\n  \"telephone\": \"+82-31-8049-6024\",\n  \"address\": {\n    \"@type\": \"PostalAddress\",\n    \"streetAddress\": \"김포한강4로 525 감두리빌딩 2층\",\n    \"addressLocality\": \"김포시\",\n    \"addressRegion\": \"경기도\",\n    \"addressCountry\": \"KR\"\n  },\n  \"medicalSpecialty\": \"Dermatology\",\n  \"availableService\": [\n    { \"@type\": \"MedicalProcedure\", \"name\": \"울쎄라 리프팅\" },\n    { \"@type\": \"MedicalProcedure\", \"name\": \"올리지오\" },\n    { \"@type\": \"MedicalProcedure\", \"name\": \"보톡스\" },\n    { \"@type\": \"MedicalProcedure\", \"name\": \"필러\" },\n    { \"@type\": \"MedicalProcedure\", \"name\": \"레이저 제모\" }\n  ],\n  \"openingHoursSpecification\": [\n    { \"@type\": \"OpeningHoursSpecification\",\n      \"dayOfWeek\": [\"Monday\",\"Tuesday\",\"Wednesday\",\"Thursday\",\"Friday\"],\n      \"opens\": \"10:00\", \"closes\": \"20:30\" }\n  ]\n}\n&lt;/script&gt;</pre><h4>3. 시술 페이지에 FAQ 구조화 데이터 추가</h4><p>울쎄라, 보톡스 등 주요 시술 페이지에 실제 페이지 내 Q&amp;A와 일치하는 FAQPage 마크업을 추가해 주세요.</p><h4>완료 확인 방법</h4><ul><li>robots.txt 접속 시 위 크롤러 허용 내용이 보이는지</li><li>Google 리치 결과 테스트에 홈페이지 URL 입력 시 MedicalClinic·FAQPage가 인식되는지</li></ul>" },
     { id: "d6", title: "크롬 자동 테스트 지시문 — AI별 줄을 자동으로 채우기", type: "자동화 지시문", target: "Claude 크롬 확장에 붙여넣기", date: "2026-07-25",
-      html: "<p>프롬프트 보드의 <b>ChatGPT·Perplexity 등 AI별 줄</b>은 각 AI에 실제로 질문해야 채워집니다. 크롬의 Claude 확장(권한 부여된 상태)에 아래 지시문을 붙여 넣으면, 확장이 원장님 브라우저에서 각 AI에 질문을 던지고 대시보드에 결과를 대신 기록합니다.</p><h4>사용 방법</h4><ul><li>크롬에서 Claude 확장을 열고 아래 지시문을 복사해 붙여 넣기 (위 <b>전문 복사</b> 버튼 사용)</li><li>ChatGPT·Perplexity에 로그인돼 있으면 더 안정적으로 작동합니다</li><li>기록은 실행한 그 브라우저에 저장됩니다 — 늘 보시는 크롬에서 실행하세요</li><li>권장 주기: 하루 1회, 비슷한 시간대 (변화 추세가 정확해집니다)</li></ul><h4>지시문 ① — ChatGPT 전체 테스트</h4><blockquote>unianalysis-production.up.railway.app 을 열고 \"키워드 테스트\" 페이지로 이동해줘. 프롬프트 칩 전체에 대해 다음을 반복해줘: (1) 칩을 클릭해 테스트 링크를 만든다 (2) ChatGPT 버튼을 새 탭에서 열고 답변이 끝날 때까지 기다린다 (3) 답변 본문에 \"유앤아이의원 김포점\"이 언급되면 노출, 출처 링크로만 있거나 타 지점(건대·영등포 등)만 나오면 부분, 없으면 미노출로 판단한다 (4) 대시보드 탭으로 돌아와 모델 선택을 ChatGPT로 두고 해당 결과 버튼을 눌러 기록한다. 전부 끝나면 노출된 키워드 목록을 요약해줘.</blockquote><h4>지시문 ② — Perplexity 전체 테스트</h4><blockquote>같은 방식으로 반복하되, 이번에는 Perplexity 버튼으로 열고 모델 선택을 Perplexity로 두고 기록해줘.</blockquote><h4>지시문 ③ — Gemini 전체 테스트</h4><blockquote>같은 방식으로 반복하되, Gemini는 자동 입력이 안 되므로 각 칩에서 복사 버튼으로 질문을 복사한 뒤 gemini.google.com 탭에 붙여 넣어 질문하고, 모델 선택을 Gemini로 두고 기록해줘.</blockquote><h4>참고</h4><ul><li>맨 위 <b>자동측정 줄</b>은 아라(AI 비서)가 매일 아침 9시·저녁 6시에 웹 인용 소스 기준으로 자동으로 채웁니다 — 이 지시문과 별개로 항상 돌아갑니다.</li><li>AI 답변은 매번 조금씩 달라질 수 있으니 하루하루의 점보다 주간 추세로 보세요.</li></ul>" },
+      html: "<p>프롬프트 보드의 <b>ChatGPT·Perplexity 등 AI별 줄</b>은 각 AI에 실제로 질문해야 채워집니다. 크롬의 Claude 확장(권한 부여된 상태)에 아래 지시문을 붙여 넣으면, 확장이 원장님 브라우저에서 각 AI에 질문을 던지고 대시보드에 결과를 대신 기록합니다.</p><h4>사용 방법</h4><ul><li>크롬에서 Claude 확장을 열고 아래 지시문을 복사해 붙여 넣기 (위 <b>전문 복사</b> 버튼 사용)</li><li>ChatGPT·Perplexity에 로그인돼 있으면 더 안정적으로 작동합니다</li><li>기록은 실행한 그 브라우저에 저장됩니다 — 늘 보시는 크롬에서 실행하세요</li><li>권장 주기: 하루 1회, 비슷한 시간대 (변화 추세가 정확해집니다)</li></ul><h4>지시문 ① — ChatGPT 전체 테스트</h4><blockquote>unianalysis-production.up.railway.app 을 열고 \"키워드 테스트\" 페이지로 이동해줘. 프롬프트 칩 전체에 대해 다음을 반복해줘: (1) 칩을 클릭해 테스트 링크를 만든다 (2) ChatGPT 버튼을 새 탭에서 열고 답변이 끝날 때까지 기다린다 (3) 답변 본문에 \"유앤아이의원 김포점\"이 언급되면 노출, 출처 링크로만 있거나 타 지점(건대·영등포 등)만 나오면 부분, 없으면 미노출로 판단한다 (4) 대시보드 탭으로 돌아와 모델 선택을 ChatGPT로 두고 해당 결과 버튼을 눌러 기록한다. 전부 끝나면 노출된 키워드 목록을 요약해줘.</blockquote><h4>지시문 ② — Perplexity 전체 테스트</h4><blockquote>같은 방식으로 반복하되, 이번에는 Perplexity 버튼으로 열고 모델 선택을 Perplexity로 두고 기록해줘.</blockquote><h4>지시문 ③ — Gemini 전체 테스트</h4><blockquote>같은 방식으로 반복하되, Gemini는 자동 입력이 안 되므로 각 칩에서 복사 버튼으로 질문을 복사한 뒤 gemini.google.com 탭에 붙여 넣어 질문하고, 모델 선택을 Gemini로 두고 기록해줘.</blockquote><h4>참고</h4><ul><li>맨 위 <b>자동측정 줄</b>은 아라(AI 비서)가 2일에 한 번 새벽 3시에 웹 인용 소스 기준으로 자동으로 채웁니다 — 이 지시문과 별개로 항상 돌아갑니다.</li><li>AI 답변은 매번 조금씩 달라질 수 있으니 하루하루의 점보다 주간 추세로 보세요.</li></ul>" },
   ];
   function renderDocs() {
     $("docRows").innerHTML = DOCS.map(function (d) {
