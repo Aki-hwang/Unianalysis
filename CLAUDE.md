@@ -20,7 +20,7 @@
 
 - 웹검색 자동측정: 매일 2회 (아침 9시·저녁 7시 KST, cron: 0 0,10 * * * UTC) — PROMPTS 전체
 - API 실측(Gemini·ChatGPT): 3일 1회 — AI_MEASURE의 엔진별 마지막 날짜가 3일 이상 지났을 때 scripts/measure-*.mjs 실행 (measure-chatgpt는 curl 기반, api.openai.com 네트워크 허용 필요)
-- 매 실행 시 Railway 공유 저장(unianalysis-production.up.railway.app/api/state)에서 새 수동 기록(Perplexity 등)을 확인해 보고에 포함 (도메인 네트워크 허용 필요)
+- 매 실행 시 Railway 공유 저장(unianalysis-production.up.railway.app/api/state)에서 새 수동 기록을 확인해 보고에 포함 (도메인 네트워크 허용 필요)
 - 결과는 MEASURE 배열에 날짜별 항목으로 추가 (같은 날 2회면 별도 항목, 차트는 그날 마지막 값 사용)
 - 판정 기준: 상위 인용 소스에 병원명 등장=노출 / 링크·타지점만=부분 / 없음=미노출
 - 측정 후: 커밋 → 브랜치+main 푸시 → 아티팩트 재게시 → 변화 요약 보고 (변화 없으면 한 줄)
