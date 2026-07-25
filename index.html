@@ -344,6 +344,7 @@
       <h1 id="pagetitle">홈</h1>
       <div class="right">
         <span class="chip num">기준측정 <span id="baseDateChip">07/24</span></span>
+        <span class="chip" id="storeChip">저장 확인 중…</span>
         <button class="btn sm" id="csvBtn2">기록 내보내기</button>
       </div>
     </div>
@@ -815,6 +816,48 @@
 
   var log = load(LOG_KEY, []);
   if (!Array.isArray(log)) log = [];
+  function newId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+  function ensureIds(arr) { arr.forEach(function (e) { if (!e.id) e.id = newId(); }); }
+  ensureIds(log);
+  var SERVER = false;
+  function apiFetch(path, opts) {
+    return fetch(path, Object.assign({ headers: { "Content-Type": "application/json" } }, opts));
+  }
+  function setStoreChip(txt) { var el = $("storeChip"); if (el) el.textContent = txt; }
+  function adoptState(st) {
+    log = Array.isArray(st.log) ? st.log : []; ensureIds(log);
+    plan = (st.plan && typeof st.plan === "object" && !Array.isArray(st.plan)) ? st.plan : {};
+    custom = st.custom && Array.isArray(st.custom.added) && Array.isArray(st.custom.hidden) ? st.custom : { added: [], hidden: [] };
+    save(LOG_KEY, log); save(PLAN_KEY, plan); save(CUSTOM_KEY, custom);
+  }
+  function syncInit() {
+    var ctl = ("AbortController" in window) ? new AbortController() : null;
+    var t = ctl && setTimeout(function () { ctl.abort(); }, 4000);
+    fetch("/api/state", ctl ? { signal: ctl.signal } : {}).then(function (r) {
+      if (t) clearTimeout(t);
+      if (!r.ok) throw new Error("bad");
+      return r.json();
+    }).then(function (st) {
+      SERVER = true;
+      var serverHasData = (st.log && st.log.length) || Object.keys(st.plan || {}).length ||
+        (st.custom && ((st.custom.added || []).length || (st.custom.hidden || []).length));
+      if (serverHasData) { adoptState(st); renderAll(); }
+      else if (log.length || Object.keys(plan).length || custom.added.length || custom.hidden.length) {
+        apiFetch("/api/state", { method: "PUT", body: JSON.stringify({ log: log, plan: plan, custom: custom }) }).catch(function () {});
+      }
+      setStoreChip(st.storage === "volume" ? "☁ 공유 저장 연결됨" : "☁ 공유 저장 (볼륨 미설정 — 배포 시 초기화됨)");
+      setInterval(function () {
+        fetch("/api/state").then(function (r) { return r.json(); }).then(function (st2) {
+          var cur = JSON.stringify({ l: log, p: plan, c: custom });
+          var inc = JSON.stringify({ l: st2.log, p: st2.plan, c: st2.custom });
+          if (cur !== inc) { adoptState(st2); renderAll(); }
+        }).catch(function () {});
+      }, 60000);
+    }).catch(function () {
+      if (t) clearTimeout(t);
+      setStoreChip("이 브라우저에만 저장");
+    });
+  }
   var plan = load(PLAN_KEY, {});
   if (typeof plan !== "object" || plan === null || Array.isArray(plan)) plan = {};
   var CUSTOM_KEY = "uni-custom-v1";
@@ -1003,7 +1046,9 @@
     document.querySelectorAll(".hidekw").forEach(function (b) {
       b.addEventListener("click", function () {
         if (custom.hidden.indexOf(b.dataset.kw) === -1) custom.hidden.push(b.dataset.kw);
-        save(CUSTOM_KEY, custom); renderAll();
+        save(CUSTOM_KEY, custom);
+        if (SERVER) apiFetch("/api/custom", { method: "PUT", body: JSON.stringify(custom) }).catch(function () {});
+        renderAll();
         toast("보드에서 숨겼습니다 — 아래에서 복원할 수 있어요");
       });
     });
@@ -1016,7 +1061,9 @@
       b.addEventListener("click", function () {
         var i = custom.hidden.indexOf(b.dataset.kw);
         if (i !== -1) custom.hidden.splice(i, 1);
-        save(CUSTOM_KEY, custom); renderAll();
+        save(CUSTOM_KEY, custom);
+        if (SERVER) apiFetch("/api/custom", { method: "PUT", body: JSON.stringify(custom) }).catch(function () {});
+        renderAll();
       });
     });
     lastRecordKey = null;
@@ -1144,7 +1191,9 @@
     $("planlist").querySelectorAll("input").forEach(function (cb) {
       cb.addEventListener("change", function () {
         plan[cb.closest(".todo").dataset.todo] = cb.checked;
-        save(PLAN_KEY, plan); renderPlan(); renderHome();
+        save(PLAN_KEY, plan);
+        if (SERVER) apiFetch("/api/plan", { method: "PUT", body: JSON.stringify(plan) }).catch(function () {});
+        renderPlan(); renderHome();
       });
     });
   }
@@ -1193,8 +1242,10 @@
     b.addEventListener("click", function () {
       if (!currentQ) { toast("먼저 테스트 링크를 만들어 주세요"); return; }
       var ch = $("channel").value;
-      log.push({ date: today(), kw: currentQ, ch: ch, r: b.dataset.result });
+      var entry = { id: newId(), date: today(), kw: currentQ, ch: ch, r: b.dataset.result };
+      log.push(entry);
       save(LOG_KEY, log);
+      if (SERVER) apiFetch("/api/log", { method: "POST", body: JSON.stringify(entry) }).catch(function () {});
       lastRecordKey = currentQ + "|" + ch + "|" + today();
       renderAll();
       toast(ch + " · " + b.dataset.result + " 기록 완료");
@@ -1209,11 +1260,17 @@
         return '<tr class="rowhover"><td class="mono">' + esc(e.date) + "</td><td><b style=\"font-size:13px\">" + esc(e.kw) + "</b></td>" +
           '<td><span class="dot" style="background:' + engColor(e.ch) + ';margin-right:7px"></span>' + esc(e.ch) + "</td>" +
           "<td>" + glyph(e.r, engColor(e.ch)) + ' <span style="font-size:12.5px">' + esc(e.r) + "</span></td>" +
-          '<td><button class="del" data-i="' + i + '" aria-label="삭제">✕</button></td></tr>';
+          '<td><button class="del" data-id="' + esc(e.id) + '" aria-label="삭제">✕</button></td></tr>';
       }).reverse().join("");
     }
     tb.querySelectorAll(".del").forEach(function (b) {
-      b.addEventListener("click", function () { log.splice(+b.dataset.i, 1); save(LOG_KEY, log); renderAll(); });
+      b.addEventListener("click", function () {
+        var id = b.dataset.id;
+        log = log.filter(function (e) { return e.id !== id; });
+        save(LOG_KEY, log);
+        if (SERVER) apiFetch("/api/log?id=" + encodeURIComponent(id), { method: "DELETE" }).catch(function () {});
+        renderAll();
+      });
     });
   }
   function exportCSV() {
@@ -1303,13 +1360,15 @@
     if (i !== -1) custom.hidden.splice(i, 1);
     var exists = allPrompts().some(function (k) { return k.q === q; });
     if (!exists) custom.added.push({ q: q });
-    save(CUSTOM_KEY, custom); $("newkw").value = ""; renderAll();
+    save(CUSTOM_KEY, custom);
+    if (SERVER) apiFetch("/api/custom", { method: "PUT", body: JSON.stringify(custom) }).catch(function () {});
+    $("newkw").value = ""; renderAll();
     toast('"' + q + '" 추적 시작 — 키워드 테스트에서 기록해 보세요');
   });
   $("newkw").addEventListener("keydown", function (ev) { if (ev.key === "Enter") $("addKwBtn").click(); });
   function renderAll() {
     renderHome(); renderSov(); renderBoard(); renderModels(); renderLog(); renderPlan(); renderChips();
   }
-  renderSources(); renderDocs(); renderAll();
+  renderSources(); renderDocs(); renderAll(); syncInit();
 })();
 </script>

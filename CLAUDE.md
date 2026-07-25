@@ -26,7 +26,7 @@
 ## 코드 구조
 
 - `index.html` — 단일 파일 대시보드 (온더AI 스타일 라이트 SaaS). 데이터는 상단 JS의 MEASURE/PROMPTS/COMPETE/SOURCES/PLAN/DOCS 배열
-- 사용자 기록(수동 테스트·플랜 체크·직접 추가 프롬프트)은 localStorage — 서버 데이터 아님
+- 사용자 기록(수동 테스트·플랜 체크·직접 추가 프롬프트)은 서버 공유 저장(`/api/state` — server.js가 shared-state.json에 저장). Railway Volume(/data 마운트) 필요 — 없으면 재배포 시 초기화. API 미접속 환경(아티팩트·로컬)에선 localStorage 폴백
 - `server.js` + `package.json` — Railway용 zero-dependency 정적 서버
 - `content/`, `tech/` — 블로그 원고·템플릿·기술 요청서 (대시보드 DOCS와 내용 동기화 유지)
 - 수정 후 검증: 인라인 스크립트 추출 → `node --check`, 필요시 playwright(chromium `/opt/pw-browsers/chromium`)
