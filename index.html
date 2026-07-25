@@ -351,7 +351,7 @@
 
       <!-- ================= 홈 ================= -->
       <section class="page active" id="page-home">
-        <p class="desc">유앤아이의원 김포점이 AI 검색(ChatGPT·Gemini·Perplexity·Grok·구글 AI 오버뷰)과 네이버에서 얼마나 추천되는지 추적하고, 노출을 늘리는 실행까지 한 곳에서 관리합니다.</p>
+        <p class="desc">유앤아이의원 김포점이 AI 검색(ChatGPT·Gemini·Perplexity·Grok)에서 얼마나 추천되는지 추적하고, 노출을 늘리는 실행까지 한 곳에서 관리합니다.</p>
 
         <div class="panel strip">
           <div class="cell">
@@ -614,9 +614,7 @@
     { id: "ChatGPT",    color: "#0FA37F" },
     { id: "Gemini",     color: "#E8930C" },
     { id: "Perplexity", color: "#7C5CE0" },
-    { id: "Grok",       color: "#E0447E" },
-    { id: "AIO",        color: "#2F7BE0" },
-    { id: "네이버",      color: "#06A94D" }
+    { id: "Grok",       color: "#E0447E" }
   ];
   var BASE_DATE = "2026-07-24";
   /* 자동 측정 이력 — 2일에 한 번 새벽 3시(KST) 웹 인용 소스 기준으로 측정해 추가됩니다 */
@@ -1156,9 +1154,7 @@
       { id: "ChatGPT", href: "https://chatgpt.com/?q=" + e },
       { id: "Gemini", href: "https://gemini.google.com/app" },
       { id: "Perplexity", href: "https://www.perplexity.ai/search?q=" + e },
-      { id: "Grok", href: "https://grok.com/?q=" + e },
-      { id: "AIO", href: "https://www.google.com/search?q=" + ek, label: "구글 (AIO)" },
-      { id: "네이버", href: "https://search.naver.com/search.naver?query=" + ek }
+      { id: "Grok", href: "https://grok.com/?q=" + e }
     ];
     $("linkgrid").innerHTML = L.map(function (l) {
       var c = engColor(l.id);
