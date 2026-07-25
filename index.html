@@ -1000,12 +1000,8 @@
     log.forEach(function (e) { set[e.date] = true; });
     MEASURE.forEach(function (m) { set[m.date] = true; });
     AI_MEASURE.forEach(function (m) { set[m.date] = true; });
-    var first = Object.keys(set).sort()[0] || today();
-    var d = new Date(), dates = [];
-    while (dates.length < 30 && (fmt(d) >= first || dates.length < 7)) {
-      dates.push(fmt(d)); d.setDate(d.getDate() - 1);
-    }
-    return dates.sort();
+    set[today()] = true;
+    return Object.keys(set).sort().slice(-30);
   }
   function renderBoard() {
     var dates = boardDates(), td = today();
