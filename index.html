@@ -444,14 +444,14 @@
       <section class="page" id="page-models">
         <p class="desc">AI 모델별로 우리 병원이 얼마나 언급되는지, 그리고 주요 질문에서 어떤 병원들이 대신 추천되고 있는지 봅니다.</p>
 
-        <h2 style="margin-top:0">모델별 노출률<small>익명 실측(API)과 내 계정 기록(수동)은 조건이 달라 분리 표시</small></h2>
+        <h2 style="margin-top:0">모델별 노출률<small>익명 API 실측 기준 — 신규 잠재 환자가 보는 화면</small></h2>
         <div class="panel tablewrap">
-          <table class="data" id="modelTable" style="min-width:640px">
-            <thead><tr><th>모델</th><th>익명 실측 (API)</th><th>내 계정 기록 (수동)</th></tr></thead>
+          <table class="data" id="modelTable" style="min-width:520px">
+            <thead><tr><th>모델</th><th>익명 실측 노출률</th><th>측정</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
-        <div class="callout"><span class="cap">해석 기준</span><b>익명 실측</b>이 신규 잠재 환자가 보는 화면에 가깝습니다. 내 계정 기록은 기억·위치 개인화로 노출이 부풀 수 있어 참고용입니다. 두 수치의 격차가 크면 "아는 사람에겐 보이지만 새 고객에겐 안 보인다"는 뜻입니다.</div>
+        <div class="callout"><span class="cap">기준</span>이 표는 <b>익명 조건의 API 실측만</b> 집계합니다 — 개인 계정 기록은 기억·위치 개인화로 부풀 수 있어 제외했습니다 (수동 기록은 프롬프트 보드의 점으로만 표시). Perplexity는 API 미연동 상태라 기록이 비어 있습니다.</div>
 
         <h2>질문별 경쟁 구도<small>2026-07-24 웹 인용 소스 기준</small></h2>
         <p class="desc" style="margin-bottom:12px">AI가 답변 근거로 인용하는 웹 소스에서 상위에 등장한 병원 순서입니다. 강조 표시된 칩이 우리 병원입니다.</p>
@@ -1109,25 +1109,27 @@
   /* ============ 모델별 / 경쟁 / 출처 ============ */
   function renderModels() {
     var tb = $("modelTable").querySelector("tbody");
-    function rateCell(entries) {
-      if (!entries.length) return '<span style="font-size:12px;color:var(--faint)">기록 없음</span>';
-      var sc = 0;
-      entries.forEach(function (e) { sc += score(e.r); });
-      var rate = Math.round(sc / entries.length * 100);
-      return '<div class="ratebar"><div class="track"><div class="fill" style="width:' + rate + '%"></div></div><span class="pct num">' + rate + '%</span></div><div style="font-size:11px;color:var(--faint);margin-top:2px">' + entries.length + "회 테스트</div>";
-    }
     tb.innerHTML = ENGINES.map(function (en) {
       var auto = [];
       AI_MEASURE.forEach(function (am) {
         if (am.engine !== en.id) return;
         Object.keys(am.results).forEach(function (q) {
-          if (am.results[q] !== "오류") auto.push({ r: am.results[q] });
+          if (am.results[q] !== "오류") auto.push(am.results[q]);
         });
       });
-      var manual = log.filter(function (e) { return e.ch === en.id; });
+      var cell, meta;
+      if (!auto.length) {
+        cell = '<span style="font-size:12px;color:var(--faint)">' + (en.id === "Perplexity" ? "API 미연동" : "기록 없음") + "</span>";
+        meta = "–";
+      } else {
+        var sc = 0;
+        auto.forEach(function (r) { sc += score(r); });
+        var rate = Math.round(sc / auto.length * 100);
+        cell = '<div class="ratebar"><div class="track"><div class="fill" style="width:' + rate + '%"></div></div><span class="pct num">' + rate + "%</span></div>";
+        meta = auto.length + "회";
+      }
       return '<tr class="rowhover"><td><span class="dot" style="background:' + en.color + ';margin-right:8px"></span><b>' + en.id + "</b></td>" +
-        "<td>" + rateCell(auto) + "</td>" +
-        "<td>" + rateCell(manual) + "</td></tr>";
+        "<td>" + cell + '</td><td class="mono">' + meta + "</td></tr>";
     }).join("");
 
     var ct = $("competeTable").querySelector("tbody");
