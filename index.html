@@ -393,7 +393,7 @@
             <h2 style="margin-top:0">바로 실행</h2>
             <div class="panel">
               <div class="rowitem" data-go="test"><div><div class="t">오늘의 키워드 테스트</div><div class="s">6개 AI에 질문을 던지고 결과를 기록하세요</div></div><div class="right"><span class="date">→</span></div></div>
-              <div class="rowitem" data-go="docs"><div><div class="t">콘텐츠 초안·지시문 7건</div><div class="s">블로그 원고·리뷰 템플릿·기술 요청서·크롬 자동 테스트 지시문</div></div><div class="right"><span class="date">→</span></div></div>
+              <div class="rowitem" data-go="docs"><div><div class="t">콘텐츠 초안·지시문 5건</div><div class="s">블로그 원고·기술 요청서·크롬 자동 테스트 지시문</div></div><div class="right"><span class="date">→</span></div></div>
               <div class="rowitem" data-go="plan"><div><div class="t">노출 기획 체크리스트</div><div class="s">플랫폼 등재·리뷰·블로그 발행 진행 관리</div></div><div class="right"><span class="date">→</span></div></div>
               <div class="rowitem" data-go="report"><div><div class="t">7월 리포트 보기</div><div class="s">기준 측정 결과와 진단 — 다음 자동 측정 8/1</div></div><div class="right"><span class="date">→</span></div></div>
             </div>
@@ -687,7 +687,30 @@
     } }
   ];
   /* AI별 자동측정(API) — {date, engine, results:{질문:판정}} 항목이 쌓임 */
-  var AI_MEASURE = [];
+  var AI_MEASURE = [
+    { date: "2026-07-25", engine: "Gemini", results: {
+      "김포 피부과 추천해줘": "노출",
+      "김포에서 울쎄라 잘하는 곳 알려줘": "노출",
+      "김포 보톡스 가격 어느 정도야?": "부분",
+      "김포 리프팅 잘하는 피부과 어디야?": "노출",
+      "김포 레이저 제모 어디서 받는 게 좋아?": "노출",
+      "구래동 근처 피부과 추천해줘": "노출",
+      "장기동 피부과 보톡스 어디가 좋아?": "미노출",
+      "운양동에서 갈 만한 피부과 있어?": "미노출",
+      "김포 리쥬란 스킨부스터 맞을 만한 곳?": "노출",
+      "유앤아이의원 김포점 어때? 후기 있어?": "노출",
+      "유앤아이의원 김포점": "노출",
+      "김포 야간 진료 피부과 어디 있어?": "노출",
+      "김포 올리지오 잘하는 곳 있어?": "노출",
+      "김포 필러 잘하는 병원 알려줘": "노출",
+      "김포 여드름 피부과 추천해줘": "노출",
+      "김포 기미 잡티 레이저 어디가 좋아?": "노출",
+      "구래역 피부과 알려줘": "노출",
+      "마산동 피부과 어디 있어?": "미노출",
+      "김포 써마지 잘하는 곳 알려줘": "미노출",
+      "김포 실리프팅 어디가 좋아?": "노출"
+    } }
+  ];
   function engineEntries() {
     var arr = log.slice();
     AI_MEASURE.forEach(function (am) {
@@ -761,15 +784,12 @@
     { id: "p03", g: "1. 플랫폼 등재 — 효과 최상 · 목표 2주 내", t: "닥터나우·나만의닥터 등재 확인", d: "\"김포시 피부과 인기 TOP10\" 류 리스트의 소스", s: ["두 앱에서 병원명 검색 → 없으면 앱 내 병원 등록 요청", "있으면 정보 인증 받고 진료시간·시술 항목 보완"] },
     { id: "p04", g: "1. 플랫폼 등재 — 효과 최상 · 목표 2주 내", t: "강남언니·바비톡 입점 + 이벤트 3건", d: "\"김포 울쎄라\" 등 시술 검색의 주 인용원", s: ["파트너 입점 신청 (강남언니 partner.gangnamunni.com)", "울쎄라·리프팅·보톡스 이벤트 등록 — 샷 수·가격 명시", "가격 노출 이벤트는 의료광고 사전심의 대상인지 대행사 확인"] },
     { id: "p05", g: "1. 플랫폼 등재 — 효과 최상 · 목표 2주 내", t: "제모데이에 기기·가격 등재", d: "미엘이 이 경로로 제모 키워드 노출 중 — 우리 강점 키워드 굳히기", s: ["jemoday.com 병원 입점 문의", "보유 기기(아포지 플러스)·부위별 가격 등록"] },
-    { id: "p06", g: "2. 후기 만들기 — 지속 루틴", t: "네이버 영수증 리뷰 루틴 가동", d: "AI가 \"리뷰 다수\"를 추천 근거로 인용 — 목표 주 5건 · 월 20건", s: ["데스크 안내판 설치 (문구는 콘텐츠 → 리뷰 템플릿)", "시술 당일 저녁 알림톡 발송 루틴 시작", "주의: 리뷰 대가 금품·할인 제공은 의료법 위반 — 요청만 하기"] },
+    { id: "p06", g: "2. 후기 만들기 — 지속 루틴", t: "네이버 영수증 리뷰 루틴 가동", d: "AI가 \"리뷰 다수\"를 추천 근거로 인용 — 목표 주 5건 · 월 20건", s: ["데스크 안내판 설치", "시술 당일 저녁 알림톡 발송 루틴 시작", "주의: 리뷰 대가 금품·할인 제공은 의료법 위반 — 요청만 하기"] },
     { id: "p07", g: "2. 후기 만들기 — 지속 루틴", t: "모두닥·구글 리뷰 확보", d: "모두닥 후기는 TOP10 순위에, 구글 리뷰는 ChatGPT가 직접 참조", s: ["시술 2주 후 경과 확인 문자에 모두닥·구글 리뷰 링크 포함", "구글 리뷰 5개 확보를 1차 목표로"] },
-    { id: "p08", g: "3. 블로그 — 진행 중, 키워드 타게팅 강화", t: "준비된 원고 3편 발행 (울쎄라·동네·야간)", d: "콘텐츠 탭에서 전문 복사 → 블로그에 발행. 제목의 동네·시술 키워드 유지", s: ["원고 1: 김포 울쎄라 가이드 — \"김포 울쎄라\" 공략", "원고 2: 구래동·장기동 체크리스트 — 소재지 키워드 선점", "원고 3: 야간 진료 가이드 — 실제 진료시간 숫자 채워서 발행"] },
-    { id: "p09", g: "3. 블로그 — 진행 중, 키워드 타게팅 강화", t: "기존 글 리터칭 (월 2편)", d: "이미 쓰는 블로그의 노출력을 키우는 가장 싼 방법", s: ["제목을 \"동네+시술+질문형\"으로 수정 (예: \"구래동 보톡스 어디서? 가격 기준 정리\")", "글 끝에 FAQ 3개 추가 — AI가 질문-답변 형식을 가장 잘 인용", "본문에 구래동·장기동·운양동·마산동 중 해당 동네명 명시"] },
-    { id: "p10", g: "3. 블로그 — 진행 중, 키워드 타게팅 강화", t: "주 1편 발행 주기 유지 + 빈 키워드 선점", d: "제모 글이 증명한 공식을 반복", s: ["다음 추천 키워드: \"장기동 보톡스\" \"김포 올리지오\" \"마산동 피부과\" (경쟁 빈약 확인됨)", "매주 프롬프트 페이지에서 미노출 키워드 확인 후 글감 선정"] },
-    { id: "p11", g: "4. 지도·프로필 정비", t: "네이버 플레이스 정비", d: "\"근처 피부과\" 지도형 질문 + 영수증 리뷰의 기반", s: ["스마트플레이스에서 시술 메뉴·가격대 등록", "원내·장비 사진 20장 이상, \"소식\" 월 2회 발행", "네이버 예약 버튼 활성화"] },
-    { id: "p12", g: "4. 지도·프로필 정비", t: "구글 비즈니스 프로필 정비", d: "ChatGPT 등 해외 AI가 직접 참조 — 경쟁사 대부분 부실해 채우면 바로 우위", s: ["business.google.com에서 소유권 인증(우편/전화)", "진료시간·사진·시술 서비스 목록 등록", "구글 리뷰 5개 확보와 병행"] },
-    { id: "p13", g: "5. 기술 기반 — 웹업체 1회 요청", t: "웹업체에 기술 요청서 전달", d: "AI 크롤러가 사이트를 못 읽으면 모든 콘텐츠가 무효 — 콘텐츠 탭의 요청서 그대로 전달", s: ["robots.txt·방화벽에서 GPTBot·ClaudeBot·PerplexityBot 허용 확인 요청", "병원 정보 JSON-LD(MedicalClinic) + 시술 페이지 FAQ 마크업 추가 요청"] },
-    { id: "p14", g: "5. 기술 기반 — 웹업체 1회 요청", t: "작업 완료 검증", d: "요청만 하고 확인 안 하면 안 된 것과 같음", s: ["gpuni114.co.kr/robots.txt 접속해 허용 목록 확인", "구글 리치 결과 테스트에 홈페이지 URL 입력 → MedicalClinic 인식 확인", "완료되면 채팅으로 알려주기 — 재측정으로 효과 확인"] }
+    { id: "p11", g: "3. 지도·프로필 정비", t: "네이버 플레이스 정비", d: "\"근처 피부과\" 지도형 질문 + 영수증 리뷰의 기반", s: ["스마트플레이스에서 시술 메뉴·가격대 등록", "원내·장비 사진 20장 이상, \"소식\" 월 2회 발행", "네이버 예약 버튼 활성화"] },
+    { id: "p12", g: "3. 지도·프로필 정비", t: "구글 비즈니스 프로필 정비", d: "ChatGPT 등 해외 AI가 직접 참조 — 경쟁사 대부분 부실해 채우면 바로 우위", s: ["business.google.com에서 소유권 인증(우편/전화)", "진료시간·사진·시술 서비스 목록 등록", "구글 리뷰 5개 확보와 병행"] },
+    { id: "p13", g: "4. 기술 기반 — 웹업체 1회 요청", t: "웹업체에 기술 요청서 전달", d: "AI 크롤러가 사이트를 못 읽으면 모든 콘텐츠가 무효 — 콘텐츠 탭의 요청서 그대로 전달", s: ["robots.txt·방화벽에서 GPTBot·ClaudeBot·PerplexityBot 허용 확인 요청", "병원 정보 JSON-LD(MedicalClinic) + 시술 페이지 FAQ 마크업 추가 요청"] },
+    { id: "p14", g: "4. 기술 기반 — 웹업체 1회 요청", t: "작업 완료 검증", d: "요청만 하고 확인 안 하면 안 된 것과 같음", s: ["gpuni114.co.kr/robots.txt 접속해 허용 목록 확인", "구글 리치 결과 테스트에 홈페이지 URL 입력 → MedicalClinic 인식 확인", "완료되면 채팅으로 알려주기 — 재측정으로 효과 확인"] }
   ];
   var LOG_KEY = "uni-testlog-v2", PLAN_KEY = "uni-plan-v1";
 
@@ -808,7 +828,7 @@
 
   /* ============ 내비 ============ */
   var TITLES = { home: "홈", sov: "노출 점유율", prompts: "프롬프트", models: "모델별 현황", sources: "인용 출처", test: "키워드 테스트", plan: "노출 기획", docs: "콘텐츠", report: "월간 리포트", account: "브랜드 관리" };
-  function goPage(id) {
+  function goPage(id, skipPush) {
     document.querySelectorAll(".nav").forEach(function (x) { x.classList.toggle("active", x.dataset.page === id); });
     document.querySelectorAll(".page").forEach(function (x) { x.classList.remove("active"); });
     $("page-" + id).classList.add("active");
@@ -816,6 +836,7 @@
     window.scrollTo(0, 0);
     if (id === "home") renderHome();
     else if (id === "sov") renderSov();
+    if (!skipPush) history.pushState({ page: id }, "", "#" + id);
   }
   document.querySelectorAll(".nav").forEach(function (b) { b.addEventListener("click", function () { goPage(b.dataset.page); }); });
   var _rz;
@@ -1220,14 +1241,10 @@
       html: "<blockquote>타깃 키워드: 구래동 피부과, 장기동 피부과, 운양동 피부과, 마산동 피부과, 구래역 피부과 — 병원 소재지인 구래동조차 미노출 상태라 선점 효과가 큰 글</blockquote><p>김포 한강신도시(구래동·마산동·장기동·운양동)에 거주하시는 분들이 피부과를 찾을 때 가장 많이 고민하는 것은 \"서울까지 가야 하나, 동네에서 해결되나\"입니다. 보톡스·필러·리프팅·제모 같은 시술은 이제 김포 안에서도 충분히 받을 수 있습니다. 동네에서 피부과를 고를 때 확인하면 좋은 것들을 정리했습니다.</p><h4>1. 우리 동네에서의 접근성</h4><ul><li><b>구래동·마산동</b>: 유앤아이의원 김포점은 구래역 인근 감두리빌딩 2층에 있어 김포골드라인 이용 시 편리합니다. 건물 지하주차장 3시간 무료 지원으로 차량 방문도 편합니다.</li><li><b>장기동·운양동</b>: 김포골드라인으로 구래역까지 10분 내외. 장기동에서 차량으로 약 10~15분 거리입니다.</li></ul><h4>2. 야간·주말 진료 여부</h4><p>직장인이라면 평일 저녁이나 주말 진료가 가능한지가 사실상 가장 중요한 조건입니다. 유앤아이의원 김포점은 <b>평일 야간 진료</b>를 운영하고 있어, 낮 방문이 어려운 한강신도시 직장인 분들이 많이 찾으십니다(일요일 휴진). (방문 전 전화로 당일 진료 시간을 확인해 주세요: 031-8049-6024)</p><h4>3. 받으려는 시술의 장비를 보유했는지</h4><table><tr><th>고민</th><th>해당 시술</th></tr><tr><td>얼굴 처짐, 턱선</td><td>울쎄라, 올리지오, 실리프팅</td></tr><tr><td>주름, 사각턱</td><td>보톡스</td></tr><tr><td>볼륨, 팔자주름</td><td>필러</td></tr><tr><td>피부결, 속건조</td><td>스킨부스터(리쥬란 등)</td></tr><tr><td>기미, 잡티</td><td>색소 레이저</td></tr><tr><td>제모</td><td>레이저 제모(아포지 플러스)</td></tr></table><h4>4. 상담과 시술의 연결</h4><p>상담만 실장이 하고 시술 방향이 갑자기 바뀌는 경우가 종종 있습니다. 의사 상담에서 시술 계획(샷 수, 용량, 주기)을 구체적으로 설명해 주는지 확인하세요.</p><h4>5. 시술 후 관리 접근성</h4><p>시술 후 붉어짐·부기 등으로 병원을 다시 찾아야 할 때, 동네 병원의 장점이 큽니다. 서울 원정 시술의 경우 사후 관리 방문이 부담될 수 있다는 점도 고려하세요.</p><h4>자주 묻는 질문 (FAQ)</h4><p><b>Q. 구래역에서 걸어갈 수 있나요?</b><br>A. 네, 유앤아이의원 김포점은 구래역 인근 감두리빌딩 2층입니다.</p><p><b>Q. 주차가 되나요?</b><br>A. 건물 지하주차장 최대 3시간 지원, 만차 시 구래1 공영주차장·구래상업지역 공영주차장을 이용하실 수 있습니다.</p><p><b>Q. 장기동에서도 갈 만한가요?</b><br>A. 차량 10~15분, 김포골드라인 이용 시 구래역 하차 후 도보로 방문 가능합니다. 평일 야간 진료로 퇴근 후 방문도 가능합니다.</p><blockquote>⚠️ 발행 전 확인: 표의 시술 목록이 실제 보유 장비와 일치하는지 확인 후 발행하세요.</blockquote>" },
     { id: "d3", title: "김포 야간 진료 피부과 찾으세요? 퇴근 후에 받기 좋은 시술 정리", type: "블로그 초안", target: "김포 야간 피부과 · 김포 저녁 진료 피부과", date: "2026-07-24",
       html: "<blockquote>타깃 키워드: 김포 야간 진료 피부과, 김포 저녁 피부과, 구래동 야간 피부과 — 해날·리멤버·미엘이 야간 키워드에 노출 중이므로 구래역·퇴근 동선을 앞세워 차별화</blockquote><p>\"피부과 가고 싶은데 평일 낮엔 도저히 시간이 안 나요.\" 김포 한강신도시에서 서울로 출퇴근하는 분들께 가장 많이 듣는 이야기입니다. 유앤아이의원 김포점은 <b>평일 야간 진료</b>를 운영합니다(일요일 휴진). 퇴근 후 방문을 계획하신다면 아래 내용이 도움이 될 것입니다.</p><h4>퇴근 후에 받기 좋은 시술</h4><p>다운타임이 거의 없어 다음 날 출근에 지장이 없는 시술들:</p><ul><li>보톡스: 시술 10~20분, 직후 일상 가능</li><li>스킨부스터: 주사 자국이 1~2일 내 가라앉는 편(개인차)</li><li>레이저 토닝·색소 관리: 당일 세안·화장 가능 여부는 시술별로 안내</li><li>레이저 제모: 직후 일상 가능</li></ul><p><b>금요일 저녁에 받는 것이 나은 시술</b> — 며칠의 회복 기간을 주말에 쓰도록:</p><ul><li>실리프팅: 부기·멍이 며칠 갈 수 있음</li><li>필러(부위에 따라): 멍이 들 수 있는 부위는 주말 회복 추천</li><li>울쎄라·올리지오: 대부분 바로 일상 가능하지만, 붉어짐이 걱정되면 금요일 저녁 추천</li></ul><h4>야간 진료 활용 팁</h4><p>퇴근 후 방문 시에는 전화로 당일 마감 접수 시간을 확인하고 오시는 것이 안전합니다. 보톡스·토닝처럼 짧은 시술은 야간 시간대에도 충분히 가능합니다. 구래역 인근이라 김포골드라인 퇴근 동선에서 바로 들를 수 있습니다.</p><h4>위치와 예약</h4><ul><li>위치: 김포시 김포한강4로 525 감두리빌딩 2층 (구래동, 구래역 인근)</li><li>주차: 건물 지하주차장 3시간 지원</li><li>예약·진료시간 문의: 031-8049-6024 (일요일 휴진)</li></ul><h4>자주 묻는 질문 (FAQ)</h4><p><b>Q. 야간에도 모든 시술이 가능한가요?</b><br>A. 대부분의 시술이 가능하지만, 시술 종류와 예약 상황에 따라 다를 수 있어 전화 예약을 권장합니다.</p><p><b>Q. 야간 진료는 몇 시까지인가요?</b><br>A. 요일별 진료 시간은 변동될 수 있으니 방문 전 031-8049-6024로 확인해 주세요.</p><p><b>Q. 주말 진료도 하나요?</b><br>A. 토요일 진료 시간은 전화로 확인해 주세요. 일요일은 휴진입니다.</p><blockquote>⚠️ 발행 전 확인: 실제 야간 진료 요일과 마감 시간을 본문에 구체적인 숫자로 넣으면 검색 노출에 훨씬 유리합니다 (예: \"화·금 저녁 8시 30분까지\"). AI와 검색엔진은 구체적인 시간이 명시된 페이지를 우선 인용합니다.</blockquote>" },
-    { id: "d4", title: "환자 리뷰 요청 템플릿 (카톡·데스크 안내판·2주 후 팔로업)", type: "운영 템플릿", target: "리뷰 확보 — 목표 월 20건", date: "2026-07-24",
-      html: "<p>AI와 검색엔진은 리뷰 수·평점을 \"추천 근거\"로 인용합니다. 시술 후 아래 템플릿으로 리뷰를 요청하는 루틴을 만드세요. 목표: <b>월 20건 이상의 신규 네이버 영수증 리뷰.</b></p><h4>1. 시술 당일 저녁 발송용 (카톡 알림톡/문자)</h4><blockquote>[유앤아이의원 김포점]<br>○○님, 오늘 방문해 주셔서 감사합니다 🙂<br>시술 부위에 불편감이 있으시면 언제든 031-8049-6024로 연락 주세요.<br><br>오늘 진료가 만족스러우셨다면, 네이버 영수증 리뷰로 경험을 남겨주시면 큰 힘이 됩니다.<br>▶ 네이버 지도에서 \"유앤아이의원 김포점\" 검색 → 리뷰 쓰기<br>(영수증 또는 카드 내역만 있으면 30초면 됩니다)</blockquote><h4>2. 데스크 안내판 문구</h4><blockquote>💬 오늘 진료 어떠셨나요?<br>네이버에 \"유앤아이의원 김포점\"을 검색하고 영수증 리뷰를 남겨주세요.<br>여러분의 한 줄이 같은 고민을 가진 이웃에게 큰 도움이 됩니다.</blockquote><h4>3. 재방문 환자용 (시술 2주 후 경과 확인 겸)</h4><blockquote>[유앤아이의원 김포점]<br>○○님, 시술 후 2주가 지났습니다. 경과는 어떠신가요?<br>궁금한 점이 있으시면 편하게 연락 주세요.<br><br>만족스러우셨다면 모두닥(modoodoc.com)에서 \"유앤아이의원 김포점\" 후기를 남겨주시면 감사하겠습니다.</blockquote><h4>⚠️ 반드시 지킬 것 (의료법)</h4><ul><li><b>리뷰 대가로 금품·할인 제공 금지</b> — 의료법상 환자 유인 행위로 처벌될 수 있습니다. \"리뷰 쓰면 ○○ 증정\" 이벤트는 하지 마세요.</li><li>자발적 리뷰 요청 자체는 문제가 없습니다. \"만족하셨다면 남겨주세요\" 수준을 유지하세요.</li><li>직원·지인을 동원한 허위 리뷰는 표시광고법 위반입니다.</li></ul><h4>리뷰 채널 우선순위</h4><table><tr><th>순위</th><th>채널</th><th>이유</th></tr><tr><td>1</td><td>네이버 영수증 리뷰</td><td>네이버 플레이스 노출 + AI 인용 빈도 최고</td></tr><tr><td>2</td><td>모두닥</td><td>\"김포 피부과 TOP10\" 류 페이지의 원천 데이터</td></tr><tr><td>3</td><td>구글 리뷰</td><td>ChatGPT 등 해외 AI가 가장 직접적으로 참조</td></tr><tr><td>4</td><td>강남언니·바비톡</td><td>시술 키워드(울쎄라 등) 검색 대응</td></tr></table>" },
     { id: "d5", title: "웹업체 기술 요청서 — AI 크롤러 허용 + 구조화 데이터(JSON-LD)", type: "기술 문서", target: "웹 담당 업체에 그대로 전달", date: "2026-07-24",
       html: "<p>홈페이지 관리 업체에 그대로 전달하시면 됩니다. AI 검색에서 병원이 인용되기 위한 기술 기반 작업입니다.</p><h4>1. AI 크롤러 차단 여부 확인 및 허용 (가장 중요)</h4><p>자동화 도구로 접속 시 사이트가 403을 반환하는 정황이 있습니다. 방화벽(WAF)이나 robots.txt에서 아래 AI 검색 크롤러들이 차단되어 있는지 확인하고, 차단되어 있다면 허용해 주세요. <b>차단 상태면 ChatGPT가 우리 사이트를 아예 읽지 못해 어떤 콘텐츠를 올려도 인용되지 않습니다.</b></p><pre>User-agent: GPTBot\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nUser-agent: ChatGPT-User\nAllow: /\n\nUser-agent: ClaudeBot\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /</pre><p>또한 서버/WAF(클라우드플레어 등) 설정에서 위 User-Agent에 대한 봇 차단 룰이 있다면 예외 처리해 주세요.</p><h4>2. 병원 정보 구조화 데이터(JSON-LD) 추가</h4><p>모든 페이지의 head에 아래 스크립트를 추가해 주세요. <b>진료시간·우편번호·좌표는 실제 값으로 교체 후 적용해 주세요.</b></p><pre>&lt;script type=\"application/ld+json\"&gt;\n{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"MedicalClinic\",\n  \"name\": \"유앤아이의원 김포점\",\n  \"url\": \"https://www.gpuni114.co.kr/\",\n  \"telephone\": \"+82-31-8049-6024\",\n  \"address\": {\n    \"@type\": \"PostalAddress\",\n    \"streetAddress\": \"김포한강4로 525 감두리빌딩 2층\",\n    \"addressLocality\": \"김포시\",\n    \"addressRegion\": \"경기도\",\n    \"addressCountry\": \"KR\"\n  },\n  \"medicalSpecialty\": \"Dermatology\",\n  \"availableService\": [\n    { \"@type\": \"MedicalProcedure\", \"name\": \"울쎄라 리프팅\" },\n    { \"@type\": \"MedicalProcedure\", \"name\": \"올리지오\" },\n    { \"@type\": \"MedicalProcedure\", \"name\": \"보톡스\" },\n    { \"@type\": \"MedicalProcedure\", \"name\": \"필러\" },\n    { \"@type\": \"MedicalProcedure\", \"name\": \"레이저 제모\" }\n  ],\n  \"openingHoursSpecification\": [\n    { \"@type\": \"OpeningHoursSpecification\",\n      \"dayOfWeek\": [\"Monday\",\"Tuesday\",\"Wednesday\",\"Thursday\",\"Friday\"],\n      \"opens\": \"10:00\", \"closes\": \"20:30\" }\n  ]\n}\n&lt;/script&gt;</pre><h4>3. 시술 페이지에 FAQ 구조화 데이터 추가</h4><p>울쎄라, 보톡스 등 주요 시술 페이지에 실제 페이지 내 Q&amp;A와 일치하는 FAQPage 마크업을 추가해 주세요.</p><h4>완료 확인 방법</h4><ul><li>robots.txt 접속 시 위 크롤러 허용 내용이 보이는지</li><li>Google 리치 결과 테스트에 홈페이지 URL 입력 시 MedicalClinic·FAQPage가 인식되는지</li></ul>" },
     { id: "d6", title: "크롬 자동 테스트 지시문 — AI별 줄을 자동으로 채우기", type: "자동화 지시문", target: "Claude 크롬 확장에 붙여넣기", date: "2026-07-25",
       html: "<p>프롬프트 보드의 <b>ChatGPT·Perplexity 등 AI별 줄</b>은 각 AI에 실제로 질문해야 채워집니다. 크롬의 Claude 확장(권한 부여된 상태)에 아래 지시문을 붙여 넣으면, 확장이 원장님 브라우저에서 각 AI에 질문을 던지고 대시보드에 결과를 대신 기록합니다.</p><h4>사용 방법</h4><ul><li>크롬에서 Claude 확장을 열고 아래 지시문을 복사해 붙여 넣기 (위 <b>전문 복사</b> 버튼 사용)</li><li>ChatGPT·Perplexity에 로그인돼 있으면 더 안정적으로 작동합니다</li><li>기록은 실행한 그 브라우저에 저장됩니다 — 늘 보시는 크롬에서 실행하세요</li><li>권장 주기: 하루 1회, 비슷한 시간대 (변화 추세가 정확해집니다)</li></ul><h4>지시문 ① — ChatGPT 전체 테스트</h4><blockquote>unianalysis-production.up.railway.app 을 열고 \"키워드 테스트\" 페이지로 이동해줘. 프롬프트 칩 전체에 대해 다음을 반복해줘: (1) 칩을 클릭해 테스트 링크를 만든다 (2) ChatGPT 버튼을 새 탭에서 열고 답변이 끝날 때까지 기다린다 (3) 답변 본문에 \"유앤아이의원 김포점\"이 언급되면 노출, 출처 링크로만 있거나 타 지점(건대·영등포 등)만 나오면 부분, 없으면 미노출로 판단한다 (4) 대시보드 탭으로 돌아와 모델 선택을 ChatGPT로 두고 해당 결과 버튼을 눌러 기록한다. 전부 끝나면 노출된 키워드 목록을 요약해줘.</blockquote><h4>지시문 ② — Perplexity 전체 테스트</h4><blockquote>같은 방식으로 반복하되, 이번에는 Perplexity 버튼으로 열고 모델 선택을 Perplexity로 두고 기록해줘.</blockquote><h4>지시문 ③ — Gemini 전체 테스트</h4><blockquote>같은 방식으로 반복하되, Gemini는 자동 입력이 안 되므로 각 칩에서 복사 버튼으로 질문을 복사한 뒤 gemini.google.com 탭에 붙여 넣어 질문하고, 모델 선택을 Gemini로 두고 기록해줘.</blockquote><h4>참고</h4><ul><li>맨 위 <b>자동측정 줄</b>은 아라(AI 비서)가 2일에 한 번 새벽 3시에 웹 인용 소스 기준으로 자동으로 채웁니다 — 이 지시문과 별개로 항상 돌아갑니다.</li><li>AI 답변은 매번 조금씩 달라질 수 있으니 하루하루의 점보다 주간 추세로 보세요.</li></ul>" },
-    { id: "d7", title: "ChatGPT 예약 작업 지시문 — Pro 구독으로 무료 자가 테스트", type: "자동화 지시문", target: "chatgpt.com에 붙여넣기 (Pro/Plus 전용 기능)", date: "2026-07-25",
-      html: "<p>ChatGPT Pro/Plus에는 <b>정해진 주기로 스스로 작업을 실행하는 예약 기능(Tasks)</b>이 있습니다. 아래 지시문을 ChatGPT에 붙여 넣으면, ChatGPT가 2일마다 알아서 자가 테스트를 돌리고 결과 표를 보내줍니다 — 이미 내는 구독료 외에 <b>추가 비용 0원</b>, OpenAI 공식 기능이라 계정 위험도 없습니다.</p><h4>설정 방법</h4><ul><li>chatgpt.com에 로그인 후 새 대화에서 아래 지시문 전체를 붙여넣기 (위 <b>전문 복사</b> 버튼 사용 후 이 안내 부분은 지우고 지시문만)</li><li>ChatGPT가 예약을 제안하면 확인 — 이후 2일마다 자동 실행되고 알림이 옵니다</li><li>결과 표가 오면 <b>그대로 복사해서 아라(Claude) 채팅에 붙여넣기</b> → 아라가 대시보드의 ChatGPT 줄에 기록합니다</li></ul><h4>지시문 (이 아래를 복사해서 사용)</h4><blockquote>2일마다 아침 9시에 이 작업을 실행해줘: 아래 질문들을 각각 웹 검색을 사용해서 답해보고, 각 답변에 \"유앤아이의원 김포점\"이 언급되는지 확인한 뒤 [질문 | 판정] 표로 정리해줘. 판정 기준: 답변 본문에 병원명이 나오면 \"노출\", 출처 링크에만 있거나 다른 지점(건대·영등포 등)만 나오면 \"부분\", 전혀 없으면 \"미노출\".<br><br>질문 목록:<br>김포 피부과 추천해줘 / 김포에서 울쎄라 잘하는 곳 알려줘 / 김포 보톡스 가격 어느 정도야? / 김포 리프팅 잘하는 피부과 어디야? / 김포 레이저 제모 어디서 받는 게 좋아? / 구래동 근처 피부과 추천해줘 / 장기동 피부과 보톡스 어디가 좋아? / 운양동에서 갈 만한 피부과 있어? / 김포 리쥬란 스킨부스터 맞을 만한 곳? / 유앤아이의원 김포점 어때? 후기 있어? / 김포 야간 진료 피부과 어디 있어? / 김포 올리지오 잘하는 곳 있어? / 김포 필러 잘하는 병원 알려줘 / 김포 여드름 피부과 추천해줘 / 김포 기미 잡티 레이저 어디가 좋아? / 구래역 피부과 알려줘 / 마산동 피부과 어디 있어? / 김포 써마지 잘하는 곳 알려줘 / 김포 실리프팅 어디가 좋아?</blockquote><h4>참고</h4><ul><li>프롬프트를 추가/삭제하면 이 지시문의 질문 목록도 아라에게 갱신해 달라고 하세요.</li><li>결과 표를 아라에게 붙여넣을 때는 \"ChatGPT 결과야, 기록해줘\" 한마디면 충분합니다.</li></ul>" },
   ];
   function renderDocs() {
     $("docRows").innerHTML = DOCS.map(function (d) {
@@ -1237,7 +1254,7 @@
       r.addEventListener("click", function () { openDoc(r.dataset.doc); });
     });
   }
-  function openDoc(id) {
+  function openDoc(id, skipPush) {
     var d = null;
     DOCS.forEach(function (x) { if (x.id === id) d = x; });
     if (!d) return;
@@ -1247,10 +1264,21 @@
     $("docsList").style.display = "none";
     $("docDetail").style.display = "block";
     window.scrollTo(0, 0);
+    if (!skipPush) history.pushState({ page: "docs", doc: id }, "", "#docs/" + id);
   }
-  $("docBack").addEventListener("click", function () {
+  function closeDoc() {
     $("docDetail").style.display = "none";
     $("docsList").style.display = "block";
+  }
+  $("docBack").addEventListener("click", function () {
+    if (history.state && history.state.doc) history.back();
+    else closeDoc();
+  });
+  window.addEventListener("popstate", function (e) {
+    var st = e.state || {};
+    closeDoc();
+    goPage(st.page || "home", true);
+    if (st.doc) openDoc(st.doc, true);
   });
   $("docCopy").addEventListener("click", function () {
     var text = $("docTitle").textContent + "\n\n" + $("docBody").innerText;
@@ -1260,6 +1288,13 @@
 
   /* ============ 전체 렌더 ============ */
   $("baseDateChip").textContent = md(BASE_DATE);
+  (function restoreRoute() {
+    var parts = location.hash.replace("#", "").split("/");
+    var pg = TITLES[parts[0]] ? parts[0] : "home";
+    history.replaceState({ page: pg, doc: parts[1] || null }, "", "#" + pg + (parts[1] ? "/" + parts[1] : ""));
+    if (pg !== "home") goPage(pg, true);
+    if (pg === "docs" && parts[1]) openDoc(parts[1], true);
+  })();
   $("addKwBtn").addEventListener("click", function () {
     var q = $("newkw").value.trim();
     if (!q) { toast("추가할 검색어를 입력해 주세요"); return; }
