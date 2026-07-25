@@ -443,7 +443,7 @@
       <section class="page" id="page-models">
         <p class="desc">AI 모델별로 우리 병원이 얼마나 언급되는지, 그리고 주요 질문에서 어떤 병원들이 대신 추천되고 있는지 봅니다.</p>
 
-        <h2 style="margin-top:0">모델별 내 노출률<small>내 테스트 기록 기준</small></h2>
+        <h2 style="margin-top:0">모델별 노출률<small>수동 기록 + API 자동측정 기준</small></h2>
         <div class="panel tablewrap">
           <table class="data" id="modelTable" style="min-width:560px">
             <thead><tr><th>모델</th><th>테스트</th><th>노출</th><th>부분</th><th>미노출</th><th>노출률</th></tr></thead>
@@ -666,6 +666,18 @@
       "김포 실리프팅 어디가 좋아?": "노출"
     } }
   ];
+  /* AI별 자동측정(API) — {date, engine, results:{질문:판정}} 항목이 쌓임 */
+  var AI_MEASURE = [];
+  function engineEntries() {
+    var arr = log.slice();
+    AI_MEASURE.forEach(function (am) {
+      Object.keys(am.results).forEach(function (q) {
+        if (am.results[q] === "오류") return;
+        arr.push({ date: am.date, kw: q, ch: am.engine, r: am.results[q], auto: true });
+      });
+    });
+    return arr;
+  }
   function measureRate(m) {
     var ks = Object.keys(m.results), s = 0;
     ks.forEach(function (k) { s += score(m.results[k]); });
@@ -881,6 +893,7 @@
     var set = {};
     log.forEach(function (e) { set[e.date] = true; });
     MEASURE.forEach(function (m) { set[m.date] = true; });
+    AI_MEASURE.forEach(function (m) { set[m.date] = true; });
     var first = Object.keys(set).sort()[0] || today();
     var d = new Date(), dates = [];
     while (dates.length < 30 && (fmt(d) >= first || dates.length < 7)) {
@@ -895,6 +908,14 @@
       idx[e.kw] = idx[e.kw] || {};
       idx[e.kw][e.ch] = idx[e.kw][e.ch] || {};
       idx[e.kw][e.ch][e.date] = e.r;
+    });
+    AI_MEASURE.forEach(function (am) {
+      Object.keys(am.results).forEach(function (q) {
+        if (am.results[q] === "오류") return;
+        idx[q] = idx[q] || {};
+        idx[q][am.engine] = idx[q][am.engine] || {};
+        if (!idx[q][am.engine][am.date]) idx[q][am.engine][am.date] = am.results[q];
+      });
     });
     $("board").innerHTML = allPrompts().map(function (kw) {
       var mine = log.filter(function (e) { return e.kw === kw.q; });
@@ -963,8 +984,9 @@
   /* ============ 모델별 / 경쟁 / 출처 ============ */
   function renderModels() {
     var tb = $("modelTable").querySelector("tbody");
+    var pool = engineEntries();
     tb.innerHTML = ENGINES.map(function (en) {
-      var mine = log.filter(function (e) { return e.ch === en.id; });
+      var mine = pool.filter(function (e) { return e.ch === en.id; });
       var ok = mine.filter(function (e) { return e.r === "노출"; }).length;
       var part = mine.filter(function (e) { return e.r === "부분"; }).length;
       var miss = mine.filter(function (e) { return e.r === "미노출"; }).length;
