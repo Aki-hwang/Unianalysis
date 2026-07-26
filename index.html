@@ -59,6 +59,7 @@
     margin: 0; background: var(--bg); color: var(--ink);
     font-family: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", -apple-system, sans-serif;
     font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+    word-break: keep-all; overflow-wrap: break-word;
   }
   .num, td.mono, .matrix th { font-variant-numeric: tabular-nums; }
 
@@ -105,7 +106,7 @@
 
   .page { display: none; }
   .page.active { display: block; }
-  .desc { color: var(--muted); font-size: 13.5px; margin: 0 0 20px; max-width: 70ch; }
+  .desc { color: var(--muted); font-size: 13.5px; margin: 0 0 20px; max-width: 92ch; text-wrap: pretty; }
   h2 { font-size: 15.5px; font-weight: 700; margin: 30px 0 10px; letter-spacing: -.01em; }
   h2 small { font-weight: 500; color: var(--faint); font-size: 11.5px; margin-left: 8px; }
 
@@ -213,7 +214,7 @@
   .docview .back { margin-bottom: 18px; }
   .docview h3 { font-size: 18px; font-weight: 700; margin: 0 0 4px; }
   .docview .meta { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
-  .docbody { font-size: 14px; line-height: 1.75; max-width: 680px; }
+  .docbody { font-size: 14px; line-height: 1.75; max-width: 78ch; text-wrap: pretty; }
   .docbody h4 { font-size: 14.5px; font-weight: 700; margin: 22px 0 6px; }
   .docbody p { margin: 8px 0; }
   .docbody ul { margin: 8px 0; padding-left: 20px; }
@@ -221,7 +222,7 @@
   .docbody table { border-collapse: collapse; font-size: 13px; margin: 10px 0; }
   .docbody th, .docbody td { border: 1px solid var(--line); padding: 6px 12px; text-align: left; }
   .docbody blockquote { margin: 14px 0; padding: 12px 16px; background: var(--inset); border-left: 3px solid var(--line2); border-radius: 0 8px 8px 0; font-size: 13px; color: var(--muted); }
-  .docbody pre { background: var(--inset); border: 1px solid var(--line); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 12px; line-height: 1.55; }
+  .docbody pre { background: var(--inset); border: 1px solid var(--line); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 12px; line-height: 1.55; word-break: normal; overflow-wrap: normal; }
 
   /* ================= plan ================= */
   .progress { display: flex; align-items: center; gap: 12px; margin: 6px 0 18px; }
@@ -234,7 +235,7 @@
   .todo input { width: 16px; height: 16px; margin-top: 3px; accent-color: var(--ink); cursor: pointer; }
   .todo .t { font-size: 13.5px; font-weight: 600; }
   .todo.done .t { color: var(--faint); font-weight: 500; text-decoration: line-through; }
-  .todo .d { font-size: 12.5px; color: var(--muted); }
+  .todo .d { font-size: 12.5px; color: var(--muted); text-wrap: pretty; }
   .todo .steps { margin: 7px 0 2px; padding-left: 17px; font-size: 12.5px; color: var(--muted); }
   .todo .steps li { margin: 3px 0; }
   .todo.done .steps { display: none; }
@@ -274,7 +275,7 @@
   .del:hover { background: var(--warn-bg); color: var(--warn); }
   .empty { color: var(--muted); font-size: 13px; padding: 26px 18px; text-align: center; }
 
-  .callout { background: var(--inset); border: 1px solid var(--line); border-left: 3px solid var(--line2); border-radius: 0 10px 10px 0; padding: 13px 17px; font-size: 13px; color: var(--muted); margin: 16px 0; }
+  .callout { background: var(--inset); border: 1px solid var(--line); border-left: 3px solid var(--line2); border-radius: 0 10px 10px 0; padding: 13px 17px; font-size: 13px; color: var(--muted); margin: 16px 0; text-wrap: pretty; }
   .callout.crit { border-left-color: var(--warn); }
   .callout b { color: var(--ink); }
   .callout .cap { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .07em; color: var(--faint); margin-bottom: 3px; }
@@ -428,13 +429,13 @@
 
       <!-- ================= 프롬프트 ================= -->
       <section class="page" id="page-prompts">
-        <p class="desc">질의어별로 어느 AI에서 언제 노출됐는지 날짜 그리드로 추적합니다. ● 노출 · ○ 부분 · <b>–</b> 미노출 · 옅은 점은 미테스트. 측정은 7/24에 시작됐습니다 — 자동측정은 매일 아침 9시·저녁 7시, Gemini·ChatGPT 실측은 3일에 한 번 쌓입니다.</p>
+        <p class="desc">질의어별로 어느 AI에서 언제 노출됐는지 날짜 그리드로 추적합니다.<br>● 노출 · ○ 부분 · <b>–</b> 미노출 · 옅은 점은 미테스트. 자동측정은 매일 아침 9시·저녁 7시, Gemini·ChatGPT 실측은 3일에 한 번 쌓입니다.</p>
         <div class="panel testbox" style="margin-bottom:14px">
           <div class="row">
             <input type="text" id="newkw" placeholder="추적할 검색어 추가 (예: 김포 리프팅 가격)" aria-label="추적할 프롬프트 추가">
             <button class="btn primary" id="addKwBtn">프롬프트 추가</button>
           </div>
-          <p style="font-size:12px;color:var(--faint);margin:8px 0 0">직접 추가한 프롬프트는 이 브라우저에 저장됩니다. 아라의 자동측정에도 포함하려면 채팅에서 "OO도 자동측정에 넣어줘"라고 말씀해 주세요. 카드 오른쪽 ✕는 보드에서 숨기기입니다.</p>
+          <p style="font-size:12px;color:var(--faint);margin:8px 0 0">추가한 프롬프트는 <b>서버에 저장</b>되어 모든 기기·직원에게 함께 보이고, 아라의 다음 자동측정부터 함께 측정됩니다. 카드 오른쪽 ✕는 보드에서 숨기기입니다.</p>
         </div>
         <div id="board"></div>
         <div id="hiddenBox"></div>
@@ -513,6 +514,15 @@
         <p class="desc">측정 데이터로 <b>공백이 확인된 것만</b> 모았습니다 — 이미 진행 중인 블로그·네이버 관리·리뷰 요청은 뺐습니다. 완료를 체크하면 모두에게 공유됩니다.</p>
         <div class="progress"><div class="bar"><div id="planbar" style="width:0%"></div></div><span class="n num" id="plancount">0 / 10 완료</span></div>
         <div class="panel" id="planlist"></div>
+
+        <h2>미노출 키워드 공략<small>최근 측정 기준 — 키워드마다 뚫는 방법이 다릅니다</small></h2>
+        <p class="desc" style="margin-bottom:12px">추천·비교 질문은 <b>플랫폼 등재</b>로, 시술·동네 질문은 <b>해당 키워드 콘텐츠</b>로 뚫립니다. 기회도가 높은 것부터 손대면 효율이 좋습니다.</p>
+        <div class="panel tablewrap">
+          <table class="data" id="playTable" style="min-width:760px">
+            <thead><tr><th>키워드</th><th>상태</th><th>현재 상위</th><th>공략 방법</th><th>기회도</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </section>
 
       <!-- ================= 콘텐츠 ================= -->
@@ -852,8 +862,27 @@
     { id: "g04", g: "1. 비교 플랫폼 등재 — 측정으로 미등재가 확인된 곳", t: "강남언니·바비톡 입점 + 이벤트 등록", d: "\"김포 울쎄라\" 등 시술 검색의 주 인용원 — 미등재 (확인됨)", s: ["파트너 입점 신청 후 울쎄라·리프팅·보톡스 이벤트 등록 (샷 수·가격 명시)", "가격 노출 이벤트는 의료광고 사전심의 대상인지 대행사 확인"] },
     { id: "g05", g: "1. 비교 플랫폼 등재 — 측정으로 미등재가 확인된 곳", t: "제모데이에 기기·가격 등재", d: "미엘·아가파·블리비는 등재돼 제모 검색에 뜨는데 우리는 없음 (확인됨) — 강점 키워드인데 아깝습니다", s: ["jemoday.com 병원 입점 문의 → 아포지 플러스·부위별 가격 등록"] },
     { id: "g08", g: "2. 홈페이지 기술 — 진단 완료, 수정 필요 (ChatGPT 공략의 핵심)", t: "웹업체에 기술 요청서 전달", d: "진단 결과: 크롤러 차단은 없음. 실제 문제는 메인 페이지 2.4MB 과체중(ChatGPT 읽기 실패 원인)과 병원 정보 구조화 데이터 부재", s: ["콘텐츠 탭 → \"웹업체 기술 요청서\"(7/25 진단 반영판) 전문 복사해서 전달", "메인 경량화(1MB 이하) + MedicalClinic JSON-LD + OpenAI IP 대역 차단 여부 확인"] },
-    { id: "g09", g: "2. 홈페이지 기술 — 미적용 확인 필요 (ChatGPT 공략의 핵심)", t: "작업 완료 검증", d: "요청만 하고 확인 안 하면 안 된 것과 같습니다", s: ["gpuni114.co.kr/robots.txt에서 허용 목록 확인", "구글 리치 결과 테스트에 홈페이지 URL 입력 → MedicalClinic 인식 확인", "완료되면 채팅으로 알려주기 — 재측정으로 효과 확인"] }
+    { id: "g09", g: "2. 홈페이지 기술 — 진단 완료, 수정 필요 (ChatGPT 공략의 핵심)", t: "작업 완료 검증", d: "요청만 하고 확인 안 하면 안 된 것과 같습니다", s: ["gpuni114.co.kr/robots.txt에서 허용 목록 확인", "구글 리치 결과 테스트에 홈페이지 URL 입력 → MedicalClinic 인식 확인", "완료되면 채팅으로 알려주기 — 재측정으로 효과 확인"] }
   ];
+  /* 키워드별 공략 — lever: 뚫는 수단, opp: 기회도(3=상,2=중,1=하) */
+  var PLAYS = {
+    "김포 피부과 추천해줘": { lever: "플랫폼 등재", how: "이 질문의 답은 사실상 모두닥·닥터나우 TOP10 목록에서 나옵니다. 콘텐츠로는 뚫기 어렵고 등재가 유일한 길.", opp: 2 },
+    "김포 보톡스 가격 어느 정도야?": { lever: "플랫폼 등재", how: "가격 질문은 강남언니·모두닥 가격표가 독식합니다. 강남언니 이벤트에 보톡스 단위·가격 등재.", opp: 2 },
+    "김포 여드름 피부과 추천해줘": { lever: "플랫폼 등재", how: "리멤버가 \"전문의 5인\" 근거로 인용됩니다. 플랫폼 프로필에 여드름 진료 항목·의료진 정보를 채워야 후보군에 듭니다.", opp: 1 },
+    "김포에서 울쎄라 잘하는 곳 알려줘": { lever: "콘텐츠+이벤트", how: "울쎄라 원고(콘텐츠 탭에 준비됨) 발행 + 강남언니 울쎄라 이벤트 등록. 리프팅 글이 통한 것처럼 같은 공식.", opp: 3 },
+    "김포 올리지오 잘하는 곳 있어?": { lever: "콘텐츠", how: "김포 올리지오 검색은 경쟁이 얕습니다. 올리지오 단독 글(울쎄라와 차이 비교) 하나면 진입 가능.", opp: 3 },
+    "김포 써마지 잘하는 곳 알려줘": { lever: "콘텐츠", how: "김포 써마지는 지역 결과가 거의 비어 있습니다. 보유 장비인데 콘텐츠가 없어서 안 나오는 것 — 선점 최우선.", opp: 3 },
+    "김포 리쥬란 스킨부스터 맞을 만한 곳?": { lever: "콘텐츠", how: "리쥬란 전용 페이지·글이 없어 톡스앤필·닥터나우 매거진만 뜹니다. 스킨부스터 종류 비교 글로 진입.", opp: 3 },
+    "김포 필러 잘하는 병원 알려줘": { lever: "콘텐츠", how: "미소가인이 부위별 필러 페이지로 상위. 팔자·눈밑·입술 등 부위별 필러 콘텐츠가 필요합니다.", opp: 2 },
+    "김포 기미 잡티 레이저 어디가 좋아?": { lever: "콘텐츠", how: "색소 치료 콘텐츠에 보유 장비명과 기미/잡티/주근깨 구분 설명을 넣어야 인용됩니다.", opp: 2 },
+    "김포 야간 진료 피부과 어디 있어?": { lever: "플랫폼+콘텐츠", how: "해날·리멤버·미엘이 플랫폼의 \"야간진료\" 필터로 노출됩니다. 플랫폼에 야간 시간 등재 + 야간 원고(준비됨) 발행.", opp: 3 },
+    "구래동 근처 피부과 추천해줘": { lever: "콘텐츠", how: "병원 소재지인데 미노출 — 콘텐츠가 \"김포\" 단위로만 쓰여 있어서입니다. 본문에 구래동을 명시한 글 필요.", opp: 3 },
+    "마산동 피부과 어디 있어?": { lever: "콘텐츠", how: "검색 결과 자체가 거의 없습니다. 짧은 글 하나로도 1위 가능한 최고 효율 키워드.", opp: 3 },
+    "장기동 피부과 보톡스 어디가 좋아?": { lever: "콘텐츠", how: "경쟁 빈약. \"장기동+보톡스\" 조합을 제목·본문에 넣은 글로 선점.", opp: 3 },
+    "운양동에서 갈 만한 피부과 있어?": { lever: "콘텐츠", how: "델타피부과가 동네 키워드를 선점. 운양동에서 구래역까지 접근성을 다룬 콘텐츠로 대응.", opp: 2 },
+    "유앤아이의원 김포점 어때? 후기 있어?": { lever: "플랫폼 등재", how: "후기 플랫폼에 김포점이 없어 공식 사이트만 뜹니다. 모두닥·굿닥 등재 시 즉시 해결.", opp: 3 },
+    "김포 리프팅 잘하는 피부과 어디야?": { lever: "콘텐츠 강화", how: "새 리프팅 글이 3위 진입 — 정확 문구까지 밀려면 글 끝에 FAQ 추가 + 시술별 내부 링크 보강.", opp: 3 }
+  };
   var LOG_KEY = "uni-testlog-v2", PLAN_KEY = "uni-plan-v1";
 
   /* ============ 유틸 ============ */
@@ -1425,8 +1454,37 @@
     toast('"' + q + '" 추적 시작 — 키워드 테스트에서 기록해 보세요');
   });
   $("newkw").addEventListener("keydown", function (ev) { if (ev.key === "Enter") $("addKwBtn").click(); });
+  function renderPlays() {
+    var tb = $("playTable") && $("playTable").querySelector("tbody");
+    if (!tb) return;
+    var latest = null;
+    MEASURE.forEach(function (m) { if (!latest || m.date >= latest.date) latest = m; });
+    if (!latest) { tb.innerHTML = '<tr><td colspan="5"><div class="empty">측정 기록이 없습니다.</div></td></tr>'; return; }
+    var top = {};
+    COMPETE.forEach(function (c) { top[c.q] = (c.ranks || []).filter(Boolean)[0] || "–"; });
+    var rows = [];
+    Object.keys(latest.results).forEach(function (q) {
+      var r = latest.results[q];
+      if (r === "노출") return;
+      var play = PLAYS[q];
+      if (!play) return;
+      rows.push({ q: q, r: r, play: play });
+    });
+    rows.sort(function (a, b) { return b.play.opp - a.play.opp; });
+    if (!rows.length) { tb.innerHTML = '<tr><td colspan="5"><div class="empty">미노출 키워드가 없습니다 🎉</div></td></tr>'; return; }
+    var oppLabel = { 3: "상", 2: "중", 1: "하" };
+    tb.innerHTML = rows.map(function (x) {
+      var first = top[x.q];
+      var isMe = first === ME;
+      return '<tr class="rowhover"><td style="max-width:220px"><b>' + esc(x.q) + "</b></td>" +
+        '<td><span class="pill ' + (x.r === "부분" ? "part" : "off") + '">' + esc(x.r) + "</span></td>" +
+        "<td>" + (first && first !== "–" ? '<span class="brandchip' + (isMe ? " me" : "") + '">' + esc(first) + "</span>" : '<span style="color:var(--faint);font-size:12px">–</span>') + "</td>" +
+        '<td style="color:var(--muted);font-size:12.5px;max-width:340px"><b style="color:var(--ink)">' + esc(x.play.lever) + "</b> · " + esc(x.play.how) + "</td>" +
+        '<td><span class="pill ' + (x.play.opp === 3 ? "ok" : x.play.opp === 2 ? "part" : "off") + '">' + oppLabel[x.play.opp] + "</span></td></tr>";
+    }).join("");
+  }
   function renderAll() {
-    renderHome(); renderSov(); renderBoard(); renderModels(); renderLog(); renderPlan(); renderChips();
+    renderHome(); renderSov(); renderBoard(); renderModels(); renderLog(); renderPlan(); renderChips(); renderPlays();
   }
   renderSources(); renderDocs(); renderAll(); syncInit();
 })();
