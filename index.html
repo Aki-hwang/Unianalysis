@@ -315,6 +315,15 @@
     .strip3 .cell:last-child { border-bottom: 0; }
   }
 
+  .modal { position: fixed; inset: 0; background: rgba(20,20,22,.45); display: none; align-items: center; justify-content: center; z-index: 60; padding: 20px; }
+  .modal.show { display: flex; }
+  .modalbox { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 24px; width: 100%; max-width: 380px; box-shadow: 0 12px 40px rgba(20,20,22,.18); }
+  .modalbox h3 { margin: 0 0 6px; font-size: 17px; font-weight: 700; }
+  .modalbox p { margin: 0 0 16px; font-size: 13px; color: var(--muted); text-wrap: pretty; }
+  .modalbox input { width: 100%; }
+  .modalbox .err { font-size: 12.5px; color: var(--warn); min-height: 17px; margin-top: 7px; }
+  .chip.admin { background: var(--ok-bg); color: var(--ok); border-color: transparent; font-weight: 700; }
+  .lockmsg { font-size: 12px; color: var(--muted); background: var(--inset); border: 1px solid var(--line); border-radius: 8px; padding: 9px 13px; margin-top: 10px; }
   .toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
     background: var(--cta); color: var(--cta-ink); font-size: 13px; font-weight: 600;
@@ -371,6 +380,7 @@
       <div class="right">
         <span class="chip num">기준측정 <span id="baseDateChip">07/24</span></span>
         <span class="chip" id="storeChip">저장 확인 중…</span>
+        <button class="btn sm" id="authBtn">로그인</button>
         <button class="btn sm" id="csvBtn2">기록 내보내기</button>
       </div>
     </div>
@@ -461,6 +471,7 @@
             <button class="btn primary" id="addKwBtn">프롬프트 추가</button>
           </div>
           <p style="font-size:12px;color:var(--faint);margin:8px 0 0">추가한 프롬프트는 <b>서버에 저장</b>되어 모든 기기·직원에게 함께 보이고, 아라의 다음 자동측정부터 함께 측정됩니다. 카드 오른쪽 ✕는 보드에서 숨기기입니다.</p>
+          <div class="lockmsg" id="promptLock" style="display:none">🔒 프롬프트 추가·삭제는 <b>관리자 로그인</b>이 필요합니다. 오른쪽 위 <b>로그인</b> 버튼을 눌러 주세요. (테스트 기록과 체크리스트는 로그인 없이 사용 가능합니다)</div>
         </div>
         <div id="board"></div>
         <div id="hiddenBox"></div>
@@ -675,6 +686,18 @@
 
     </div>
   </main>
+</div>
+<div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-label="관리자 로그인">
+  <div class="modalbox">
+    <h3>관리자 로그인</h3>
+    <p>프롬프트를 추가하거나 삭제하려면 로그인이 필요합니다. 테스트 기록과 체크리스트는 로그인 없이 사용할 수 있습니다.</p>
+    <input type="password" id="pw" placeholder="비밀번호" aria-label="비밀번호" autocomplete="current-password">
+    <div class="err" id="loginErr"></div>
+    <div class="row" style="justify-content:flex-end;margin-top:14px">
+      <button class="btn" id="loginCancel">취소</button>
+      <button class="btn primary" id="loginGo">로그인</button>
+    </div>
+  </div>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -1110,6 +1133,45 @@
     return fetch(path, Object.assign({ headers: { "Content-Type": "application/json" } }, opts));
   }
   function setStoreChip(txt) { var el = $("storeChip"); if (el) el.textContent = txt; }
+  var AUTHED = false;
+  function applyAuthUI() {
+    var btn = $("authBtn");
+    if (!SERVER) { if (btn) btn.style.display = "none"; return; }
+    if (btn) { btn.style.display = ""; btn.textContent = AUTHED ? "로그아웃" : "로그인"; }
+    var add = $("addKwBtn"), kw = $("newkw");
+    if (add) add.disabled = !AUTHED;
+    if (kw) { kw.disabled = !AUTHED; kw.placeholder = AUTHED ? "추적할 검색어 추가 (예: 김포 리프팅 가격)" : "프롬프트 추가·삭제는 로그인 후 가능합니다"; }
+    var lock = $("promptLock");
+    if (lock) lock.style.display = AUTHED ? "none" : "block";
+    document.querySelectorAll(".hidekw, .restore").forEach(function (b) { b.disabled = !AUTHED; });
+  }
+  function refreshAuth() {
+    return fetch("/api/me").then(function (r) { return r.json(); }).then(function (d) {
+      AUTHED = !!d.authed; applyAuthUI(); return AUTHED;
+    }).catch(function () { return false; });
+  }
+  function openLogin() {
+    $("loginErr").textContent = ""; $("pw").value = "";
+    $("loginModal").classList.add("show"); setTimeout(function () { $("pw").focus(); }, 50);
+  }
+  function closeLogin() { $("loginModal").classList.remove("show"); }
+  function doLogin() {
+    var v = $("pw").value;
+    if (!v) { $("loginErr").textContent = "비밀번호를 입력해 주세요"; return; }
+    apiFetch("/api/login", { method: "POST", body: JSON.stringify({ password: v }) })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (x) {
+        if (!x.ok) { $("loginErr").textContent = x.d.error || "로그인 실패"; return; }
+        AUTHED = true; closeLogin(); applyAuthUI(); renderAll();
+        toast("로그인되었습니다 — 프롬프트를 추가·삭제할 수 있습니다");
+      }).catch(function () { $("loginErr").textContent = "서버에 연결할 수 없습니다"; });
+  }
+  function doLogout() {
+    apiFetch("/api/logout", { method: "POST" }).then(function () {
+      AUTHED = false; applyAuthUI(); renderAll(); toast("로그아웃되었습니다");
+    }).catch(function () {});
+  }
+  function needLogin() { toast("프롬프트 변경은 로그인이 필요합니다"); openLogin(); }
   function adoptState(st) {
     log = Array.isArray(st.log) ? st.log : []; ensureIds(log);
     plan = (st.plan && typeof st.plan === "object" && !Array.isArray(st.plan)) ? st.plan : {};
@@ -1131,6 +1193,8 @@
       else if (log.length || Object.keys(plan).length || custom.added.length || custom.hidden.length) {
         apiFetch("/api/state", { method: "PUT", body: JSON.stringify({ log: log, plan: plan, custom: custom }) }).catch(function () {});
       }
+      AUTHED = !!st.authed;
+      applyAuthUI();
       setStoreChip(st.storage === "volume" ? "☁ 공유 저장 연결됨" : "☁ 공유 저장 (볼륨 미설정 — 배포 시 초기화됨)");
       setInterval(function () {
         fetch("/api/state").then(function (r) { return r.json(); }).then(function (st2) {
@@ -1327,6 +1391,7 @@
     });
     document.querySelectorAll(".hidekw").forEach(function (b) {
       b.addEventListener("click", function () {
+        if (SERVER && !AUTHED) { needLogin(); return; }
         if (custom.hidden.indexOf(b.dataset.kw) === -1) custom.hidden.push(b.dataset.kw);
         save(CUSTOM_KEY, custom);
         if (SERVER) apiFetch("/api/custom", { method: "PUT", body: JSON.stringify(custom) }).catch(function () {});
@@ -1341,6 +1406,7 @@
       : "";
     hb.querySelectorAll(".restore").forEach(function (b) {
       b.addEventListener("click", function () {
+        if (SERVER && !AUTHED) { needLogin(); return; }
         var i = custom.hidden.indexOf(b.dataset.kw);
         if (i !== -1) custom.hidden.splice(i, 1);
         save(CUSTOM_KEY, custom);
@@ -1636,6 +1702,7 @@
     if (pg === "docs" && parts[1]) openDoc(parts[1], true);
   })();
   $("addKwBtn").addEventListener("click", function () {
+    if (SERVER && !AUTHED) { needLogin(); return; }
     var q = $("newkw").value.trim();
     if (!q) { toast("추가할 검색어를 입력해 주세요"); return; }
     q = toQuestion(q);
@@ -1728,6 +1795,12 @@
   function renderAll() {
     renderHome(); renderSov(); renderBoard(); renderModels(); renderLog(); renderPlan(); renderChips(); renderPlays(); renderBlog();
   }
-  renderSources(); renderDocs(); renderAll(); syncInit();
+  $("authBtn").addEventListener("click", function () { AUTHED ? doLogout() : openLogin(); });
+  $("loginGo").addEventListener("click", doLogin);
+  $("loginCancel").addEventListener("click", closeLogin);
+  $("pw").addEventListener("keydown", function (e) { if (e.key === "Enter") doLogin(); });
+  $("loginModal").addEventListener("click", function (e) { if (e.target === $("loginModal")) closeLogin(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeLogin(); });
+  renderSources(); renderDocs(); renderAll(); applyAuthUI(); syncInit();
 })();
 </script>

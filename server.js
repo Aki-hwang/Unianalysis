@@ -1,6 +1,7 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
@@ -15,6 +16,51 @@ try {
 }
 const DATA_FILE = path.join(DATA_DIR, "shared-state.json");
 const PERSISTENT = DATA_DIR !== ROOT;
+
+// ── 인증 ──────────────────────────────────────────────
+// 비밀번호는 Railway 환경변수 ADMIN_PASSWORD 로 설정. 미설정 시 기본값(변경 권장).
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "uni2026";
+if (!process.env.ADMIN_PASSWORD) console.warn("[경고] ADMIN_PASSWORD 미설정 — 기본 비밀번호가 사용됩니다.");
+const SESSION_DAYS = 30;
+
+// 서명 키: 환경변수 없으면 저장소에 생성해 보관(재시작해도 로그인 유지)
+let SECRET_FILE = "";
+function loadSecret(dir) {
+  SECRET_FILE = path.join(dir, "session-secret");
+  if (process.env.SESSION_SECRET) return process.env.SESSION_SECRET;
+  try { return fs.readFileSync(SECRET_FILE, "utf8").trim(); } catch (e) {}
+  const v = crypto.randomBytes(32).toString("hex");
+  try { fs.writeFileSync(SECRET_FILE, v); } catch (e) {}
+  return v;
+}
+let SECRET = loadSecret(DATA_DIR);
+
+function sign(exp) {
+  return crypto.createHmac("sha256", SECRET).update(String(exp)).digest("hex");
+}
+function makeToken() {
+  const exp = Date.now() + SESSION_DAYS * 864e5;
+  return exp + "." + sign(exp);
+}
+function validToken(tok) {
+  if (!tok || tok.indexOf(".") === -1) return false;
+  const [expStr, sig] = tok.split(".");
+  const exp = Number(expStr);
+  if (!exp || Date.now() > exp) return false;
+  const want = sign(exp);
+  const a = Buffer.from(sig || "", "utf8"), b = Buffer.from(want, "utf8");
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+function isAuthed(req) {
+  const raw = req.headers.cookie || "";
+  const m = raw.match(/(?:^|;\s*)uni_auth=([^;]+)/);
+  return m ? validToken(decodeURIComponent(m[1])) : false;
+}
+function pwOk(input) {
+  const a = Buffer.from(String(input || ""), "utf8");
+  const b = Buffer.from(ADMIN_PASSWORD, "utf8");
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
 
 let state = { log: [], plan: {}, custom: { added: [], hidden: [] } };
 try {
@@ -73,7 +119,26 @@ http.createServer(async (req, res) => {
   if (p.startsWith("/api/")) {
     try {
       if (p === "/api/state" && req.method === "GET") {
-        return sendJSON(res, 200, { ok: true, storage: PERSISTENT ? "volume" : "ephemeral", ...state });
+        return sendJSON(res, 200, { ok: true, storage: PERSISTENT ? "volume" : "ephemeral", authed: isAuthed(req), ...state });
+      }
+      if (p === "/api/me" && req.method === "GET") {
+        return sendJSON(res, 200, { ok: true, authed: isAuthed(req) });
+      }
+      if (p === "/api/login" && req.method === "POST") {
+        const b = await readBody(req);
+        if (!pwOk(b.password)) return sendJSON(res, 401, { ok: false, error: "비밀번호가 올바르지 않습니다" });
+        const tok = makeToken();
+        const secure = (req.headers["x-forwarded-proto"] || "").indexOf("https") === 0 ? " Secure;" : "";
+        res.setHeader("Set-Cookie", `uni_auth=${encodeURIComponent(tok)}; Path=/; HttpOnly;${secure} SameSite=Lax; Max-Age=${SESSION_DAYS * 86400}`);
+        return sendJSON(res, 200, { ok: true, authed: true });
+      }
+      if (p === "/api/logout" && req.method === "POST") {
+        res.setHeader("Set-Cookie", "uni_auth=; Path=/; HttpOnly; Max-Age=0");
+        return sendJSON(res, 200, { ok: true, authed: false });
+      }
+      // 프롬프트 목록 변경(추가·숨김)과 전체 덮어쓰기는 로그인 필요
+      if ((p === "/api/custom" || p === "/api/state") && req.method === "PUT" && !isAuthed(req)) {
+        return sendJSON(res, 401, { ok: false, error: "로그인이 필요합니다" });
       }
       if (p === "/api/state" && req.method === "PUT") {
         const b = await readBody(req);

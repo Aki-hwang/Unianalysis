@@ -32,7 +32,8 @@
 
 - `index.html` — 단일 파일 대시보드 (온더AI 스타일 라이트 SaaS). 데이터는 상단 JS의 MEASURE/PROMPTS/COMPETE/SOURCES/PLAN/DOCS 배열
 - 사용자 기록(수동 테스트·플랜 체크·직접 추가 프롬프트)은 서버 공유 저장(`/api/state` — server.js가 shared-state.json에 저장). Railway Volume(/data 마운트) 필요 — 없으면 재배포 시 초기화. API 미접속 환경(아티팩트·로컬)에선 localStorage 폴백
-- `server.js` + `package.json` — Railway용 zero-dependency 정적 서버
+- `server.js` + `package.json` — Railway용 zero-dependency 서버 (정적 + 공유 저장 API + 인증)
+- 인증: 비밀번호는 Railway 환경변수 `ADMIN_PASSWORD` (미설정 시 기본값 uni2026 — 반드시 변경). HMAC 서명 쿠키(30일), 세션 키는 /data/session-secret에 자동 생성. **프롬프트 추가·숨김(`PUT /api/custom`, `PUT /api/state`)만 로그인 필요**, 테스트 기록·플랜 체크는 누구나 가능
 - `content/`, `tech/` — 블로그 원고·템플릿·기술 요청서 (대시보드 DOCS와 내용 동기화 유지)
 
 ## 블로그 운영 현황 (2026-07 실측)
