@@ -383,7 +383,7 @@
         <h2>노출 점유율 추이</h2>
         <div class="panel chartcard">
           <div class="chartwrap" id="homeChart"></div>
-          <div class="chart-cap">검은 실선 = 자동 측정(매일 아침 9시·저녁 7시, 웹 인용 소스 기준, AI 비서가 실행) · 회색 점선 = 내 수동 기록. 노출 1점 + 부분 0.5점 ÷ 테스트 수.</div>
+          <div class="chart-cap">검은 실선 = 자동 측정(3일 1회 아침 9시, 웹 인용 소스 기준, AI 비서가 실행) · 회색 점선 = 내 수동 기록. 노출 1점 + 부분 0.5점 ÷ 테스트 수.</div>
         </div>
 
         <div class="cols2" style="margin-top:26px">
@@ -415,7 +415,7 @@
             </div>
           </div>
           <div class="chartwrap" id="sovChart"></div>
-          <div class="chart-cap">가로 점선 = 첫 측정값. 검은 실선 = 자동 측정(매일 2회), 회색 점선 = 내 수동 기록. 노출 1점, 부분 0.5점으로 계산합니다.</div>
+          <div class="chart-cap">가로 점선 = 첫 측정값. 검은 실선 = 자동 측정(3일 1회), 회색 점선 = 내 수동 기록. 노출 1점, 부분 0.5점으로 계산합니다.</div>
         </div>
 
         <h2>프롬프트별 현황<small>기준측정 + 내 기록 최신값</small></h2>
@@ -429,7 +429,7 @@
 
       <!-- ================= 프롬프트 ================= -->
       <section class="page" id="page-prompts">
-        <p class="desc">질의어별로 어느 AI에서 언제 노출됐는지 날짜 그리드로 추적합니다.<br>● 노출 · ○ 부분 · <b>–</b> 미노출 · 옅은 점은 미테스트. 자동측정은 매일 아침 9시·저녁 7시, Gemini·ChatGPT 실측은 3일에 한 번 쌓입니다.</p>
+        <p class="desc">질의어별로 어느 AI에서 언제 노출됐는지 날짜 그리드로 추적합니다.<br>● 노출 · ○ 부분 · <b>–</b> 미노출 · 옅은 점은 미테스트. 자동측정과 Gemini·ChatGPT 실측을 3일에 한 번 같은 날 함께 실행해 같은 날짜에 나란히 쌓입니다.</p>
         <div class="panel testbox" style="margin-bottom:14px">
           <div class="row">
             <input type="text" id="newkw" placeholder="추적할 검색어 추가 (예: 김포 리프팅 가격)" aria-label="추적할 프롬프트 추가">
@@ -544,12 +544,12 @@
 
       <!-- ================= 월간 리포트 ================= -->
       <section class="page" id="page-report">
-        <p class="desc">2026년 7월 리포트 — 웹 인용 소스 기준. 매일 아침 9시·저녁 7시(KST)에 자동 측정되어 갱신됩니다 (Gemini·ChatGPT 실측은 3일 1회). 즉시 재측정은 채팅에서 "지금 재측정 해줘"라고 요청하세요.</p>
+        <p class="desc">2026년 7월 리포트 — 웹 인용 소스 기준. 3일에 한 번 아침 9시(KST)에 웹검색 측정과 AI 실측이 함께 실행되어 갱신됩니다. 즉시 재측정은 채팅에서 "지금 재측정 해줘"라고 요청하세요.</p>
 
         <div class="panel strip strip3">
           <div class="cell"><div class="k">종합 노출률</div><div class="v num">23<span class="unit">%</span></div><div class="d">11개 프롬프트 기준</div></div>
           <div class="cell"><div class="k">노출 / 부분 / 미노출</div><div class="v num">2 · 1 · 8</div><div class="d">브랜드·제모만 노출</div></div>
-          <div class="cell"><div class="k">자동 측정 주기</div><div class="v num">매일 2회</div><div class="d">9시·19시 · AI 실측은 3일 1회</div></div>
+          <div class="cell"><div class="k">자동 측정 주기</div><div class="v num">3일 1회</div><div class="d">아침 9시 · 웹검색+AI 실측 동시</div></div>
         </div>
 
         <h2>프롬프트별 결과</h2>
@@ -627,7 +627,7 @@
     { id: "Gemini",     color: "#E8930C" }
   ];
   var BASE_DATE = "2026-07-24";
-  /* 자동 측정 이력 — 매일 아침 9시·저녁 7시(KST) 웹 인용 소스 기준으로 측정해 추가됩니다 */
+  /* 자동 측정 이력 — 3일에 1회 아침 9시(KST) 웹 인용 소스 기준으로 측정해 추가됩니다 (AI 실측과 같은 날) */
   var MEASURE = [
     { date: "2026-07-24", results: {
       "김포 피부과 추천해줘": "미노출",

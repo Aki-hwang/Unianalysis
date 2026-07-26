@@ -18,8 +18,9 @@
 
 ## 자동 측정 루틴
 
-- 웹검색 자동측정: 매일 2회 (아침 9시·저녁 7시 KST, cron: 0 0,10 * * * UTC) — PROMPTS 전체
-- API 실측(Gemini·ChatGPT): 3일 1회 — AI_MEASURE의 엔진별 마지막 날짜가 3일 이상 지났을 때 scripts/measure-*.mjs 실행 (measure-chatgpt는 curl 기반, api.openai.com 네트워크 허용 필요)
+- 측정은 3일에 1회, 아침 9시 KST (cron: 0 0 */3 * * UTC) — 웹검색 측정과 API 실측을 같은 실행에서 함께 수행해 날짜 정합성 유지
+- 웹검색 측정: PROMPTS 전체 + 서버 공유 저장의 custom.added
+- API 실측: scripts/measure-gemini.mjs, scripts/measure-chatgpt.mjs (measure-chatgpt는 curl 기반, api.openai.com 네트워크 허용 필요)
 - 매 실행 시 Railway 공유 저장(unianalysis-production.up.railway.app/api/state)에서 새 수동 기록을 확인해 보고에 포함 (도메인 네트워크 허용 필요)
 - 결과는 MEASURE 배열에 날짜별 항목으로 추가 (같은 날 2회면 별도 항목, 차트는 그날 마지막 값 사용)
 - 판정 기준: 상위 인용 소스에 병원명 등장=노출 / 링크·타지점만=부분 / 없음=미노출
