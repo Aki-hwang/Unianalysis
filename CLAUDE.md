@@ -37,8 +37,9 @@
 
 ## 블로그 운영 현황 (2026-07 실측)
 
-- 공식 블로그 gpuni114.co.kr/blog: 156편 (자체 제작 57 + 네이버 이관 99), 인블로그 오토로 월 14편 발행 중
-- 네이버 블로그 blog.naver.com/detach3975 ("의사는 환자를 위해 존재한다" - 최수정 원장): 50편
+- 공식 블로그 gpuni114.co.kr/blog: 157편(RSS 기준), 인블로그 오토로 월 14편 발행 중
+- 네이버 블로그 blog.naver.com/detach3975 (최수정 원장): **381편** — 전체 목록은 m.blog.naver.com/api/blogs/detach3975/post-list?categoryNo=0&itemCount=30&page=N 로 수집 (RSS는 최근 50편만 주므로 전수 분석에 쓰면 안 됨)
+- 총 538편 — 미노출 키워드마다 이미 3~65편씩 존재. 제목 기준 진짜 공백은 한강신도시·야간진료 2개뿐
 - 글 구조는 이미 GEO 최적화됨 (질문형 H2, FAQ 섹션, FAQPage·MedicalWebPage 스키마) — **빠진 것은 본문 지역 신호뿐**
 - 인블로그 리포트(7월): 14편 중 상위노출 4개 키워드, 전부 힐로웨이브 글 1편에서 발생 (김포 힐로웨이브 1위)
 - 수정 후 검증: 인라인 스크립트 추출 → `node --check`, 필요시 playwright(chromium `/opt/pw-browsers/chromium`)
