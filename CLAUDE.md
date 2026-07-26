@@ -20,9 +20,10 @@
 
 ## 자동 측정 루틴
 
-- 측정은 3일에 1회, 아침 9시 KST (cron: 0 0 */3 * * UTC) — 웹검색 측정과 API 실측을 같은 실행에서 함께 수행해 날짜 정합성 유지
+- 측정은 3일에 1회, 아침 9시 KST (cron: 0 0 */3 * * UTC) — 웹검색 측정과 채널 실측(AI+네이버)을 같은 실행에서 함께 수행해 날짜 정합성 유지
 - 웹검색 측정: PROMPTS 전체 + 서버 공유 저장의 custom.added
-- API 실측: scripts/measure-gemini.mjs, scripts/measure-chatgpt.mjs (measure-chatgpt는 curl 기반, api.openai.com 네트워크 허용 필요)
+- 채널 실측: scripts/measure-gemini.mjs, scripts/measure-chatgpt.mjs (curl 기반, api.openai.com 허용 필요), scripts/measure-naver.mjs (네이버 통합검색, API 키 불필요 · search.naver.com 허용 필요)
+- 네이버 판정은 병원명 "유앤아이" 주변 ±80자에 김포/구래/gpuni114/detach3975/최수정이 있어야 우리 지점으로 인정 (타지점 오인 방지)
 - 매 실행 시 Railway 공유 저장(unianalysis-production.up.railway.app/api/state)에서 새 수동 기록을 확인해 보고에 포함 (도메인 네트워크 허용 필요)
 - 결과는 MEASURE 배열에 날짜별 항목으로 추가 (같은 날 2회면 별도 항목, 차트는 그날 마지막 값 사용)
 - 판정 기준: 상위 인용 소스에 병원명 등장=노출 / 링크·타지점만=부분 / 없음=미노출
@@ -43,4 +44,5 @@
 - 총 538편 — 미노출 키워드마다 이미 3~65편씩 존재. 제목 기준 진짜 공백은 한강신도시·야간진료 2개뿐
 - 글 구조는 이미 GEO 최적화됨 (질문형 H2, FAQ 섹션, FAQPage·MedicalWebPage 스키마) — **빠진 것은 본문 지역 신호뿐**
 - 인블로그 리포트(7월): 14편 중 상위노출 4개 키워드, 전부 힐로웨이브 글 1편에서 발생 (김포 힐로웨이브 1위)
+- 네이버 실측 첫 결과(7/26): 20개 중 14개 노출 = **70%** (ChatGPT 10% · Gemini 78%). 네이버는 이미 강한 채널이고, 네이버 노출·ChatGPT 미노출 키워드의 격차가 핵심 공략 지점
 - 수정 후 검증: 인라인 스크립트 추출 → `node --check`, 필요시 playwright(chromium `/opt/pw-browsers/chromium`)

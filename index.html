@@ -388,7 +388,7 @@
 
       <!-- ================= 홈 ================= -->
       <section class="page active" id="page-home">
-        <p class="desc">유앤아이의원 김포점이 AI 검색(ChatGPT·Gemini)에서 얼마나 추천되는지 추적하고, 노출을 늘리는 실행까지 한 곳에서 관리합니다.</p>
+        <p class="desc">유앤아이의원 김포점이 AI 검색(ChatGPT·Gemini)과 네이버에서 얼마나 추천되는지 추적하고, 노출을 늘리는 실행까지 한 곳에서 관리합니다.</p>
 
         <div class="panel strip">
           <div class="cell">
@@ -464,7 +464,7 @@
 
       <!-- ================= 프롬프트 ================= -->
       <section class="page" id="page-prompts">
-        <p class="desc">질의어별로 어느 AI에서 언제 노출됐는지 날짜 그리드로 추적합니다.<br>● 노출 · ○ 부분 · <b>–</b> 미노출 · 옅은 점은 미테스트. 자동측정과 Gemini·ChatGPT 실측을 3일에 한 번 같은 날 함께 실행해 같은 날짜에 나란히 쌓입니다.</p>
+        <p class="desc">질의어별로 어느 AI에서 언제 노출됐는지 날짜 그리드로 추적합니다.<br>● 노출 · ○ 부분 · <b>–</b> 미노출 · 옅은 점은 미테스트. 자동측정과 Gemini·ChatGPT·네이버 실측을 3일에 한 번 같은 날 함께 실행해 같은 날짜에 나란히 쌓입니다.</p>
         <div class="panel testbox" style="margin-bottom:14px">
           <div class="row">
             <input type="text" id="newkw" placeholder="추적할 검색어 추가 (예: 김포 리프팅 가격)" aria-label="추적할 프롬프트 추가">
@@ -479,16 +479,17 @@
 
       <!-- ================= 모델별 현황 ================= -->
       <section class="page" id="page-models">
-        <p class="desc">AI 모델별로 우리 병원이 얼마나 언급되는지, 그리고 주요 질문에서 어떤 병원들이 대신 추천되고 있는지 봅니다.</p>
+        <p class="desc">채널(AI 모델·네이버)별로 우리 병원이 얼마나 언급되는지, 그리고 주요 질문에서 어떤 병원들이 대신 추천되고 있는지 봅니다.</p>
 
-        <h2 style="margin-top:0">모델별 노출률<small>익명 API 실측 기준 — 신규 잠재 환자가 보는 화면</small></h2>
+        <h2 style="margin-top:0">채널별 노출률<small>익명 실측 기준 — 신규 잠재 환자가 보는 화면</small></h2>
         <div class="panel tablewrap">
           <table class="data" id="modelTable" style="min-width:520px">
-            <thead><tr><th>모델</th><th>익명 실측 노출률</th><th>측정</th></tr></thead>
+            <thead><tr><th>채널</th><th>익명 실측 노출률</th><th>측정</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
-        <div class="callout"><span class="cap">기준</span>이 표는 <b>익명 조건의 API 실측만</b> 집계합니다 — 개인 계정 기록은 기억·위치 개인화로 부풀 수 있어 제외했습니다 (수동 기록은 프롬프트 보드의 점으로만 표시).</div>
+        <div class="callout"><span class="cap">기준</span>이 표는 <b>익명 조건의 실측만</b> 집계합니다 — ChatGPT·Gemini는 API, 네이버는 로그인 없는 통합검색 결과 기준입니다. 개인 계정 기록은 기억·위치 개인화로 부풀 수 있어 제외했습니다 (수동 기록은 프롬프트 보드의 점으로만 표시).</div>
+        <div class="callout"><span class="cap">읽는 법</span><b>네이버는 지금 우리가 가장 강한 채널입니다</b> — 원장 블로그 381편이 실제로 검색 결과를 잡고 있습니다. 반대로 ChatGPT는 같은 질문에서 거의 잡히지 않습니다. 네이버에서 이미 이긴 키워드가 AI 답변으로 넘어오지 못하고 있다는 뜻이고, 그 사이를 메우는 것이 노출 기획의 핵심입니다.</div>
 
         <h2>질문별 경쟁 구도<small>자동측정과 같은 웹 인용 소스 기준 — AI에게 직접 물은 위 표와는 기준이 다릅니다 (판정 변화 시 갱신)</small></h2>
         <p class="desc" style="margin-bottom:12px">AI가 답변 근거로 인용하는 웹 소스에서 상위에 등장한 병원 순서입니다. 강조 표시된 칩이 우리 병원입니다.</p>
@@ -616,12 +617,12 @@
 
       <!-- ================= 월간 리포트 ================= -->
       <section class="page" id="page-report">
-        <p class="desc">2026년 7월 리포트 — 웹 인용 소스 기준. 3일에 한 번 아침 9시(KST)에 웹검색 측정과 AI 실측이 함께 실행되어 갱신됩니다. 즉시 재측정은 채팅에서 "지금 재측정 해줘"라고 요청하세요.</p>
+        <p class="desc">2026년 7월 리포트 — 웹 인용 소스 기준. 3일에 한 번 아침 9시(KST)에 웹검색 측정과 AI·네이버 실측이 함께 실행되어 갱신됩니다. 즉시 재측정은 채팅에서 "지금 재측정 해줘"라고 요청하세요.</p>
 
         <div class="panel strip strip3">
           <div class="cell"><div class="k">종합 노출률</div><div class="v num">23<span class="unit">%</span></div><div class="d">11개 프롬프트 기준</div></div>
           <div class="cell"><div class="k">노출 / 부분 / 미노출</div><div class="v num">2 · 1 · 8</div><div class="d">브랜드·제모만 노출</div></div>
-          <div class="cell"><div class="k">자동 측정 주기</div><div class="v num">3일 1회</div><div class="d">아침 9시 · 웹검색+AI 실측 동시</div></div>
+          <div class="cell"><div class="k">자동 측정 주기</div><div class="v num">3일 1회</div><div class="d">아침 9시 · 웹검색+AI+네이버 동시</div></div>
         </div>
 
         <h2>프롬프트별 결과</h2>
@@ -708,7 +709,8 @@
   var ME = "유앤아이 김포점";
   var ENGINES = [
     { id: "ChatGPT",    color: "#0FA37F" },
-    { id: "Gemini",     color: "#E8930C" }
+    { id: "Gemini",     color: "#E8930C" },
+    { id: "네이버",     color: "#06A94D" }
   ];
   var BASE_DATE = "2026-07-24";
   /* 자동 측정 이력 — 3일에 1회 아침 9시(KST) 웹 인용 소스 기준으로 측정해 추가됩니다 (AI 실측과 같은 날) */
@@ -868,6 +870,28 @@
       "구래역 피부과 알려줘": "노출",
       "마산동 피부과 어디 있어?": "미노출",
       "김포 인모드 잘하는 곳 알려줘": "미노출",
+      "김포 실리프팅 어디가 좋아?": "노출"
+    } },
+    { date: "2026-07-26", engine: "네이버", results: {
+      "김포 피부과 추천해줘": "노출",
+      "김포에서 울쎄라 잘하는 곳 알려줘": "노출",
+      "김포 보톡스 가격 어느 정도야?": "미노출",
+      "김포 리프팅 잘하는 피부과 어디야?": "노출",
+      "김포 레이저 제모 어디서 받는 게 좋아?": "미노출",
+      "구래동 근처 피부과 추천해줘": "노출",
+      "장기동 피부과 보톡스 어디가 좋아?": "노출",
+      "운양동에서 갈 만한 피부과 있어?": "미노출",
+      "김포 리쥬란 스킨부스터 맞을 만한 곳?": "노출",
+      "유앤아이의원 김포점 어때? 후기 있어?": "노출",
+      "유앤아이의원 김포점": "노출",
+      "김포 야간 진료 피부과 어디 있어?": "미노출",
+      "김포 올리지오 잘하는 곳 있어?": "미노출",
+      "김포 필러 잘하는 병원 알려줘": "노출",
+      "김포 여드름 피부과 추천해줘": "노출",
+      "김포 기미 잡티 레이저 어디가 좋아?": "미노출",
+      "구래역 피부과 알려줘": "노출",
+      "마산동 피부과 어디 있어?": "노출",
+      "김포 인모드 잘하는 곳 알려줘": "노출",
       "김포 실리프팅 어디가 좋아?": "노출"
     } }
   ];
