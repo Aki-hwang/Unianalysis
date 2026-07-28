@@ -456,7 +456,7 @@
         <h2>프롬프트별 현황<small>기준측정 + 내 기록 최신값</small></h2>
         <div class="panel tablewrap">
           <table class="data" id="sovTable" style="min-width:640px">
-            <thead><tr><th>프롬프트</th><th>유형</th><th>기준측정 (7/24)</th><th>내 최근 기록</th></tr></thead>
+            <thead><tr><th>프롬프트</th><th>유형</th><th>기준측정 (7/24)</th><th id="sovLastHead">최근 자동측정</th><th>내 최근 기록</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
@@ -484,7 +484,7 @@
         <h2 style="margin-top:0">채널별 노출률<small>익명 실측 기준 — 신규 잠재 환자가 보는 화면</small></h2>
         <div class="panel tablewrap">
           <table class="data" id="modelTable" style="min-width:520px">
-            <thead><tr><th>채널</th><th>익명 실측 노출률</th><th>측정</th></tr></thead>
+            <thead><tr><th>채널</th><th>최근 실측 노출률</th><th>측정일 · 누적</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
@@ -620,8 +620,8 @@
         <p class="desc">2026년 7월 리포트 — 웹 인용 소스 기준. 3일에 한 번 아침 9시(KST)에 웹검색 측정과 AI·네이버 실측이 함께 실행되어 갱신됩니다. 즉시 재측정은 채팅에서 "지금 재측정 해줘"라고 요청하세요.</p>
 
         <div class="panel strip strip3">
-          <div class="cell"><div class="k">종합 노출률</div><div class="v num">23<span class="unit">%</span></div><div class="d">11개 프롬프트 기준</div></div>
-          <div class="cell"><div class="k">노출 / 부분 / 미노출</div><div class="v num">2 · 1 · 8</div><div class="d">브랜드·제모만 노출</div></div>
+          <div class="cell"><div class="k">종합 노출률</div><div class="v num">20<span class="unit">%</span></div><div class="d">20개 프롬프트 기준 · 7/28 측정</div></div>
+          <div class="cell"><div class="k">노출 / 부분 / 미노출</div><div class="v num">4 · 0 · 16</div><div class="d">브랜드 2 + 인모드 · 실리프팅</div></div>
           <div class="cell"><div class="k">자동 측정 주기</div><div class="v num">3일 1회</div><div class="d">아침 9시 · 웹검색+AI+네이버 동시</div></div>
         </div>
 
@@ -630,17 +630,26 @@
           <table class="data" style="min-width:720px">
             <thead><tr><th>검색 질문</th><th>유형</th><th>결과</th><th>대신 노출되는 곳</th></tr></thead>
             <tbody>
-              <tr><td><b>유앤아이의원 김포점</b></td><td class="mono">브랜드</td><td><span class="pill ok">노출</span></td><td style="color:var(--muted)">공식 홈페이지 최상단. 주소·전화·주차 정보 정확</td></tr>
-              <tr><td><b>김포 레이저 제모 피부과</b></td><td class="mono">지역+시술</td><td><span class="pill ok">노출</span></td><td style="color:var(--muted)">공식 블로그 글("김포 남자 수염 레이저제모") 상위 노출</td></tr>
-              <tr><td><b>유앤아이의원 김포점 후기</b></td><td class="mono">브랜드+후기</td><td><span class="pill part">부분</span></td><td style="color:var(--muted)">공식 사이트만. 후기 플랫폼엔 건대·영등포점만 등재</td></tr>
-              <tr><td><b>김포 피부과 추천</b></td><td class="mono">지역+진료과</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">리멤버·미소가인·해날·플랜·미엘 + 플랫폼 리스트</td></tr>
-              <tr><td><b>김포 울쎄라 잘하는 곳</b></td><td class="mono">지역+시술</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">에버스(검단), 리베리, 강남언니 이벤트</td></tr>
-              <tr><td><b>김포 보톡스 가격</b></td><td class="mono">지역+시술+가격</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">강남언니·모두닥·굿닥 가격 비교, 톡스앤필</td></tr>
-              <tr><td><b>김포 리프팅 잘하는 피부과</b></td><td class="mono">지역+시술</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">미소가인, 리멤버 (전문의 구성이 근거로 인용)</td></tr>
-              <tr><td><b>김포 스킨부스터 리쥬란</b></td><td class="mono">지역+시술</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">톡스앤필, 닥터나우 매거진</td></tr>
+              <tr><td><b>유앤아이의원 김포점</b></td><td class="mono">브랜드</td><td><span class="pill ok">노출</span></td><td style="color:var(--muted)">공식 홈페이지가 최상단 3개 결과를 차지. 단, 인용된 소개문에 <b>써마지·일요일진료</b>가 그대로 들어감 — 메타태그 수정 시급</td></tr>
+              <tr><td><b>김포 인모드 잘하는 곳</b></td><td class="mono">장비(보유)</td><td><span class="pill ok">노출</span></td><td style="color:var(--muted)">인모드리프팅 랜딩 페이지 1위 <b>(직전 미노출 → 신규 진입)</b></td></tr>
+              <tr><td><b>김포 실리프팅</b></td><td class="mono">지역+시술</td><td><span class="pill ok">노출</span></td><td style="color:var(--muted)">민트실리프팅 페이지 상위 유지 — 다시봄날·리멤버와 경합</td></tr>
+              <tr><td><b>유앤아이의원 김포점 후기</b></td><td class="mono">브랜드+후기</td><td><span class="pill ok">노출</span></td><td style="color:var(--muted)">공식 사이트 기준으로는 노출 <b>(부분 → 노출)</b>. 후기 플랫폼엔 여전히 미등재</td></tr>
+              <tr><td><b>김포 레이저 제모</b></td><td class="mono">지역+시술</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)"><b>노출 → 미노출로 이탈.</b> 플랜·톡스앤필·다시봄날·미엘이 상위 차지</td></tr>
+              <tr><td><b>구래역 피부과</b></td><td class="mono">역세권(소재지)</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)"><b>노출 → 미노출로 이탈.</b> 미엘·리멤버가 자리 차지</td></tr>
+              <tr><td><b>김포 피부과 추천</b></td><td class="mono">지역+진료과</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">리멤버·해날·미엘·플랜 + 모두닥·닥터나우 TOP10 리스트</td></tr>
+              <tr><td><b>김포 리프팅 잘하는 피부과</b></td><td class="mono">지역+시술</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">미소가인·리멤버 (7/24 3위 진입했다가 이탈)</td></tr>
+              <tr><td><b>김포 울쎄라 잘하는 곳</b></td><td class="mono">지역+시술</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">강남언니 이벤트, 에버스(검단), 리베리 — 김포 병원 자체가 적음</td></tr>
+              <tr><td><b>김포 보톡스 가격</b></td><td class="mono">지역+시술+가격</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">강남언니·모두닥·굿닥 가격 비교표가 독식</td></tr>
+              <tr><td><b>김포 필러 잘하는 병원</b></td><td class="mono">지역+시술</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">미소가인(부위별 필러 페이지)·플랜</td></tr>
+              <tr><td><b>김포 여드름 피부과</b></td><td class="mono">지역+진료</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">리멤버(전문의 5인)·미엘·플랜</td></tr>
+              <tr><td><b>김포 기미 잡티 레이저</b></td><td class="mono">지역+시술</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">미소가인·리멤버·플랜</td></tr>
+              <tr><td><b>김포 리쥬란 스킨부스터</b></td><td class="mono">지역+시술</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">강남언니·닥터나우 매거진 — 김포 병원 결과 없음</td></tr>
+              <tr><td><b>김포 올리지오 잘하는 곳</b></td><td class="mono">지역+시술</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">김포 결과가 거의 없음 — <b>선점 기회</b></td></tr>
+              <tr><td><b>김포 야간 진료 피부과</b></td><td class="mono">지역+진료시간</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">해날·리멤버·미엘이 플랫폼 야간진료 필터로 노출</td></tr>
               <tr><td><b>구래동 피부과 추천</b></td><td class="mono">동네(소재지)</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">리멤버·미엘. <b>병원이 있는 동네인데도 안 나옴</b></td></tr>
-              <tr><td><b>운양동 피부과</b></td><td class="mono">동네</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">델타피부과, 리멤버</td></tr>
-              <tr><td><b>장기동 피부과 보톡스</b></td><td class="mono">동네+시술</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">결과 자체가 빈약 — 선점 기회</td></tr>
+              <tr><td><b>마산동 피부과</b></td><td class="mono">동네</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">마산동 전용 결과 없음 — 김포 일반 리스트로 대체됨</td></tr>
+              <tr><td><b>운양동 피부과</b></td><td class="mono">동네</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">델타피부과·리멤버</td></tr>
+              <tr><td><b>장기동 피부과 보톡스</b></td><td class="mono">동네+시술</td><td><span class="pill off">미노출</span></td><td style="color:var(--muted)">검색어가 <b>장안동</b>으로 오인돼 결과가 오염됨</td></tr>
             </tbody>
           </table>
         </div>
@@ -649,7 +658,8 @@
         <div class="callout crit"><span class="cap">원인 1 · 가장 큼</span><b>비교 플랫폼에 김포점이 없다.</b> AI 답변의 근거는 모두닥·닥터나우·나만의닥터·강남언니의 "김포 피부과 TOP10" 류 페이지인데, 김포점은 이 목록들에 사실상 없습니다.</div>
         <div class="callout"><span class="cap">원인 2</span><b>후기 데이터가 얇다.</b> 경쟁 병원은 "전문의 5인, 리뷰 다수" 같은 구체적 데이터로 인용됩니다. 김포점은 검색 가능한 후기가 거의 잡히지 않습니다.</div>
         <div class="callout"><span class="cap">원인 3</span><b>동네 키워드 공백.</b> 구래동(소재지)·운양동·장기동 검색에서 전멸 — 콘텐츠가 "김포" 단위로만 말하고 동네 단위 언어를 쓰지 않습니다.</div>
-        <div class="callout"><span class="cap">증명된 강점</span><b>블로그는 이미 통한다.</b> 제모 글 하나가 해당 키워드를 뚫었습니다. 같은 공식을 울쎄라·리프팅·동네 키워드에 복제하는 것이 가장 확실한 승부처입니다.</div>
+        <div class="callout"><span class="cap">증명된 강점</span><b>블로그·랜딩 페이지는 이미 통한다.</b> 제모 글, 리프팅 글, 그리고 7/28 새로 1위에 오른 인모드 랜딩 페이지가 차례로 키워드를 뚫었습니다. 같은 공식을 울쎄라·올리지오·동네 키워드에 복제하는 것이 가장 확실한 승부처입니다.</div>
+        <div class="callout crit"><span class="cap">채널 격차 (7/28)</span><b>네이버 80% · Gemini 83% · ChatGPT 10%.</b> 네이버에서는 노출되는데 ChatGPT에서는 안 나오는 질문이 <b>14개</b>입니다(김포 피부과·울쎄라·리프팅·구래동·구래역·마산동·인모드·실리프팅 등). 콘텐츠가 없어서가 아니라, 있는 콘텐츠가 ChatGPT까지 닿지 않는 것 — 홈페이지 경량화와 본문 지역 신호가 1순위인 이유입니다.</div>
       </section>
 
       <!-- ================= 브랜드 관리 ================= -->
@@ -824,6 +834,28 @@
       "마산동 피부과 어디 있어?": "미노출",
       "김포 인모드 잘하는 곳 알려줘": "미노출",
       "김포 실리프팅 어디가 좋아?": "노출"
+    } },
+    { date: "2026-07-28", results: {
+      "김포 피부과 추천해줘": "미노출",
+      "김포에서 울쎄라 잘하는 곳 알려줘": "미노출",
+      "김포 보톡스 가격 어느 정도야?": "미노출",
+      "김포 리프팅 잘하는 피부과 어디야?": "미노출",
+      "김포 레이저 제모 어디서 받는 게 좋아?": "미노출",
+      "구래동 근처 피부과 추천해줘": "미노출",
+      "장기동 피부과 보톡스 어디가 좋아?": "미노출",
+      "운양동에서 갈 만한 피부과 있어?": "미노출",
+      "김포 리쥬란 스킨부스터 맞을 만한 곳?": "미노출",
+      "유앤아이의원 김포점 어때? 후기 있어?": "노출",
+      "유앤아이의원 김포점": "노출",
+      "김포 야간 진료 피부과 어디 있어?": "미노출",
+      "김포 올리지오 잘하는 곳 있어?": "미노출",
+      "김포 필러 잘하는 병원 알려줘": "미노출",
+      "김포 여드름 피부과 추천해줘": "미노출",
+      "김포 기미 잡티 레이저 어디가 좋아?": "미노출",
+      "구래역 피부과 알려줘": "미노출",
+      "마산동 피부과 어디 있어?": "미노출",
+      "김포 인모드 잘하는 곳 알려줘": "노출",
+      "김포 실리프팅 어디가 좋아?": "노출"
     } }
   ];
   /* AI별 자동측정(API) — {date, engine, results:{질문:판정}} 항목이 쌓임 */
@@ -893,6 +925,72 @@
       "마산동 피부과 어디 있어?": "노출",
       "김포 인모드 잘하는 곳 알려줘": "노출",
       "김포 실리프팅 어디가 좋아?": "노출"
+    } },
+    { date: "2026-07-28", engine: "ChatGPT", results: {
+      "김포 피부과 추천해줘": "미노출",
+      "김포에서 울쎄라 잘하는 곳 알려줘": "미노출",
+      "김포 보톡스 가격 어느 정도야?": "미노출",
+      "김포 리프팅 잘하는 피부과 어디야?": "미노출",
+      "김포 레이저 제모 어디서 받는 게 좋아?": "미노출",
+      "구래동 근처 피부과 추천해줘": "미노출",
+      "장기동 피부과 보톡스 어디가 좋아?": "미노출",
+      "운양동에서 갈 만한 피부과 있어?": "미노출",
+      "김포 리쥬란 스킨부스터 맞을 만한 곳?": "미노출",
+      "유앤아이의원 김포점 어때? 후기 있어?": "노출",
+      "유앤아이의원 김포점": "노출",
+      "김포 야간 진료 피부과 어디 있어?": "미노출",
+      "김포 올리지오 잘하는 곳 있어?": "미노출",
+      "김포 필러 잘하는 병원 알려줘": "미노출",
+      "김포 여드름 피부과 추천해줘": "미노출",
+      "김포 기미 잡티 레이저 어디가 좋아?": "미노출",
+      "구래역 피부과 알려줘": "미노출",
+      "마산동 피부과 어디 있어?": "미노출",
+      "김포 인모드 잘하는 곳 알려줘": "미노출",
+      "김포 실리프팅 어디가 좋아?": "미노출"
+    } },
+    { date: "2026-07-28", engine: "Gemini", results: {
+      "김포 피부과 추천해줘": "노출",
+      "김포에서 울쎄라 잘하는 곳 알려줘": "노출",
+      "김포 보톡스 가격 어느 정도야?": "부분",
+      "김포 리프팅 잘하는 피부과 어디야?": "노출",
+      "김포 레이저 제모 어디서 받는 게 좋아?": "노출",
+      "구래동 근처 피부과 추천해줘": "노출",
+      "장기동 피부과 보톡스 어디가 좋아?": "미노출",
+      "운양동에서 갈 만한 피부과 있어?": "미노출",
+      "김포 리쥬란 스킨부스터 맞을 만한 곳?": "노출",
+      "유앤아이의원 김포점 어때? 후기 있어?": "노출",
+      "유앤아이의원 김포점": "노출",
+      "김포 야간 진료 피부과 어디 있어?": "노출",
+      "김포 올리지오 잘하는 곳 있어?": "노출",
+      "김포 필러 잘하는 병원 알려줘": "노출",
+      "김포 여드름 피부과 추천해줘": "노출",
+      "김포 기미 잡티 레이저 어디가 좋아?": "노출",
+      "구래역 피부과 알려줘": "미노출",
+      "마산동 피부과 어디 있어?": "노출",
+      "김포 인모드 잘하는 곳 알려줘": "노출",
+      "김포 실리프팅 어디가 좋아?": "노출"
+    } },
+    { date: "2026-07-28", engine: "네이버", results: {
+      "김포 피부과 추천해줘": "노출",
+      "김포에서 울쎄라 잘하는 곳 알려줘": "노출",
+      "김포 보톡스 가격 어느 정도야?": "미노출",
+      "김포 리프팅 잘하는 피부과 어디야?": "노출",
+      "김포 레이저 제모 어디서 받는 게 좋아?": "노출",
+      "구래동 근처 피부과 추천해줘": "노출",
+      "장기동 피부과 보톡스 어디가 좋아?": "노출",
+      "운양동에서 갈 만한 피부과 있어?": "미노출",
+      "김포 리쥬란 스킨부스터 맞을 만한 곳?": "노출",
+      "유앤아이의원 김포점 어때? 후기 있어?": "노출",
+      "유앤아이의원 김포점": "노출",
+      "김포 야간 진료 피부과 어디 있어?": "노출",
+      "김포 올리지오 잘하는 곳 있어?": "미노출",
+      "김포 필러 잘하는 병원 알려줘": "노출",
+      "김포 여드름 피부과 추천해줘": "노출",
+      "김포 기미 잡티 레이저 어디가 좋아?": "미노출",
+      "구래역 피부과 알려줘": "노출",
+      "마산동 피부과 어디 있어?": "노출",
+      "김포 인모드 잘하는 곳 알려줘": "노출",
+      "김포 실리프팅 어디가 좋아?": "노출"
     } }
   ];
   function engineEntries() {
@@ -933,23 +1031,25 @@
     { q: "김포 실리프팅 어디가 좋아?", cat: "지역+시술", base: "노출" }
   ];
   var COMPETE = [
-    { q: "김포 피부과 추천해줘", ranks: ["리멤버피부과", "미소가인피부과", "해날피부과", "플랜피부과"] },
-    { q: "김포에서 울쎄라 잘하는 곳 알려줘", ranks: ["에버스의원(검단)", "리베리의원", "강남언니(플랫폼)", ""] },
+    { q: "김포 피부과 추천해줘", ranks: ["리멤버피부과", "해날피부과", "미엘피부과", "플랜피부과"] },
+    { q: "김포에서 울쎄라 잘하는 곳 알려줘", ranks: ["강남언니(플랫폼)", "에버스의원(검단)", "리베리의원", ""] },
     { q: "김포 보톡스 가격 어느 정도야?", ranks: ["강남언니(플랫폼)", "모두닥(플랫폼)", "굿닥(플랫폼)", "톡스앤필"] },
-    { q: "김포 리프팅 잘하는 피부과 어디야?", ranks: ["미소가인피부과", "리멤버피부과", ME, ""] },
-    { q: "김포 레이저 제모 어디서 받는 게 좋아?", ranks: [ME, "미엘피부과", "플랜피부과", ""] },
+    { q: "김포 리프팅 잘하는 피부과 어디야?", ranks: ["미소가인피부과", "리멤버피부과", "닥터스피부과", ""] },
+    { q: "김포 레이저 제모 어디서 받는 게 좋아?", ranks: ["플랜피부과", "톡스앤필", "다시봄날의원", "미엘피부과"] },
     { q: "구래동 근처 피부과 추천해줘", ranks: ["리멤버피부과", "미엘피부과", "", ""] },
     { q: "운양동에서 갈 만한 피부과 있어?", ranks: ["델타피부과", "리멤버피부과", "", ""] },
-    { q: "김포 리쥬란 스킨부스터 맞을 만한 곳?", ranks: ["톡스앤필", "닥터나우 매거진", "", ""] },
+    { q: "김포 리쥬란 스킨부스터 맞을 만한 곳?", ranks: ["강남언니(플랫폼)", "닥터나우 매거진", "톡스앤필", ""] },
     { q: "유앤아이의원 김포점", ranks: [ME, "", "", ""] },
-    { q: "김포 올리지오 잘하는 곳 있어?", ranks: ["톡스앤필", "다시봄날의원", "리멤버피부과", ""] },
+    { q: "김포 올리지오 잘하는 곳 있어?", ranks: ["김포 결과 거의 없음 — 선점 기회", "", "", ""] },
     { q: "김포 필러 잘하는 병원 알려줘", ranks: ["미소가인피부과", "플랜피부과", "강남언니(플랫폼)", ""] },
     { q: "김포 여드름 피부과 추천해줘", ranks: ["리멤버피부과", "미엘피부과", "플랜피부과", ""] },
     { q: "김포 기미 잡티 레이저 어디가 좋아?", ranks: ["미소가인피부과", "리멤버피부과", "플랜피부과", ""] },
-    { q: "구래역 피부과 알려줘", ranks: [ME, "리멤버피부과", "", ""] },
+    { q: "구래역 피부과 알려줘", ranks: ["미엘피부과", "리멤버피부과", "", ""] },
     { q: "마산동 피부과 어디 있어?", ranks: ["결과 거의 없음 — 선점 기회", "", "", ""] },
-    { q: "김포 인모드 잘하는 곳 알려줘", ranks: ["김포 결과 거의 없음 — 선점 기회", "", "", ""] },
-    { q: "김포 실리프팅 어디가 좋아?", ranks: ["리멤버피부과", ME, "다시봄날의원", "화사한의원"] }
+    { q: "김포 인모드 잘하는 곳 알려줘", ranks: [ME, "리멤버피부과", "", ""] },
+    { q: "김포 실리프팅 어디가 좋아?", ranks: [ME, "다시봄날의원", "리멤버피부과", "톡스앤필"] },
+    { q: "장기동 피부과 보톡스 어디가 좋아?", ranks: ["김포 결과 없음 — 검색어가 장안동으로 오인됨", "", "", ""] },
+    { q: "김포 야간 진료 피부과 어디 있어?", ranks: ["해날피부과", "리멤버피부과", "미엘피부과", ""] }
   ];
   var SOURCES = [
     { name: "모두닥", role: "\"김포 피부과 TOP10\" — 추천 질문의 최다 인용원", status: "미등재", statusCls: "warn", action: "김포점 프로필 등재 + 후기 요청 루틴" },
@@ -980,7 +1080,7 @@
     "김포 여드름 피부과 추천해줘": { lever: "플랫폼 등재", how: "리멤버가 \"전문의 5인\" 근거로 인용됩니다. 플랫폼 프로필에 여드름 진료 항목·의료진 정보를 채워야 후보군에 듭니다.", opp: 1 },
     "김포에서 울쎄라 잘하는 곳 알려줘": { lever: "콘텐츠+이벤트", how: "울쎄라 원고(콘텐츠 탭에 준비됨) 발행 + 강남언니 울쎄라 이벤트 등록. 리프팅 글이 통한 것처럼 같은 공식.", opp: 3 },
     "김포 올리지오 잘하는 곳 있어?": { lever: "콘텐츠", how: "김포 올리지오 검색은 경쟁이 얕습니다. 올리지오 단독 글(울쎄라와 차이 비교) 하나면 진입 가능.", opp: 3 },
-    "김포 인모드 잘하는 곳 알려줘": { lever: "콘텐츠", how: "김포 인모드 검색은 경쟁이 얕습니다. 블로그에 인모드 글이 8편 있으나 지역 정보가 없어 안 잡히는 상태 — 지역 신호만 넣으면 선점 가능.", opp: 3 },
+    "김포 인모드 잘하는 곳 알려줘": { lever: "선점 성공 · 유지", how: "7/28 웹검색에서 인모드리프팅 랜딩 페이지가 1위로 인용됐습니다(직전 미노출). 얕은 경쟁 키워드에 전용 페이지가 통한다는 증거 — 같은 방식(시술별 랜딩 페이지)을 올리지오·리쥬란에 복제하세요.", opp: 3 },
     "김포 리쥬란 스킨부스터 맞을 만한 곳?": { lever: "콘텐츠", how: "리쥬란 전용 페이지·글이 없어 톡스앤필·닥터나우 매거진만 뜹니다. 스킨부스터 종류 비교 글로 진입.", opp: 3 },
     "김포 필러 잘하는 병원 알려줘": { lever: "콘텐츠", how: "미소가인이 부위별 필러 페이지로 상위. 팔자·눈밑·입술 등 부위별 필러 콘텐츠가 필요합니다.", opp: 2 },
     "김포 기미 잡티 레이저 어디가 좋아?": { lever: "콘텐츠", how: "색소 치료 콘텐츠에 보유 장비명과 기미/잡티/주근깨 구분 설명을 넣어야 인용됩니다.", opp: 2 },
@@ -990,7 +1090,9 @@
     "장기동 피부과 보톡스 어디가 좋아?": { lever: "콘텐츠", how: "경쟁 빈약. \"장기동+보톡스\" 조합을 제목·본문에 넣은 글로 선점.", opp: 3 },
     "운양동에서 갈 만한 피부과 있어?": { lever: "콘텐츠", how: "델타피부과가 동네 키워드를 선점. 운양동에서 구래역까지 접근성을 다룬 콘텐츠로 대응.", opp: 2 },
     "유앤아이의원 김포점 어때? 후기 있어?": { lever: "플랫폼 등재", how: "후기 플랫폼에 김포점이 없어 공식 사이트만 뜹니다. 모두닥·굿닥 등재 시 즉시 해결.", opp: 3 },
-    "김포 리프팅 잘하는 피부과 어디야?": { lever: "콘텐츠 강화", how: "새 리프팅 글이 3위 진입 — 정확 문구까지 밀려면 글 끝에 FAQ 추가 + 시술별 내부 링크 보강.", opp: 3 }
+    "김포 리프팅 잘하는 피부과 어디야?": { lever: "콘텐츠 강화", how: "7/24 3위 진입했다가 7/28 이탈 — 미소가인·리멤버가 리프팅 전용 페이지로 자리를 되찾았습니다. 순위가 흔들린다는 건 경계선에 있다는 뜻이니, 글 끝 FAQ와 시술별 내부 링크로 밀어 올리면 회복 가능합니다.", opp: 3 },
+    "구래역 피부과 알려줘": { lever: "콘텐츠 유지", how: "7/24 1위였다가 7/28 이탈(미엘·리멤버가 차지). 네이버에서는 여전히 노출되므로 콘텐츠는 있습니다 — 구래역 도보 시간·출구 번호를 본문에 명시한 글을 대표글로 지정해 고정시키세요.", opp: 3 },
+    "김포 레이저 제모 어디서 받는 게 좋아?": { lever: "플랫폼 등재", how: "7/24 1위였다가 7/28 이탈. 상위를 플랜·톡스앤필·제모데이 등재 병원이 채웠습니다 — 콘텐츠는 이미 통했으니 제모데이에 아포지 플러스·부위별 가격을 등재해 고정 인용원을 만드는 것이 남은 일입니다.", opp: 3 }
   };
   var BLOG_RULES = [
     { t: "제목: 지역 + 키워드 + 구체적 약속", d: "이미 통한 두 글의 공식 그대로. 예: '김포 리프팅 잘하는곳, 고를 때 장비보다 먼저 확인해야 할 3가지'. 키워드를 여러 번 반복하는 건 오히려 역효과(GEO 연구에서 −8.7%)." },
@@ -1444,24 +1546,31 @@
   /* ============ 모델별 / 경쟁 / 출처 ============ */
   function renderModels() {
     var tb = $("modelTable").querySelector("tbody");
+    function rateOf(list) {
+      if (!list.length) return null;
+      var sc = 0;
+      list.forEach(function (r) { sc += score(r); });
+      return Math.round(sc / list.length * 100);
+    }
     tb.innerHTML = ENGINES.map(function (en) {
-      var auto = [];
-      AI_MEASURE.forEach(function (am) {
-        if (am.engine !== en.id) return;
-        Object.keys(am.results).forEach(function (q) {
-          if (am.results[q] !== "오류") auto.push(am.results[q]);
-        });
+      var runs = AI_MEASURE.filter(function (am) { return am.engine === en.id; });
+      var all = [], last = [], lastDate = "";
+      runs.forEach(function (am, i) {
+        var vals = Object.keys(am.results).map(function (q) { return am.results[q]; }).filter(function (r) { return r !== "오류"; });
+        all = all.concat(vals);
+        if (i === runs.length - 1) { last = vals; lastDate = am.date; }
       });
       var cell, meta;
-      if (!auto.length) {
-        cell = '<span style="font-size:12px;color:var(--faint)">' + "기록 없음" + "</span>";
+      if (!last.length) {
+        cell = '<span style="font-size:12px;color:var(--faint)">기록 없음</span>';
         meta = "–";
       } else {
-        var sc = 0;
-        auto.forEach(function (r) { sc += score(r); });
-        var rate = Math.round(sc / auto.length * 100);
-        cell = '<div class="ratebar"><div class="track"><div class="fill" style="width:' + rate + '%"></div></div><span class="pct num">' + rate + "%</span></div>";
-        meta = auto.length + "회";
+        var rate = rateOf(last), avg = rateOf(all);
+        var prev = runs.length > 1 ? rateOf(Object.keys(runs[runs.length - 2].results).map(function (q) { return runs[runs.length - 2].results[q]; }).filter(function (r) { return r !== "오류"; })) : null;
+        var delta = prev === null || prev === rate ? "" :
+          ' <span style="font-size:11px;color:var(--faint)">' + (rate > prev ? "▲" : "▼") + Math.abs(rate - prev) + "p</span>";
+        cell = '<div class="ratebar"><div class="track"><div class="fill" style="width:' + rate + '%"></div></div><span class="pct num">' + rate + "%</span>" + delta + "</div>";
+        meta = md(lastDate) + " · 누적 " + avg + "% (" + all.length + "회)";
       }
       return '<tr class="rowhover"><td><span class="dot" style="background:' + en.color + ';margin-right:8px"></span><b>' + en.id + "</b></td>" +
         "<td>" + cell + '</td><td class="mono">' + meta + "</td></tr>";
@@ -1495,14 +1604,22 @@
     $("sovCount").textContent = "자동 측정 " + auto2.length + "회 · 수동 기록 " + log.length + "건";
     $("sovChart").innerHTML = chartSVG({ range: range, width: $("sovChart").clientWidth });
     var tb = $("sovTable").querySelector("tbody");
+    var lastM = MEASURE.length ? MEASURE[MEASURE.length - 1] : null;
+    $("sovLastHead").textContent = lastM ? "최근 자동측정 (" + md(lastM.date) + ")" : "최근 자동측정";
+    function pill(r) {
+      return r ? '<span class="pill ' + (r === "노출" ? "ok" : r === "부분" ? "part" : "off") + '">' + r + "</span>" : '<span style="font-size:12px;color:var(--faint)">미측정</span>';
+    }
     tb.innerHTML = allPrompts().map(function (p) {
       var mine = log.filter(function (e) { return e.kw === p.q; });
       var lastE = mine.length ? mine[mine.length - 1] : null;
-      var basePill = p.base ? '<span class="pill ' + (p.base === "노출" ? "ok" : p.base === "부분" ? "part" : "off") + '">' + p.base + "</span>" : '<span style="font-size:12px;color:var(--faint)">미측정</span>';
+      var now = lastM && lastM.results[p.q];
+      var moved = p.base && now && p.base !== now;
       var minePill = lastE
         ? glyph(lastE.r, engColor(lastE.ch)) + ' <span style="font-size:12px">' + esc(lastE.r) + ' <span style="color:var(--faint)">· ' + esc(lastE.ch) + " · " + md(lastE.date) + "</span></span>"
         : '<span style="font-size:12px;color:var(--faint)">기록 없음</span>';
-      return '<tr class="rowhover"><td><b>' + esc(p.q) + "</b></td><td class=\"mono\">" + esc(p.cat) + "</td><td>" + basePill + "</td><td>" + minePill + "</td></tr>";
+      return '<tr class="rowhover"><td><b>' + esc(p.q) + "</b></td><td class=\"mono\">" + esc(p.cat) + "</td><td>" + pill(p.base) + "</td><td>" + pill(now) +
+        (moved ? ' <span style="font-size:11px;color:var(--faint)">' + (score(now) > score(p.base) ? "▲" : "▼") + "</span>" : "") +
+        "</td><td>" + minePill + "</td></tr>";
     }).join("");
   }
   document.querySelectorAll("#rangeSeg button").forEach(function (b) {
