@@ -224,21 +224,10 @@
   .docbody blockquote { margin: 14px 0; padding: 12px 16px; background: var(--inset); border-left: 3px solid var(--line2); border-radius: 0 8px 8px 0; font-size: 13px; color: var(--muted); }
   .docbody pre { background: var(--inset); border: 1px solid var(--line); border-radius: 8px; padding: 14px; overflow-x: auto; font-size: 12px; line-height: 1.55; word-break: normal; overflow-wrap: normal; }
 
-  /* ================= plan ================= */
   .progress { display: flex; align-items: center; gap: 12px; margin: 6px 0 18px; }
   .bar { flex: 1; height: 6px; border-radius: 999px; background: var(--off-bg); overflow: hidden; }
   .bar > div { height: 100%; background: var(--ink); border-radius: 999px; transition: width .25s; }
   .progress .n { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
-  .todo { display: grid; grid-template-columns: 26px 1fr; gap: 10px; padding: 12px 18px; border-bottom: 1px solid var(--line); cursor: pointer; }
-  .todo:last-child { border-bottom: 0; }
-  .todo:hover { background: var(--inset); }
-  .todo input { width: 16px; height: 16px; margin-top: 3px; accent-color: var(--ink); cursor: pointer; }
-  .todo .t { font-size: 13.5px; font-weight: 600; }
-  .todo.done .t { color: var(--faint); font-weight: 500; text-decoration: line-through; }
-  .todo .d { font-size: 12.5px; color: var(--muted); text-wrap: pretty; }
-  .todo .steps { margin: 7px 0 2px; padding-left: 17px; font-size: 12.5px; color: var(--muted); }
-  .todo .steps li { margin: 3px 0; }
-  .todo.done .steps { display: none; }
   .grplabel { font-size: 11px; font-weight: 700; color: var(--faint); letter-spacing: .06em; padding: 18px 18px 6px; }
   .bpost { border: 1px solid var(--line); border-radius: 10px; background: var(--card); box-shadow: var(--shadow); margin: 10px 0; overflow: hidden; }
   .bpost .bhead { display: grid; grid-template-columns: 26px 1fr auto; gap: 12px; padding: 15px 18px; cursor: pointer; align-items: start; }
@@ -360,7 +349,6 @@
     <button class="nav" data-page="sources"><svg viewBox="0 0 16 16"><path d="M6.5 9.5 9.5 6.5M5 11 3.6 12.4a2.2 2.2 0 0 1-3.1-3.1L3.9 5.9a2.2 2.2 0 0 1 3.1 0M11 5l1.4-1.4a2.2 2.2 0 0 1 3.1 3.1l-3.4 3.4a2.2 2.2 0 0 1-3.1 0" transform="scale(.88) translate(1,1)"/></svg>인용 출처</button>
     <div class="grp">실행</div>
     <button class="nav" data-page="test"><svg viewBox="0 0 16 16"><path d="M6 2h4M7 2v4.2L3.2 12a1.6 1.6 0 0 0 1.4 2.5h6.8a1.6 1.6 0 0 0 1.4-2.5L9 6.2V2"/></svg>키워드 테스트</button>
-    <button class="nav" data-page="plan"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2.6"/><path d="M8 2v1.8M8 12.2V14M2 8h1.8M12.2 8H14"/></svg>노출 기획<span class="bdg" id="bdgPlan"></span></button>
     <div class="grp">발행</div>
     <button class="nav" data-page="blog"><svg viewBox="0 0 16 16"><path d="M2.5 3.2h11M2.5 6.4h11M2.5 9.6h7M2.5 12.8h7"/></svg>블로그 기획<span class="bdg" id="bdgBlog"></span></button>
     <button class="nav" data-page="docs"><svg viewBox="0 0 16 16"><path d="M4 1.8h5.5L13 5.3V13a1.2 1.2 0 0 1-1.2 1.2H4A1.2 1.2 0 0 1 2.8 13V3A1.2 1.2 0 0 1 4 1.8zM9.3 2v3.5H13M5.4 8.2h5.2M5.4 10.8h5.2"/></svg>콘텐츠<span class="bdg" id="bdgDocs"></span></button>
@@ -390,7 +378,7 @@
       <section class="page active" id="page-home">
         <p class="desc">유앤아이의원 김포점이 AI 검색(ChatGPT·Gemini)과 네이버에서 얼마나 추천되는지 추적하고, 노출을 늘리는 실행까지 한 곳에서 관리합니다.</p>
 
-        <div class="panel strip">
+        <div class="panel strip strip3">
           <div class="cell">
             <div class="k">노출 점유율</div>
             <div class="v num" id="hSov">–</div>
@@ -406,12 +394,6 @@
             <div class="k">테스트 기록</div>
             <div class="v num" id="hTests">0</div>
             <div class="d">AI별 기록 누적</div>
-          </div>
-          <div class="cell">
-            <div class="k">노출 기획 진행</div>
-            <div class="v num" id="hPlan">0<span class="unit">/10</span></div>
-            <div class="d">완료 항목</div>
-            <div class="microbar"><div class="fill" id="hPlanBar" style="width:0%"></div></div>
           </div>
         </div>
 
@@ -431,7 +413,6 @@
             <div class="panel">
               <div class="rowitem" data-go="test"><div><div class="t">오늘의 키워드 테스트</div><div class="s">6개 AI에 질문을 던지고 결과를 기록하세요</div></div><div class="right"><span class="date">→</span></div></div>
               <div class="rowitem" data-go="docs"><div><div class="t">콘텐츠 초안·문서 4건</div><div class="s">블로그 원고 3편 + 웹업체 기술 요청서</div></div><div class="right"><span class="date">→</span></div></div>
-              <div class="rowitem" data-go="plan"><div><div class="t">노출 기획 체크리스트</div><div class="s">플랫폼 등재·리뷰·블로그 발행 진행 관리</div></div><div class="right"><span class="date">→</span></div></div>
               <div class="rowitem" data-go="report"><div><div class="t">9월 리포트 보기</div><div class="s">9/28 측정 결과와 진단 — 다음 자동 측정 9/30</div></div><div class="right"><span class="date">→</span></div></div>
             </div>
           </div>
@@ -489,7 +470,7 @@
           </table>
         </div>
         <div class="callout"><span class="cap">기준</span>이 표는 <b>익명 조건의 실측만</b> 집계합니다 — ChatGPT·Gemini는 API, 네이버는 로그인 없는 통합검색 결과 기준입니다. 개인 계정 기록은 기억·위치 개인화로 부풀 수 있어 제외했습니다 (수동 기록은 프롬프트 보드의 점으로만 표시).</div>
-        <div class="callout"><span class="cap">읽는 법</span><b>네이버는 지금 우리가 가장 강한 채널입니다</b> — 원장 블로그 381편이 실제로 검색 결과를 잡고 있습니다. 반대로 ChatGPT는 같은 질문에서 거의 잡히지 않습니다. 네이버에서 이미 이긴 키워드가 AI 답변으로 넘어오지 못하고 있다는 뜻이고, 그 사이를 메우는 것이 노출 기획의 핵심입니다.</div>
+        <div class="callout"><span class="cap">읽는 법</span><b>네이버는 지금 우리가 가장 강한 채널입니다</b> — 원장 블로그 381편이 실제로 검색 결과를 잡고 있습니다. 반대로 ChatGPT는 같은 질문에서 거의 잡히지 않습니다. 네이버에서 이미 이긴 키워드가 AI 답변으로 넘어오지 못하고 있다는 뜻이고, 그 사이를 메우는 것이 핵심 과제입니다.</div>
 
         <h2>질문별 경쟁 구도<small>자동측정과 같은 웹 인용 소스 기준 — AI에게 직접 물은 위 표와는 기준이 다릅니다 (판정 변화 시 갱신)</small></h2>
         <p class="desc" style="margin-bottom:12px">AI가 답변 근거로 인용하는 웹 소스에서 상위에 등장한 병원 순서입니다. 강조 표시된 칩이 우리 병원입니다.</p>
@@ -542,22 +523,6 @@
           <table class="data" id="logtable" style="min-width:560px">
             <thead><tr><th>날짜</th><th>프롬프트</th><th>모델</th><th>결과</th><th></th></tr></thead>
             <tbody id="logbody"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- ================= 노출 기획 ================= -->
-      <section class="page" id="page-plan">
-        <p class="desc">측정 데이터로 <b>공백이 확인된 것만</b> 모았습니다 — 이미 진행 중인 블로그·네이버 관리·리뷰 요청은 뺐습니다. 완료를 체크하면 모두에게 공유됩니다.</p>
-        <div class="progress"><div class="bar"><div id="planbar" style="width:0%"></div></div><span class="n num" id="plancount">0 / 10 완료</span></div>
-        <div class="panel" id="planlist"></div>
-
-        <h2>미노출 키워드 공략<small>최근 측정 기준 — 키워드마다 뚫는 방법이 다릅니다</small></h2>
-        <p class="desc" style="margin-bottom:12px">추천·비교 질문은 <b>플랫폼 등재</b>로, 시술·동네 질문은 <b>해당 키워드 콘텐츠</b>로 뚫립니다. 기회도가 높은 것부터 손대면 효율이 좋습니다.</p>
-        <div class="panel tablewrap">
-          <table class="data" id="playTable" style="min-width:760px">
-            <thead><tr><th>키워드</th><th>상태</th><th>현재 상위</th><th>공략 방법</th><th>기회도</th></tr></thead>
-            <tbody></tbody>
           </table>
         </div>
       </section>
@@ -660,7 +625,7 @@
         <div class="callout"><span class="cap">원인 3</span><b>동네 키워드 공백.</b> 구래동(소재지)·운양동·장기동 검색에서 전멸 — 콘텐츠가 "김포" 단위로만 말하고 동네 단위 언어를 쓰지 않습니다.</div>
         <div class="callout"><span class="cap">증명된 강점</span><b>블로그·랜딩 페이지는 이미 통한다.</b> 9/28 웹검색에서 리프팅 글·제모 글이 1위로 돌아왔고, 인모드에 이어 <b>올리지오 랜딩 페이지도 단독 1위</b>에 올랐습니다. 같은 공식을 울쎄라·리쥬란·동네 키워드에 복제하는 것이 가장 확실한 승부처입니다.</div>
         <div class="callout crit"><span class="cap">채널 격차 (9/28)</span><b>네이버 90% · Gemini 65% · ChatGPT 10%.</b> 네이버에서는 노출되는데 ChatGPT에서는 안 나오는 질문이 <b>16개</b>로 늘었습니다(7/28 14개). ChatGPT는 여전히 병원 이름을 직접 물을 때만 답합니다. Gemini는 제모·야간·필러·마산동에서 빠져 83%→65%로 내려왔습니다. 콘텐츠가 없어서가 아니라, 있는 콘텐츠가 AI까지 닿지 않는 것 — 홈페이지 경량화와 본문 지역 신호가 1순위인 이유입니다.</div>
-        <div class="callout crit"><span class="cap">틀린 정보 인용 (9/28)</span>웹검색 답변 4곳(김포 피부과·리프팅·야간·인모드)이 여전히 <b>"야간/일요일진료"</b>를 인용하고, 야간 질문에선 소재지를 <b>장기동</b>으로 적었습니다. og:description 수정(노출 기획 0번)이 아직 반영되지 않은 것으로 보입니다 — 일요일은 휴진입니다.</div>
+        <div class="callout crit"><span class="cap">틀린 정보 인용 (9/28)</span>웹검색 답변 4곳(김포 피부과·리프팅·야간·인모드)이 여전히 <b>"야간/일요일진료"</b>를 인용하고, 야간 질문에선 소재지를 <b>장기동</b>으로 적었습니다. og:description 수정(콘텐츠 → 웹업체 기술 요청서 요청 0)이 아직 반영되지 않은 것으로 보입니다 — 일요일은 휴진입니다.</div>
       </section>
 
       <!-- ================= 브랜드 관리 ================= -->
@@ -1152,38 +1117,6 @@
     { name: "빙 플레이스 (Bing)", role: "ChatGPT가 참조하는 빙 검색의 지역 정보", status: "활성", statusCls: "ok", action: "등록 완료 — 현 상태 유지 관리" },
     { name: "공식 블로그", role: "제모 글이 이미 키워드 검색을 뚫음", status: "활성", statusCls: "ok", action: "울쎄라·동네·야간 키워드로 확장 (초안 준비됨)" }
   ];
-  var PLAN = [
-    { id: "g01", g: "1. 비교 플랫폼 등재 — 측정으로 미등재가 확인된 곳", t: "모두닥에 김포점 등재", d: "AI가 인용하는 \"김포 피부과 TOP10\"의 원천 — 현재 건대·영등포점만 잡히고 김포점은 없음 (확인됨)", s: ["modoodoc.com 하단 \"병원 등록·제휴\" 문의 (사업자등록증·개설신고증 사본 준비)", "프로필: 진료시간(야간 명시)·시술 메뉴·의료진·원내 사진 10장 이상", "완료 기준: 모두닥에서 \"유앤아이의원 김포점\" 검색 시 프로필 노출"] },
-    { id: "g02", g: "1. 비교 플랫폼 등재 — 측정으로 미등재가 확인된 곳", t: "굿닥·똑닥에 김포점 등재", d: "예약·후기 데이터가 AI 근거로 인용됨 — 타 지점만 등재된 상태 (확인됨)", s: ["굿닥 파트너센터·똑닥 병원 등록 신청", "야간 진료 요일·시간 정확히 표기 — \"야간 피부과\" 필터 노출 조건"] },
-    { id: "g03", g: "1. 비교 플랫폼 등재 — 측정으로 미등재가 확인된 곳", t: "닥터나우·나만의닥터 등재 확인 후 등록", d: "\"김포시 피부과 인기 TOP10\" 리스트의 소스 — 김포점 미확인 상태", s: ["두 앱에서 병원명 검색 → 없으면 병원 등록 요청, 있으면 정보 인증·보완"] },
-    { id: "g04", g: "1. 비교 플랫폼 등재 — 측정으로 미등재가 확인된 곳", t: "강남언니·바비톡 입점 + 이벤트 등록", d: "\"김포 울쎄라\" 등 시술 검색의 주 인용원 — 미등재 (확인됨)", s: ["파트너 입점 신청 후 울쎄라·리프팅·보톡스 이벤트 등록 (샷 수·가격 명시)", "가격 노출 이벤트는 의료광고 사전심의 대상인지 대행사 확인"] },
-    { id: "g05", g: "1. 비교 플랫폼 등재 — 측정으로 미등재가 확인된 곳", t: "제모데이에 기기·가격 등재", d: "미엘·아가파·블리비는 등재돼 제모 검색에 뜨는데 우리는 없음 (확인됨) — 강점 키워드인데 아깝습니다", s: ["jemoday.com 병원 입점 문의 → 아포지 플러스·부위별 가격 등록"] },
-    { id: "g00", g: "0. 즉시 수정 — 잘못된 정보가 AI에 퍼지는 중", t: "홈페이지 og:description의 \"일요일진료\" 수정", d: "메인 <head>의 og:description에 \"야간/일요일진료\"가 실려 있고 AI 답변에 그대로 인용되는 것이 확인됨. 일요일 휴진인데 헛걸음 민원으로 직결", s: ["웹업체에 \"야간/일요일진료 → 야간진료\" 한 줄 수정 요청 (기술 요청서 요청 0)", "수정 후 카카오톡에 홈페이지 링크를 공유해 미리보기 문구 확인"] },
-    { id: "g08", g: "2. 홈페이지 기술 — 진단 완료, 수정 필요 (ChatGPT 공략의 핵심)", t: "웹업체에 기술 요청서 전달", d: "진단 결과: 크롤러 차단은 없음. 실제 문제는 메인 페이지 2.4MB 과체중(ChatGPT 읽기 실패 원인)과 병원 정보 구조화 데이터 부재", s: ["콘텐츠 탭 → \"웹업체 기술 요청서\"(7/25 진단 반영판) 전문 복사해서 전달", "메인 경량화(1MB 이하) + MedicalClinic JSON-LD + OpenAI IP 대역 차단 여부 확인"] },
-    { id: "g09", g: "2. 홈페이지 기술 — 진단 완료, 수정 필요 (ChatGPT 공략의 핵심)", t: "작업 완료 검증", d: "요청만 하고 확인 안 하면 안 된 것과 같습니다", s: ["gpuni114.co.kr/robots.txt에서 허용 목록 확인", "구글 리치 결과 테스트에 홈페이지 URL 입력 → MedicalClinic 인식 확인", "완료되면 채팅으로 알려주기 — 재측정으로 효과 확인"] }
-  ];
-  /* 키워드별 공략 — lever: 뚫는 수단, opp: 기회도(3=상,2=중,1=하) */
-  var PLAYS = {
-    "김포 피부과 추천해줘": { lever: "플랫폼 등재", how: "9/28 웹검색에서 5번째 후보로 처음 이름이 올랐습니다(직전 미노출). 여전히 닥터나우·모두닥 목록이 답의 원천이라 등재가 순위를 올리는 길입니다.", opp: 2 },
-    "김포 보톡스 가격 어느 정도야?": { lever: "플랫폼 등재", how: "가격 질문은 강남언니·모두닥 가격표가 독식합니다. 강남언니 이벤트에 보톡스 단위·가격 등재.", opp: 2 },
-    "김포 여드름 피부과 추천해줘": { lever: "플랫폼 등재", how: "리멤버가 \"전문의 5인\" 근거로 인용됩니다. 플랫폼 프로필에 여드름 진료 항목·의료진 정보를 채워야 후보군에 듭니다.", opp: 1 },
-    "김포에서 울쎄라 잘하는 곳 알려줘": { lever: "콘텐츠+이벤트", how: "울쎄라 원고(콘텐츠 탭에 준비됨) 발행 + 강남언니 울쎄라 이벤트 등록. 리프팅 글이 통한 것처럼 같은 공식.", opp: 3 },
-    "김포 올리지오 잘하는 곳 있어?": { lever: "선점 성공 · 유지", how: "9/28 웹검색에서 올리지오 랜딩 페이지가 유일한 김포 병원으로 인용됐고 네이버도 노출로 바뀌었습니다. 인모드와 같은 공식(시술별 랜딩 페이지)이 통했습니다 — 리쥬란에도 복제하세요.", opp: 3 },
-    "김포 인모드 잘하는 곳 알려줘": { lever: "선점 성공 · 유지", how: "7/28 웹검색에서 인모드리프팅 랜딩 페이지가 1위로 인용됐습니다(직전 미노출). 얕은 경쟁 키워드에 전용 페이지가 통한다는 증거 — 같은 방식(시술별 랜딩 페이지)을 올리지오·리쥬란에 복제하세요.", opp: 3 },
-    "김포 리쥬란 스킨부스터 맞을 만한 곳?": { lever: "콘텐츠", how: "리쥬란 전용 페이지·글이 없어 톡스앤필·닥터나우 매거진만 뜹니다. 스킨부스터 종류 비교 글로 진입.", opp: 3 },
-    "김포 필러 잘하는 병원 알려줘": { lever: "콘텐츠", how: "미소가인이 부위별 필러 페이지로 상위. 팔자·눈밑·입술 등 부위별 필러 콘텐츠가 필요합니다.", opp: 2 },
-    "김포 기미 잡티 레이저 어디가 좋아?": { lever: "콘텐츠", how: "색소 치료 콘텐츠에 보유 장비명과 기미/잡티/주근깨 구분 설명을 넣어야 인용됩니다.", opp: 2 },
-    "김포 야간 진료 피부과 어디 있어?": { lever: "정보 오류 수정 우선", how: "9/28 웹검색 2위로 첫 노출. 그런데 답변이 '야간/일요일진료'(홈페이지 og:description)와 '장기동 소재'라는 틀린 정보를 함께 인용했습니다 — og:description 수정과 플랫폼 소재지 정정이 먼저입니다.", opp: 3 },
-    "구래동 근처 피부과 추천해줘": { lever: "콘텐츠", how: "9/28 웹검색에서 후보 목록 5번째로 첫 노출. 플랫폼 목록에서 나온 것이라 순위가 낮습니다 — 본문에 구래동·구래역 도보를 명시한 대표 글로 위로 끌어올리세요.", opp: 3 },
-    "마산동 피부과 어디 있어?": { lever: "콘텐츠", how: "검색 결과 자체가 거의 없습니다. 짧은 글 하나로도 1위 가능한 최고 효율 키워드.", opp: 3 },
-    "장기동 피부과 보톡스 어디가 좋아?": { lever: "콘텐츠", how: "경쟁 빈약. \"장기동+보톡스\" 조합을 제목·본문에 넣은 글로 선점.", opp: 3 },
-    "운양동에서 갈 만한 피부과 있어?": { lever: "콘텐츠", how: "델타피부과가 동네 키워드를 선점. 운양동에서 구래역까지 접근성을 다룬 콘텐츠로 대응.", opp: 2 },
-    "유앤아이의원 김포점 어때? 후기 있어?": { lever: "플랫폼 등재", how: "후기 플랫폼에 김포점이 없어 공식 사이트만 뜹니다. 모두닥·굿닥 등재 시 즉시 해결.", opp: 3 },
-    "김포 리프팅 잘하는 피부과 어디야?": { lever: "회복 · 유지", how: "7/28 이탈 후 9/28 웹검색 1위로 회복 — '김포 리프팅 잘하는곳' 글이 인용됐습니다. 이 글을 리프팅 허브로 키워 장비별 글을 연결하세요.", opp: 3 },
-    "구래역 피부과 알려줘": { lever: "콘텐츠 유지", how: "7/24 1위였다가 7/28 이탈(미엘·리멤버가 차지). 네이버에서는 여전히 노출되므로 콘텐츠는 있습니다 — 구래역 도보 시간·출구 번호를 본문에 명시한 글을 대표글로 지정해 고정시키세요.", opp: 3 },
-    "김포 레이저 제모 어디서 받는 게 좋아?": { lever: "회복 · 플랫폼 등재", how: "9/28 웹검색 1위로 회복(남자 수염 제모 글·아포지 플러스·젠틀맥스 인용). 다만 Gemini에서는 이번에 빠졌습니다 — 제모데이 등재로 고정 인용원을 만드는 것이 남은 일입니다.", opp: 3 },
-    "김포 실리프팅 어디가 좋아?": { lever: "콘텐츠 강화", how: "9/28 웹검색에서 우리 리프팅 글이 인용 소스에는 올랐지만 답변은 다시봄날·화사클리닉을 이름으로 추천(부분). 실리프팅 단독 글에 실 종류·유지기간 표와 병원명을 문장마다 명시해 이름이 답변에 실리게 하세요.", opp: 3 }
-  };
   var BLOG_RULES = [
     { t: "제목: 지역 + 키워드 + 구체적 약속", d: "이미 통한 두 글의 공식 그대로. 예: '김포 리프팅 잘하는곳, 고를 때 장비보다 먼저 확인해야 할 3가지'. 키워드를 여러 번 반복하는 건 오히려 역효과(GEO 연구에서 −8.7%)." },
     { t: "소제목은 실제 검색 질문 문장으로", d: "'울쎄라의 특징'(X) → '울쎄라와 올리지오 중 뭘 먼저 해야 하나요?'(O). 그리고 소제목 바로 아래 첫 문장이 곧 답이어야 합니다. 설명은 그 뒤에." },
@@ -1436,7 +1369,7 @@
   var lastRecordKey = null;
 
   /* ============ 내비 ============ */
-  var TITLES = { home: "홈", sov: "노출 점유율", prompts: "프롬프트", models: "모델별 현황", sources: "인용 출처", test: "키워드 테스트", plan: "노출 기획", blog: "블로그 기획", docs: "콘텐츠", report: "월간 리포트", account: "브랜드 관리" };
+  var TITLES = { home: "홈", sov: "노출 점유율", prompts: "프롬프트", models: "모델별 현황", sources: "인용 출처", test: "키워드 테스트", blog: "블로그 기획", docs: "콘텐츠", report: "월간 리포트", account: "브랜드 관리" };
   function goPage(id, skipPush) {
     document.querySelectorAll(".nav").forEach(function (x) { x.classList.toggle("active", x.dataset.page === id); });
     document.querySelectorAll(".page").forEach(function (x) { x.classList.remove("active"); });
@@ -1736,9 +1669,6 @@
     }
     $("hPrompts").textContent = allPrompts().length;
     $("hTests").textContent = log.length;
-    var done = PLAN.filter(function (p) { return plan[p.id]; }).length;
-    $("hPlan").innerHTML = done + '<span class="unit">/' + PLAN.length + '</span>';
-    $("hPlanBar").style.width = (done / PLAN.length * 100) + "%";
     $("homeChart").innerHTML = chartSVG({ range: 0, width: $("homeChart").clientWidth });
     var recent = log.slice(-5).reverse();
     $("homeRecent").innerHTML = recent.length
@@ -1756,30 +1686,7 @@
     }).join("");
     /* 사이드바 배지 */
     $("bdgPrompts").textContent = allPrompts().length;
-    $("bdgPlan").textContent = done + "/" + PLAN.length;
     $("bdgDocs").textContent = DOCS.length;
-  }
-
-  /* ============ 노출 기획 ============ */
-  function renderPlan() {
-    var html = "", lastG = null;
-    PLAN.forEach(function (p) {
-      if (p.g !== lastG) { html += '<div class="grplabel">' + esc(p.g) + "</div>"; lastG = p.g; }
-      var c = !!plan[p.id];
-      html += '<label class="todo' + (c ? " done" : "") + '" data-todo="' + p.id + '"><input type="checkbox"' + (c ? " checked" : "") + '><span><span class="t">' + esc(p.t) + '</span><br><span class="d">' + esc(p.d) + "</span>" + (p.s ? '<ul class="steps">' + p.s.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "") + "</span></label>";
-    });
-    $("planlist").innerHTML = html;
-    var done = PLAN.filter(function (p) { return plan[p.id]; }).length;
-    $("planbar").style.width = (done / PLAN.length * 100) + "%";
-    $("plancount").textContent = done + " / " + PLAN.length + " 완료";
-    $("planlist").querySelectorAll("input").forEach(function (cb) {
-      cb.addEventListener("change", function () {
-        plan[cb.closest(".todo").dataset.todo] = cb.checked;
-        save(PLAN_KEY, plan);
-        if (SERVER) apiFetch("/api/plan", { method: "PUT", body: JSON.stringify(plan) }).catch(function () {});
-        renderPlan(); renderHome();
-      });
-    });
   }
 
   /* ============ 키워드 테스트 ============ */
@@ -1994,37 +1901,8 @@
     $("blogcount").textContent = done + " / " + BLOG_POSTS.length + " 완료";
     $("bdgBlog").textContent = done + "/" + BLOG_POSTS.length;
   }
-  function renderPlays() {
-    var tb = $("playTable") && $("playTable").querySelector("tbody");
-    if (!tb) return;
-    var latest = null;
-    MEASURE.forEach(function (m) { if (!latest || m.date >= latest.date) latest = m; });
-    if (!latest) { tb.innerHTML = '<tr><td colspan="5"><div class="empty">측정 기록이 없습니다.</div></td></tr>'; return; }
-    var top = {};
-    COMPETE.forEach(function (c) { top[c.q] = (c.ranks || []).filter(Boolean)[0] || "–"; });
-    var rows = [];
-    Object.keys(latest.results).forEach(function (q) {
-      var r = latest.results[q];
-      if (r === "노출") return;
-      var play = PLAYS[q];
-      if (!play) return;
-      rows.push({ q: q, r: r, play: play });
-    });
-    rows.sort(function (a, b) { return b.play.opp - a.play.opp; });
-    if (!rows.length) { tb.innerHTML = '<tr><td colspan="5"><div class="empty">미노출 키워드가 없습니다 🎉</div></td></tr>'; return; }
-    var oppLabel = { 3: "상", 2: "중", 1: "하" };
-    tb.innerHTML = rows.map(function (x) {
-      var first = top[x.q];
-      var isMe = first === ME;
-      return '<tr class="rowhover"><td style="max-width:220px"><b>' + esc(x.q) + "</b></td>" +
-        '<td><span class="pill ' + (x.r === "부분" ? "part" : "off") + '">' + esc(x.r) + "</span></td>" +
-        "<td>" + (first && first !== "–" ? '<span class="brandchip' + (isMe ? " me" : "") + '">' + esc(first) + "</span>" : '<span style="color:var(--faint);font-size:12px">–</span>') + "</td>" +
-        '<td style="color:var(--muted);font-size:12.5px;max-width:340px"><b style="color:var(--ink)">' + esc(x.play.lever) + "</b> · " + esc(x.play.how) + "</td>" +
-        '<td><span class="pill ' + (x.play.opp === 3 ? "ok" : x.play.opp === 2 ? "part" : "off") + '">' + oppLabel[x.play.opp] + "</span></td></tr>";
-    }).join("");
-  }
   function renderAll() {
-    renderHome(); renderSov(); renderBoard(); renderModels(); renderLog(); renderPlan(); renderChips(); renderPlays(); renderBlog();
+    renderHome(); renderSov(); renderBoard(); renderModels(); renderLog(); renderChips(); renderBlog();
   }
   $("authBtn").addEventListener("click", function () { AUTHED ? doLogout() : openLogin(); });
   $("loginGo").addEventListener("click", doLogin);
