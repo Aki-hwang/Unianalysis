@@ -1422,7 +1422,7 @@
     });
     if (refV !== null) {
       s += '<line x1="' + PL + '" y1="' + y(refV) + '" x2="' + (W - PR) + '" y2="' + y(refV) + '" stroke="var(--faint)" stroke-width="1" stroke-dasharray="3 4"/>';
-      s += '<text x="' + (PL + 5) + '" y="' + (y(refV) - 5) + '" text-anchor="start" font-size="10.5" fill="var(--faint)">첫 측정 ' + refV + "%</text>";
+      s += '<text x="' + (W - PR - 2) + '" y="' + (y(refV) + 13) + '" text-anchor="end" font-size="10.5" fill="var(--faint)">첫 측정 ' + refV + "%</text>";
     }
     function drawLine(pts, stroke, dash, fillArea) {
       if (pts.length > 1) {
@@ -1442,9 +1442,15 @@
       s += '<circle cx="' + x(p.d).toFixed(1) + '" cy="' + y(p.v).toFixed(1) + '" r="' + (last ? 4 : 2.7) + '" fill="var(--ink)"' + (last ? ' stroke="var(--surface)" stroke-width="1.5"' : "") + '><title>' + p.d + " · 자동 측정 " + p.v + "%</title></circle>";
     });
     var labels = auto.length ? auto : manual;
+    /* 날짜 라벨이 겹치지 않게 최소 간격(38px)을 두고 표시 — 마지막 날짜는 항상 표시 */
+    var GAP = 38, shown = [];
     labels.forEach(function (p, i) {
-      if (labels.length <= 8 || i === labels.length - 1 || i === 0)
-        s += '<text x="' + x(p.d).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10.5" fill="var(--faint)">' + md(p.d) + "</text>";
+      var px = x(p.d), last = i === labels.length - 1;
+      if (last) { while (shown.length && px - shown[shown.length - 1].px < GAP) shown.pop(); shown.push({ px: px, d: p.d }); }
+      else if (!shown.length || px - shown[shown.length - 1].px >= GAP) shown.push({ px: px, d: p.d });
+    });
+    shown.forEach(function (l) {
+      s += '<text x="' + l.px.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10.5" fill="var(--faint)">' + md(l.d) + "</text>";
     });
     s += "</svg>";
     return s;
