@@ -11,7 +11,7 @@ if (!KEY) {
   console.error("OPENAI_API_KEY 환경변수가 없습니다.");
   process.exit(1);
 }
-const MODEL = process.env.OPENAI_MODEL || "gpt-4o-mini";
+const MODEL = process.env.OPENAI_MODEL || "gpt-4.1-mini";
 const BRAND = "유앤아이";
 const SITE = "gpuni114";
 
@@ -41,7 +41,14 @@ for (const q of prompts) {
   try {
     const raw = await curlPost("https://api.openai.com/v1/responses", {
       model: MODEL,
-      tools: [{ type: "web_search_preview" }],
+      // 검색을 강제하지 않으면 모델이 검색 없이 일반론만 답해 전부 미노출로 나옴 (2026-09-28 확인)
+      // 위치는 김포로 지정 — 실제 김포 사용자가 ChatGPT에 묻는 조건에 맞춤
+      tools: [{
+        type: "web_search_preview",
+        search_context_size: "medium",
+        user_location: { type: "approximate", country: "KR", region: "Gyeonggi-do", city: "Gimpo" },
+      }],
+      tool_choice: { type: "web_search_preview" },
       input: q,
     });
     const data = JSON.parse(raw);

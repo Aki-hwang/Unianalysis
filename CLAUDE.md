@@ -22,7 +22,7 @@
 
 - 측정은 3일에 1회, 아침 8:52 KST (루틴 trig_016wkBLT8A96wrbUdTxKCj1u, cron `CRON_TZ=Asia/Seoul 52 8 3-31/3 * *`, 저장소가 붙은 세션 session_01W5TFRd3k219jZMYb5ZshNB로 발화). 구 루틴 trig_018jrepMYrpQkTLYNbfw2zKH는 저장소 없는 환경에서 돌아 7/31 이후 결과가 안 남았고 꺼져 있음 — 웹검색 측정과 채널 실측(AI+네이버)을 같은 실행에서 함께 수행해 날짜 정합성 유지
 - 웹검색 측정: PROMPTS 전체 + 서버 공유 저장의 custom.added
-- 채널 실측: scripts/measure-gemini.mjs, scripts/measure-chatgpt.mjs (curl 기반, api.openai.com 허용 필요), scripts/measure-naver.mjs (네이버 통합검색, API 키 불필요 · search.naver.com 허용 필요)
+- 채널 실측: scripts/measure-gemini.mjs, scripts/measure-chatgpt.mjs (curl 기반, api.openai.com 허용 필요, gpt-4.1-mini + web_search 강제 + 김포 위치), scripts/measure-naver.mjs (네이버 통합검색, API 키 불필요 · search.naver.com 허용 필요)
 - 네이버 판정은 병원명 "유앤아이" 주변 ±80자에 김포/구래/gpuni114/detach3975/최수정이 있어야 우리 지점으로 인정 (타지점 오인 방지)
 - 매 실행 시 Railway 공유 저장(unianalysis-production.up.railway.app/api/state)에서 새 수동 기록을 확인해 보고에 포함 (도메인 네트워크 허용 필요 — 2026-09-28 기준 클라우드 환경 정책이 이 도메인을 차단(403)해 확인 불가)
 - 결과는 MEASURE 배열에 날짜별 항목으로 추가 (같은 날 2회면 별도 항목, 차트는 그날 마지막 값 사용)
@@ -45,6 +45,6 @@
 - 총 538편 — 미노출 키워드마다 이미 3~65편씩 존재. 제목 기준 진짜 공백은 한강신도시·야간진료 2개뿐
 - 글 구조는 이미 GEO 최적화됨 (질문형 H2, FAQ 섹션, FAQPage·MedicalWebPage 스키마) — **빠진 것은 본문 지역 신호뿐**
 - 인블로그 리포트(7월): 14편 중 상위노출 4개 키워드, 전부 힐로웨이브 글 1편에서 발생 (김포 힐로웨이브 1위)
-- 채널 실측 추이 (브랜드명 단독 질의 제외, 19개 기준): 네이버 79%(7/28) → **89%**(9/28) · Gemini 82% → **63%** · ChatGPT 5% → **5%**(변화 없음, 후기 질문만 노출) · 웹검색 16% → **45%**. 2026-09-28 소유자 지시로 "유앤아이의원 김포점" 단독 질의를 PROMPTS와 과거 측정 전체에서 삭제 — 항상 노출이라 노출률만 부풀림
-- 네이버 노출·ChatGPT 미노출 키워드가 **16개**(9/28) — 콘텐츠가 없어서가 아니라 있는 콘텐츠가 ChatGPT까지 닿지 않는 것. 이 격차가 핵심 공략 지점이며 홈페이지 경량화·본문 지역 신호가 1순위인 근거
+- 채널 실측 추이 (브랜드명 단독 질의 제외, 19개 기준): 네이버 79%(7/28) → **89%**(9/28) · Gemini 82% → **63%** · ChatGPT 5% → **16%**(9/28부터 웹검색 강제·김포 위치 지정으로 측정 방식 수정 — 7/25·7/28 값은 모델이 검색 없이 답한 것이라 과소측정) · 웹검색 16% → **45%**. 2026-09-28 소유자 지시로 "유앤아이의원 김포점" 단독 질의를 PROMPTS와 과거 측정 전체에서 삭제 — 항상 노출이라 노출률만 부풀림
+- 네이버 노출·ChatGPT 미노출 키워드가 **14개**(9/28) — 콘텐츠가 없어서가 아니라 있는 콘텐츠가 ChatGPT까지 닿지 않는 것. 이 격차가 핵심 공략 지점이며 홈페이지 경량화·본문 지역 신호가 1순위인 근거
 - 수정 후 검증: 인라인 스크립트 추출 → `node --check`, 필요시 playwright(chromium `/opt/pw-browsers/chromium`)
