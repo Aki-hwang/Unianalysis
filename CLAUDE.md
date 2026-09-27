@@ -7,7 +7,7 @@
 - **모든 커밋은 특별한 지시가 없는 한 항상 main에도 반영한다** (소유자 지시, 2026-07-25):
   `git branch -f main HEAD && git push origin main`
 - 작업 브랜치: `claude/vibrant-fermat-yhzusg` (2026-09-28부터, 커밋 후 브랜치·main 둘 다 푸시)
-- main 푸시 → Railway 자동 배포: https://unianalysis-production.up.railway.app (소유자가 상시 확인하는 주소)
+- main 푸시 → Railway 자동 배포: https://unianalysis-production.up.railway.app (소유자가 상시 확인하는 주소). Railway 배포 브랜치는 **main** (2026-09-28 전환 — 그전엔 claude/hospital-search-visibility-abe0ue를 보고 있어 main 푸시가 반영 안 됐음)
 - 대시보드 아티팩트도 같은 파일로 재게시: https://claude.ai/code/artifact/c2b086c8-2de0-41a2-95cf-2d8ab7021afe
 
 ## 병원 사실 관계 (틀리면 안 됨)
