@@ -24,7 +24,7 @@
 - 웹검색 측정: PROMPTS 전체 + 서버 공유 저장의 custom.added
 - 채널 실측: scripts/measure-gemini.mjs, scripts/measure-chatgpt.mjs (curl 기반, api.openai.com 허용 필요, gpt-4.1-mini + web_search 강제 + 김포 위치), scripts/measure-naver.mjs (네이버 통합검색, API 키 불필요 · search.naver.com 허용 필요)
 - 네이버 판정은 병원명 "유앤아이" 주변 ±80자에 김포/구래/gpuni114/detach3975/최수정이 있어야 우리 지점으로 인정 (타지점 오인 방지)
-- 매 실행 시 Railway 공유 저장(unianalysis-production.up.railway.app/api/state)에서 새 수동 기록을 확인해 보고에 포함 (도메인 네트워크 허용 필요 — 2026-09-28 기준 클라우드 환경 정책이 이 도메인을 차단(403)해 확인 불가)
+- 매 실행 시 Railway 공유 저장(unianalysis-production.up.railway.app/api/state)에서 새 수동 기록을 확인해 보고에 포함 (2026-10-15 소유자가 클라우드 환경 Allowed domains에 추가해 접속 가능 — 그전엔 403 차단. 10/15 확인 시 custom.added 0개, 수동 기록 59건은 모두 7/25~26 것)
 - 결과는 MEASURE 배열에 날짜별 항목으로 추가 (같은 날 2회면 별도 항목, 차트는 그날 마지막 값 사용)
 - 판정 기준: 상위 인용 소스에 병원명 등장=노출 / 링크·타지점만=부분 / 없음=미노출
 - 측정 후: 커밋 → 브랜치+main 푸시 → 아티팩트 재게시 → 변화 요약 보고 (변화 없으면 한 줄)
