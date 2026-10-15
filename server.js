@@ -112,7 +112,7 @@ const TYPES = {
   ".md": "text/markdown; charset=utf-8"
 };
 
-http.createServer(async (req, res) => {
+async function handle(req, res) {
   const url = new URL(req.url || "/", "http://x");
   const p = url.pathname;
 
@@ -187,10 +187,17 @@ http.createServer(async (req, res) => {
     }
   }
 
-  let fp = decodeURIComponent(p);
+  // 봇이 보내는 깨진 % 인코딩 주소(예: /%E0%A4%A)는 400으로 돌려보냄 — 예전엔 여기서 예외가 나 서버가 통째로 죽었음
+  let fp;
+  try { fp = decodeURIComponent(p); } catch (e) { res.writeHead(400); return res.end(); }
   if (fp === "/") fp = "/index.html";
-  const file = path.join(ROOT, path.normalize(fp));
-  if (!file.startsWith(ROOT)) { res.writeHead(403); return res.end(); }
+  // 공개 파일은 대시보드 한 장뿐 — server.js·CLAUDE.md·scripts 등 저장소 파일이 그대로 노출되던 것을 막음
+  const PUBLIC = { "/index.html": true };
+  if (!PUBLIC[fp]) {
+    res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+    return res.end("Not found");
+  }
+  const file = path.join(ROOT, fp);
   fs.readFile(file, (err, data) => {
     if (err) {
       res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
@@ -198,5 +205,14 @@ http.createServer(async (req, res) => {
     }
     res.writeHead(200, { "Content-Type": TYPES[path.extname(file).toLowerCase()] || "application/octet-stream" });
     res.end(data);
+  });
+}
+
+// 요청 하나의 예외가 서버 전체를 죽이지 않도록 마지막 안전망
+http.createServer((req, res) => {
+  handle(req, res).catch((e) => {
+    console.error("request failed:", req.method, req.url, e && e.message);
+    if (!res.headersSent) res.writeHead(500);
+    res.end();
   });
 }).listen(PORT, () => console.log(`unianalysis listening on ${PORT} (storage: ${PERSISTENT ? "volume " + DATA_DIR : "ephemeral"})`));
