@@ -209,10 +209,27 @@ async function handle(req, res) {
 }
 
 // 요청 하나의 예외가 서버 전체를 죽이지 않도록 마지막 안전망
-http.createServer((req, res) => {
+const server = http.createServer((req, res) => {
   handle(req, res).catch((e) => {
     console.error("request failed:", req.method, req.url, e && e.message);
     if (!res.headersSent) res.writeHead(500);
     res.end();
   });
 }).listen(PORT, () => console.log(`unianalysis listening on ${PORT} (storage: ${PERSISTENT ? "volume " + DATA_DIR : "ephemeral"})`));
+
+// 재배포 때 Railway가 이전 컨테이너에 SIGTERM을 보냄. 처리기가 없으면 Node가 종료 코드 143으로 끝나
+// Railway가 이를 "Deploy Crashed"로 보고했음 — 대기 중인 저장을 마무리하고 정상 종료(0)한다
+function shutdown(sig) {
+  console.log(`${sig} 수신 — 저장 후 종료`);
+  if (writeTimer) {
+    clearTimeout(writeTimer);
+    try { fs.writeFileSync(DATA_FILE, JSON.stringify(state)); } catch (e) { console.error("persist failed:", e.message); }
+  }
+  server.close(() => process.exit(0));
+  setTimeout(() => process.exit(0), 3000).unref();
+}
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("SIGINT", () => shutdown("SIGINT"));
+// 놓친 예외 하나로 프로세스가 죽지 않게 로그만 남김
+process.on("uncaughtException", (e) => console.error("uncaught:", e && e.stack));
+process.on("unhandledRejection", (e) => console.error("unhandled:", e && (e.stack || e)));
