@@ -33,12 +33,12 @@
 
 ## 코드 구조
 
-- `index.html` — 단일 파일 대시보드 (온더AI 스타일 라이트 SaaS). 데이터는 상단 JS의 MEASURE/AI_MEASURE/PROMPTS/COMPETE/SOURCES/DOCS 배열 (노출 기획 페이지·PLAN·PLAYS는 2026-09-28 소유자 지시로 삭제)
+- `index.html` — 단일 파일 대시보드 (온더AI 스타일 라이트 SaaS). 데이터는 상단 JS의 MEASURE/AI_MEASURE/PROMPTS/COMPETE/SOURCES 배열 (노출 기획 페이지·PLAN·PLAYS는 2026-09-28, 블로그 기획·콘텐츠 페이지(BLOG_POSTS·DOCS)는 2026-10-17 소유자 지시로 삭제 — 다시 만들지 말 것). 상단 칩은 가장 최근 측정일 표시
 - 사용자 기록(수동 테스트·직접 추가 프롬프트)은 서버 공유 저장(`/api/state` — server.js가 shared-state.json에 저장). Railway Volume(/data 마운트) 필요 — 없으면 재배포 시 초기화. API 미접속 환경(아티팩트·로컬)에선 localStorage 폴백
 - `server.js` + `package.json` — Railway용 zero-dependency 서버 (정적 + 공유 저장 API + 인증)
 - server.js는 **index.html만 공개** (2026-10-15부터 — 그전엔 저장소 파일 전부(server.js·CLAUDE.md·scripts) 노출). 깨진 % 인코딩 주소 요청 하나에 서버가 죽어 Railway "Deployment crashed"가 반복되던 버그도 같은 날 수정 — 요청 예외는 전부 handle().catch로 잡음. 재배포마다 뜨던 "Deploy Crashed"는 SIGTERM 미처리로 종료 코드 143이 나던 것 — 10/17 SIGTERM 처리기(저장 마무리 후 exit 0) + railway.json(startCommand `node server.js`)으로 수정
 - 인증: 비밀번호는 Railway 환경변수 `ADMIN_PASSWORD` (미설정 시 기본값 uni2026 — 반드시 변경). HMAC 서명 쿠키(30일), 세션 키는 /data/session-secret에 자동 생성. **프롬프트 추가·숨김(`PUT /api/custom`, `PUT /api/state`)만 로그인 필요**, 테스트 기록은 누구나 가능
-- `content/`, `tech/` — 블로그 원고·템플릿·기술 요청서 (대시보드 DOCS와 내용 동기화 유지)
+- `content/`, `tech/` — 블로그 원고·템플릿·기술 요청서 (대시보드에서는 10/17 삭제, 저장소에만 보관)
 
 ## 블로그 운영 현황 (2026-07 실측)
 

@@ -352,9 +352,6 @@
     <button class="nav" data-page="sources"><svg viewBox="0 0 16 16"><path d="M6.5 9.5 9.5 6.5M5 11 3.6 12.4a2.2 2.2 0 0 1-3.1-3.1L3.9 5.9a2.2 2.2 0 0 1 3.1 0M11 5l1.4-1.4a2.2 2.2 0 0 1 3.1 3.1l-3.4 3.4a2.2 2.2 0 0 1-3.1 0" transform="scale(.88) translate(1,1)"/></svg>인용 출처</button>
     <div class="grp">실행</div>
     <button class="nav" data-page="test"><svg viewBox="0 0 16 16"><path d="M6 2h4M7 2v4.2L3.2 12a1.6 1.6 0 0 0 1.4 2.5h6.8a1.6 1.6 0 0 0 1.4-2.5L9 6.2V2"/></svg>키워드 테스트</button>
-    <div class="grp">발행</div>
-    <button class="nav" data-page="blog"><svg viewBox="0 0 16 16"><path d="M2.5 3.2h11M2.5 6.4h11M2.5 9.6h7M2.5 12.8h7"/></svg>블로그 기획<span class="bdg" id="bdgBlog"></span></button>
-    <button class="nav" data-page="docs"><svg viewBox="0 0 16 16"><path d="M4 1.8h5.5L13 5.3V13a1.2 1.2 0 0 1-1.2 1.2H4A1.2 1.2 0 0 1 2.8 13V3A1.2 1.2 0 0 1 4 1.8zM9.3 2v3.5H13M5.4 8.2h5.2M5.4 10.8h5.2"/></svg>콘텐츠<span class="bdg" id="bdgDocs"></span></button>
     <div class="grp">리포트</div>
     <button class="nav" data-page="report"><svg viewBox="0 0 16 16"><path d="M3 1.8h10a.7.7 0 0 1 .7.7V13a1.2 1.2 0 0 1-1.2 1.2H3.5A1.2 1.2 0 0 1 2.3 13V2.5a.7.7 0 0 1 .7-.7zM5.2 5h5.6M5.2 7.6h5.6M5.2 10.2h3.4"/></svg>월간 리포트</button>
     <div class="grp">계정</div>
@@ -369,7 +366,7 @@
     <div class="topbar">
       <h1 id="pagetitle">홈</h1>
       <div class="right">
-        <span class="chip num">기준측정 <span id="baseDateChip">07/24</span></span>
+        <span class="chip num">최근 측정 <span id="baseDateChip">10/15</span></span>
         <span class="chip" id="storeChip">저장 확인 중…</span>
         <button class="btn sm" id="authBtn">로그인</button>
         <button class="btn sm" id="csvBtn2">기록 내보내기</button>
@@ -415,7 +412,6 @@
             <h2 style="margin-top:0">바로 실행</h2>
             <div class="panel">
               <div class="rowitem" data-go="test"><div><div class="t">오늘의 키워드 테스트</div><div class="s">6개 AI에 질문을 던지고 결과를 기록하세요</div></div><div class="right"><span class="date">→</span></div></div>
-              <div class="rowitem" data-go="docs"><div><div class="t">콘텐츠 초안·문서 4건</div><div class="s">블로그 원고 3편 + 웹업체 기술 요청서</div></div><div class="right"><span class="date">→</span></div></div>
               <div class="rowitem" data-go="report"><div><div class="t">10월 리포트 보기</div><div class="s">10/15 측정 결과와 진단 — 다음 자동 측정 10/18</div></div><div class="right"><span class="date">→</span></div></div>
             </div>
           </div>
@@ -495,7 +491,7 @@
           </table>
         </div>
         <div class="callout crit"><span class="cap">치명 원인</span><b>비교 플랫폼에 김포점이 없습니다.</b> AI 답변의 근거가 되는 "김포 피부과 TOP10" 류 목록에 유앤아이는 타 지점(건대·영등포)만 잡힙니다. 목록에 없으면 AI 답변에도 없습니다 — 등재가 1순위인 이유입니다.</div>
-        <div class="callout"><span class="cap">진단 완료 (7/25)</span>홈페이지 점검 결과: 크롤러 차단 없음(robots 허용, 전 AI 크롤러 접속 200), 블로그는 AI가 읽기 좋은 상태. 문제는 <b>메인 페이지가 2.4MB로 과도하게 무거워</b> ChatGPT의 페이지 읽기가 실패하는 것과, 메인에 병원 정보(MedicalClinic) 구조화 데이터가 없는 것. <b>콘텐츠 → 웹업체 기술 요청서</b>(갱신됨)를 전달하세요.</div>
+        <div class="callout"><span class="cap">진단 완료 (7/25)</span>홈페이지 점검 결과: 크롤러 차단 없음(robots 허용, 전 AI 크롤러 접속 200), 블로그는 AI가 읽기 좋은 상태. 문제는 <b>메인 페이지가 2.4MB로 과도하게 무거워</b> ChatGPT의 페이지 읽기가 실패하는 것과, 메인에 병원 정보(MedicalClinic) 구조화 데이터가 없는 것. <b>웹업체 기술 요청서</b>(저장소 tech/ 폴더)를 전달하세요.</div>
       </section>
 
       <!-- ================= 키워드 테스트 ================= -->
@@ -531,59 +527,6 @@
       </section>
 
       <!-- ================= 블로그 기획 ================= -->
-      <section class="page" id="page-blog">
-        <p class="desc">공식 블로그 157편·네이버 블로그 381편(총 538편)·인블로그 순위 리포트를 전수 분석한 결과, <b>글이 부족한 게 아니라 기존 글이 검색에 안 잡히는 것</b>이 문제였습니다. 그래서 이 기획은 신규 글 대량 생산이 아니라 <b>기존 글 살리기 중심</b>으로 짰습니다.</p>
-
-        <div class="callout crit"><span class="cap">먼저 고칠 것 · 글쓰기보다 급함</span><b>홈페이지 메타태그가 AI에게 "일요일진료"라고 알려주고 있습니다.</b> 메인 &lt;head&gt;의 og:description에 <b>"야간/일요일진료"</b>가 라이브로 실려 있고 AI 답변에 그대로 인용되는 것까지 확인됐습니다. 웹업체에 수정을 최우선으로 요청하세요 (기술 요청서 요청 0). 같은 태그의 "김포써마지"는 10/17 써마지 도입으로 이제 맞는 표기라 그대로 두면 됩니다.</div>
-
-        <h2>왜 안 잡혔나 — 블로그 실측 진단</h2>
-        <div class="cols2">
-          <div class="panel" style="padding:18px 20px">
-            <h3 style="margin:0 0 8px;font-size:14.5px">글 구조는 이미 훌륭합니다 — 딱 하나가 빠졌습니다</h3>
-            <p style="margin:0;font-size:13px;color:var(--muted)">상위노출된 글 2편을 뜯어보니 <b>소제목이 전부 질문 문장, 글 끝 FAQ, FAQPage·MedicalWebPage 스키마</b>까지 AI 인용에 필요한 구조를 이미 갖췄습니다. 그런데 <b>구래역·도보·주차·골드라인·진료시간 언급이 본문에 0회</b>입니다. 동네 키워드가 안 잡히는 이유는 글이 없어서가 아니라 <b>글에 동네가 없어서</b>입니다.</p>
-          </div>
-          <div class="panel" style="padding:18px 20px">
-            <h3 style="margin:0 0 8px;font-size:14.5px">AI는 형용사가 아니라 숫자를 인용한다</h3>
-            <p style="margin:0;font-size:13px;color:var(--muted)">경쟁사가 반복 인용되는 건 전부 셀 수 있는 사실입니다 — 리멤버 "전문의 5인", 미소가인 "부위별 유지기간 표", 다시봄날 "구래역 120m". 우리에겐 "지하주차장 3시간 지원" 같은 숫자가 있는데 <b>블로그 본문에 0회</b> 등장합니다.</p>
-          </div>
-        </div>
-        <div class="cols2" style="margin-top:12px">
-          <div class="panel" style="padding:18px 20px">
-            <h3 style="margin:0 0 8px;font-size:14.5px">글이 없어서가 아닙니다 — 이미 208편입니다</h3>
-            <p style="margin:0;font-size:13px;color:var(--muted)">공식 157편 + 네이버 381편 = <b>총 538편</b>입니다. 미노출 키워드마다 글이 <b>이미 3~65편씩</b> 있습니다 (구래동 65 · 제모 39 · 필러 32 · 장기동 29 · 울쎄라 28 · 올리지오 22 · 인모드 20 · 리쥬란 19 · 운양동 11 · 마산동 3). <b>구래동 글이 65편인데도 "구래동 피부과"가 미노출</b>입니다. 제목 기준 진짜 공백은 <b>한강신도시 0 · 야간진료 0편</b> 둘뿐입니다.</p>
-          </div>
-          <div class="panel" style="padding:18px 20px">
-            <h3 style="margin:0 0 8px;font-size:14.5px">공백 선점 전략이 이미 증명됐습니다 <span class="pill ok">근거</span></h3>
-            <p style="margin:0;font-size:13px;color:var(--muted)">인블로그 리포트 기준 7월 발행 14편 중 <b>상위노출은 4개 키워드뿐이고 전부 "힐로웨이브" 글 하나</b>에서 나왔습니다(김포 힐로웨이브 <b>1위</b>, 스킨부스터효과 4위, 스킨부스터 5위). 경쟁자가 없는 신규 시술 키워드라 바로 1위가 된 것 — 아래 1단계 글들이 노리는 것이 정확히 이 구조입니다.</p>
-          </div>
-        </div>
-
-        <h2>모든 글에 적용할 공통 규칙<small>대행사에 그대로 전달 가능</small></h2>
-        <div class="panel" id="blogRules"></div>
-
-        <h2>실행 작업 12건<small>기존 글 강화 8 + 신규 작성 2 + 공식 반복 1 + 운영 전환 1</small></h2>
-        <div class="progress"><div class="bar"><div id="blogbar" style="width:0%"></div></div><span class="n num" id="blogcount">0 / 12 완료</span></div>
-        <div id="blogList"></div>
-      </section>
-
-      <!-- ================= 콘텐츠 ================= -->
-      <section class="page" id="page-docs">
-        <div id="docsList">
-          <p class="desc">AI가 인용하기 좋은 구조(질문형 제목 + 동네 키워드 + FAQ)로 작성된 초안입니다. 열어서 복사한 뒤 블로그·업체에 바로 사용하세요. 새 초안이 필요하면 채팅에서 요청하면 됩니다.</p>
-          <div class="panel" id="docRows"></div>
-        </div>
-        <div id="docDetail" style="display:none">
-          <div class="panel docview">
-            <button class="btn sm back" id="docBack">← 목록으로</button>
-            <h3 id="docTitle"></h3>
-            <div class="meta" id="docMeta"></div>
-            <div class="row" style="margin-bottom:16px"><button class="btn primary sm" id="docCopy">전문 복사</button></div>
-            <div class="docbody" id="docBody"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= 월간 리포트 ================= -->
       <section class="page" id="page-report">
         <p class="desc">2026년 10월 리포트(10/15 측정) — 웹 인용 소스 기준. 3일에 한 번 아침(8:52 KST)에 웹검색 측정과 AI·네이버 실측이 함께 실행되어 갱신됩니다. 즉시 재측정은 채팅에서 "지금 재측정 해줘"라고 요청하세요.</p>
 
@@ -627,7 +570,7 @@
         <div class="callout"><span class="cap">원인 3</span><b>동네 키워드 공백.</b> 구래동(소재지)·운양동·장기동 검색에서 전멸 — 콘텐츠가 "김포" 단위로만 말하고 동네 단위 언어를 쓰지 않습니다.</div>
         <div class="callout"><span class="cap">증명된 강점</span><b>블로그·랜딩 페이지는 이미 통한다.</b> 10/15 웹검색에서 <b>'김포리쥬란' 블로그 글이 리쥬란 질문 1위</b>로 인용됐고, 올리지오·인모드·보톡스 가격도 1위를 지켰습니다. 반면 리프팅·제모는 이번에 빠져 1위 키워드가 측정마다 오가고 있습니다 — 한 번 오른 글에 지역 정보·가격표를 보강해 고정시키는 것이 다음 과제입니다.</div>
         <div class="callout crit"><span class="cap">채널 격차 (10/15)</span><b>네이버 84% · Gemini 74% · ChatGPT 21%.</b> ChatGPT는 리프팅·후기·올리지오·여드름 4개 질문에서 우리 병원을 언급했습니다(10/12 5개). 네이버 노출·ChatGPT 미노출 격차는 <b>12개</b>로 유지됐습니다. Gemini는 구래동·구래역·마산동이 돌아와 63%→74%로 올랐고, 네이버는 필러가 빠져 89%→84%입니다. 남은 격차의 핵심은 여전히 홈페이지 경량화와 본문 지역 신호입니다.</div>
-        <div class="callout crit"><span class="cap">틀린 정보 인용 (10/15)</span>이번 측정에서는 일요일 진료 같은 틀린 정보가 답변에 직접 인용되지 않았습니다. 다만 홈페이지 메타태그의 "야간/일요일진료" 표기(콘텐츠 → 웹업체 기술 요청서 요청 0)는 그대로라 다음 측정에서 다시 인용될 수 있습니다 — 일요일은 휴진입니다. (메타태그의 "김포써마지"는 10/17 써마지 도입으로 이제 맞는 표기입니다.)</div>
+        <div class="callout crit"><span class="cap">틀린 정보 인용 (10/15)</span>이번 측정에서는 일요일 진료 같은 틀린 정보가 답변에 직접 인용되지 않았습니다. 다만 홈페이지 메타태그의 "야간/일요일진료" 표기(웹업체 기술 요청서 요청 0)는 그대로라 다음 측정에서 다시 인용될 수 있습니다 — 일요일은 휴진입니다. (메타태그의 "김포써마지"는 10/17 써마지 도입으로 이제 맞는 표기입니다.)</div>
       </section>
 
       <!-- ================= 브랜드 관리 ================= -->
@@ -1607,139 +1550,6 @@
     { name: "빙 플레이스 (Bing)", role: "ChatGPT가 참조하는 빙 검색의 지역 정보", status: "활성", statusCls: "ok", action: "등록 완료 — 현 상태 유지 관리" },
     { name: "공식 블로그", role: "제모 글이 이미 키워드 검색을 뚫음", status: "활성", statusCls: "ok", action: "울쎄라·동네·야간 키워드로 확장 (초안 준비됨)" }
   ];
-  var BLOG_RULES = [
-    { t: "제목: 지역 + 키워드 + 구체적 약속", d: "이미 통한 두 글의 공식 그대로. 예: '김포 리프팅 잘하는곳, 고를 때 장비보다 먼저 확인해야 할 3가지'. 키워드를 여러 번 반복하는 건 오히려 역효과(GEO 연구에서 −8.7%)." },
-    { t: "소제목은 실제 검색 질문 문장으로", d: "'울쎄라의 특징'(X) → '울쎄라와 올리지오 중 뭘 먼저 해야 하나요?'(O). 그리고 소제목 바로 아래 첫 문장이 곧 답이어야 합니다. 설명은 그 뒤에." },
-    { t: "문단은 앞뒤 없이 혼자 읽혀도 말이 되게", d: "AI는 글을 통째로 읽지 않고 문단 단위로 잘라 가져갑니다. '앞서 말씀드린 것처럼', '이 시술은' 같은 문맥 의존 표현 대신 매번 주어를 명시하세요 — '울쎄라는', '유앤아이의원 김포점은'." },
-    { t: "본문에 지역 신호를 실제로 넣기 (지금 유일하게 빠진 것)", d: "실측 결과 현재 글들은 구조는 완벽한데 본문에 구래역·도보·주차·골드라인·진료시간 언급이 0회입니다. 각 글 본문 중간에 오시는 길 단락 하나만 넣으면 됩니다 — 구래역 도보 시간, 김포골드라인, 지하주차장 3시간, 요일별 진료시간, 감두리빌딩 2층, 인근 동네명." },
-    { t: "숫자와 고유명사를 넣기", d: "AI는 셀 수 있는 것을 인용합니다. 장비 정식 명칭(아포지 플러스, 올리지오), 샷 수 기준, 시술 시간, 유지 기간, 주기 — 형용사 대신 숫자로." },
-    { t: "출처를 명시하기 (후발주자 최대 무기)", d: "식약처 허가 정보, 장비 제조사 공식 사양, 학회 자료를 근거로 밝히면 인용률이 크게 오릅니다. 특히 검색 상위가 아닌 사이트일수록 효과가 큽니다." },
-    { t: "글 끝에 FAQ 4~6개", d: "질문-답변 형식은 AI가 가장 잘 인용하는 구조입니다. 실제 환자가 검색창에 치는 표현 그대로 질문을 쓰세요. 답은 2~3문장으로 완결." },
-    { t: "문장을 다듬기 — 의료 분야 1순위 레버", d: "GEO 연구에서 헬스 카테고리는 통계보다 '문장 유창성'이 인용률에 가장 크게 작용했습니다. 대행사 원고 특유의 어색한 키워드 삽입 문체가 의료에서 특히 손해입니다." },
-    { t: "의료광고법 안전선", d: "효과 보장·단정 표현 금지, 최상급('김포 1등') 금지, 전후사진 주의, 가격 노출 시 사전심의 대상 여부 확인, 리뷰 대가 제공 금지." }
-  ];
-  var BLOG_POSTS = [
-    { no: 1, g: "1단계 · 기존 글 살리기 — 새 글 안 씁니다 (가장 큰 레버)",
-      title: "구래동 대표 글 1편 지정하고 지역 정보 넣기",
-      alt: "36편 중 가장 잘 쓴 글 하나를 대표로 키우기",
-      kw: ["구래동 피부과", "구래역 피부과", "구래동 스킨부스터"],
-      why: "구래동 글이 65편인데 '구래동 피부과'는 미노출입니다. 글이 서로 경쟁해 어느 것도 대표가 되지 못하고, 본문에 구래역·도보·주차·진료시간 언급이 0회입니다. 새로 쓰는 것보다 한 편을 대표로 키우는 게 훨씬 빠릅니다.",
-      outline: ["구래동 글 65편(공식 24·네이버 41) 중 가장 잘 쓰인 1편을 대표로 선정", "그 글 본문 중간에 '오시는 길' 단락 삽입 — 구래역 도보 시간, 김포골드라인, 감두리빌딩 2층, 지하주차장 3시간, 요일별 진료시간(일요일 휴진)", "글 끝 FAQ에 지역 질문 3개 추가 (아래 FAQ 항목 참고)", "나머지 구래동 글 본문 하단에 대표 글 링크 삽입 — '구래동에서 오시는 길 자세히 보기'", "제목에 구래동이 없는 글은 제목 앞에 구래동 추가 검토"],
-      faq: ["구래역에서 도보로 얼마나 걸리나요?", "주차는 얼마나 지원되나요?", "평일 저녁 몇 시까지 진료하나요?"],
-      hooks: ["구래역 출구·도보 시간을 숫자로", "김포한강4로 525 감두리빌딩 2층", "지하주차장 3시간·구래1 공영주차장", "요일별 진료시간(일요일 휴진)"],
-      impact: "구래동·구래역 피부과 → 미노출에서 노출로", diff: "쉬움" },
-
-    { no: 2, g: "1단계 · 기존 글 살리기 — 새 글 안 씁니다 (가장 큰 레버)",
-      title: "울쎄라 대표 글 강화 (28편 보유)",
-      alt: "울쎄라 글 중 대표 1편에 지역 정보와 비교표 추가",
-      kw: ["김포 울쎄라", "김포 울쎄라 잘하는 곳", "김포 울쎄라 가격"],
-      why: "울쎄라 글이 28편 있는데 '김포 울쎄라'는 미노출이고 에버스·리베리·강남언니가 상위입니다. 대표 글 한 편에 지역 정보와 올리지오 비교표를 넣어 밀도를 올립니다.",
-      outline: ["울쎄라 글 28편 중 대표 1편 선정 (제목에 '김포 울쎄라'가 들어간 글 우선)", "오시는 길 단락 삽입", "울쎄라와 올리지오 비교표 추가 — 두 장비를 모두 보유한 것이 우리 강점", "샷 수 결정 기준을 구체적 숫자로 보강", "나머지 울쎄라 글에서 대표 글로 내부 링크"],
-      faq: ["김포에서 울쎄라 상담은 어떻게 받나요?", "구래역에서 얼마나 걸리나요?", "퇴근 후에 받을 수 있나요?"],
-      hooks: ["울쎄라·올리지오 동시 보유 명시", "제조사 정품 확인 방법 출처", "구래역 도보·주차 3시간", "평일 야간 진료"],
-      impact: "김포 울쎄라 → 미노출에서 부분·노출로", diff: "쉬움" },
-
-    { no: 3, g: "1단계 · 기존 글 살리기 — 새 글 안 씁니다 (가장 큰 레버)",
-      title: "필러 대표 글 강화 + 부위별 유지기간 표 (32편 보유)",
-      alt: "필러 글 중 대표 1편에 비교표 추가",
-      kw: ["김포 필러", "김포 필러 잘하는 곳", "장기동 필러"],
-      why: "필러 글이 32편으로 가장 많은데 미노출입니다. 미소가인이 부위별 유지기간 표로 상위를 잡고 있어, 같은 형태의 표를 넣는 것이 직접적인 대응입니다. AI는 표 형태의 숫자를 잘 인용합니다.",
-      outline: ["필러 글 32편 중 대표 1편 선정", "부위별 유지기간 비교표 추가 (팔자·눈밑·입술·코 등, 개인차 명시)", "제품별 차이 설명 보강 — 보유 제품 정식 명칭", "오시는 길 단락 삽입", "나머지 필러 글에서 대표 글로 내부 링크"],
-      faq: ["필러는 부위별로 얼마나 유지되나요?", "멍이 들면 며칠이나 가나요?", "구래역에서 얼마나 걸리나요?"],
-      hooks: ["부위별 유지기간 표(숫자)", "보유 제품 정식 명칭", "구래역 도보·주차 3시간"],
-      impact: "김포 필러 → 미노출에서 부분으로", diff: "쉬움" },
-
-    { no: 4, g: "1단계 · 기존 글 살리기 — 새 글 안 씁니다 (가장 큰 레버)",
-      title: "리프팅 계열 대표 글 통합 (써마지·올타이트 신규 · 올리지오 22 · 인모드 20편)",
-      alt: "장비별로 흩어진 리프팅 글을 비교 허브로 묶기",
-      kw: ["김포 올리지오", "김포 인모드", "김포 리프팅"],
-      why: "올리지오 22편, 인모드 20편이 각각 흩어져 있는데 전부 미노출입니다. 이미 3위에 오른 '김포 리프팅 잘하는곳' 글을 허브로 삼아 장비 비교표를 넣고 나머지를 연결하면 전체가 함께 올라갑니다.",
-      outline: ["기존 '김포 리프팅 잘하는곳' 글(3위 진입)을 허브로 지정", "허브 글에 장비 비교표 추가 — 울쎄라·써마지·올타이트·올리지오·인모드·슈링크·실리프팅의 원리·깊이·회복기간·유지기간 (써마지 10/17·올타이트 10/18 도입 — 비교표에 반드시 포함)", "각 장비 글에서 허브 글로 내부 링크, 허브에서 각 장비 글로 링크", "허브 글에 오시는 길 단락 삽입", "고민별 장비 선택 가이드 추가 — 처짐이면 초음파, 표면 탄력이면 고주파"],
-      faq: ["울쎄라와 올리지오 중 뭘 먼저 해야 하나요?", "인모드는 어떤 고민에 맞나요?", "여러 장비를 같이 받아도 되나요?"],
-      hooks: ["보유 장비 전체 목록과 정식 명칭", "장비별 비교표(숫자)", "구래역 도보·주차·야간 진료"],
-      impact: "김포 올리지오·인모드·리프팅 동시 강화", diff: "보통" },
-
-    { no: 5, g: "1단계 · 기존 글 살리기 — 새 글 안 씁니다 (가장 큰 레버)",
-      title: "스킨부스터 허브 강화 — 힐로웨이브 1위 자산 활용 (리쥬란 19편)",
-      alt: "1위 글을 허브로 삼아 스킨부스터 계열 전체 끌어올리기",
-      kw: ["김포 리쥬란", "김포 스킨부스터", "김포 물광주사"],
-      why: "힐로웨이브 글이 '김포 힐로웨이브' 1위, '김포 스킨부스터' 5위입니다. 이미 검증된 이 글을 허브로 삼아 리쥬란·ECM·물광 글을 연결하면 계열 전체가 함께 올라갑니다. 미노출인 '김포 리쥬란'이 직접 수혜를 받습니다.",
-      outline: ["힐로웨이브 글(1위)을 스킨부스터 허브로 지정", "허브 글에 스킨부스터 종류 비교표 추가 — 리쥬란·힐로웨이브·ECM·물광의 성분·목적·주기 차이", "리쥬란·ECM·물광 글에서 허브로 내부 링크", "허브 글에 오시는 길 단락 삽입", "고민별 선택 가이드 추가"],
-      faq: ["리쥬란과 힐로웨이브는 뭐가 다른가요?", "몇 회 받아야 하나요?", "구래역에서 얼마나 걸리나요?"],
-      hooks: ["스킨부스터 종류 비교표", "식약처 허가 성분 정보 출처", "구래역 도보·주차 3시간"],
-      impact: "김포 리쥬란 → 미노출에서 노출로", diff: "쉬움" },
-
-    { no: 6, g: "1단계 · 기존 글 살리기 — 새 글 안 씁니다 (가장 큰 레버)",
-      title: "장기동·운양동 대표 글 강화 (장기동 29 · 운양동 11편)",
-      alt: "동네 글에 이동 시간과 접근성 넣기",
-      kw: ["장기동 피부과", "장기동 보톡스", "운양동 피부과"],
-      why: "장기동 29편, 운양동 11편이 있는데 둘 다 미노출입니다. 동네 검색에서 인용되는 건 시술 설명이 아니라 주소·이동시간·주차·진료시간 같은 사실 묶음입니다.",
-      outline: ["장기동 대표 1편, 운양동 대표 1편 선정", "각 글에 해당 동네 기준 이동 정보 삽입 — 장기동에서 차량 몇 분·골드라인 몇 분, 운양동에서 구래역까지", "주차·진료시간 단락 추가", "각 동네 나머지 글에서 대표 글로 내부 링크", "장기동 대표 글은 보톡스 각도로 보강 (장기동+보톡스가 미노출 키워드)"],
-      faq: ["장기동에서 얼마나 걸리나요?", "운양동에서 가는 방법은?", "주차 지원이 되나요?"],
-      hooks: ["동네별 실제 이동 시간·교통편", "김포골드라인 구래역", "지하주차장 3시간"],
-      impact: "장기동 보톡스·운양동 피부과 → 부분·노출로", diff: "보통" },
-
-    { no: 7, g: "1단계 · 기존 글 살리기 — 새 글 안 씁니다 (가장 큰 레버)",
-      title: "여의사 각도 강화 (4편 보유) — 경쟁사에 없는 차별점",
-      alt: "여의사 진료를 강점으로 세우기",
-      kw: ["김포 여의사 피부과", "김포 여의사 제모", "구래동 여의사"],
-      why: "여의사 글이 이미 4편 있고, 이건 경쟁 병원 대부분이 갖지 못한 차별점입니다. 특히 제모·바디 시술처럼 민감한 부위 검색에서 결정적인 선택 기준이 됩니다. 아직 추적 키워드에 없어 측정도 안 되고 있습니다.",
-      outline: ["여의사 글 4편 중 대표 1편 선정하고 나머지를 연결", "대표 글에 오시는 길 단락 삽입", "민감 부위 시술(브라질리언·겨드랑이·바디 제모)과 연결하는 내부 링크", "제모 글 24편에서 여의사 대표 글로 링크", "대시보드 추적 키워드에 '김포 여의사 피부과' 추가 요청"],
-      faq: ["여의사 진료가 가능한가요?", "제모 시술도 여의사가 하나요?", "예약 시 요청하면 되나요?"],
-      hooks: ["원장 진료 사실 명시(과장 표현 금지)", "구래역 도보·주차", "평일 야간 진료"],
-      impact: "김포 여의사 피부과 → 신규 키워드 선점", diff: "쉬움" },
-
-    { no: 8, g: "2단계 · 약한 곳 보강 — 글은 있지만 검색에 안 잡히는 것",
-      title: "마산동 대표 글 강화 (3편 보유) — 김포 표기로 창원 마산과 구분",
-      alt: "마산동 글에 김포 표기와 지역 정보 넣기",
-      kw: ["마산동 피부과", "김포 마산동 피부과", "마산동 레이저제모"],
-      why: "네이버에 마산동 글이 3편 있는데 미노출입니다. 원인은 두 가지 — 본문에 지역 정보가 없고, 검색엔진이 '마산동'을 창원시 마산으로 인식해 결과가 오염됩니다. 제목·본문에 '김포'를 함께 넣는 것만으로 크게 개선됩니다.",
-      outline: ["마산동 글 3편(피부관리·레이저제모·피부과) 제목에 '김포' 추가 — 예: '김포 마산동 피부과'", "가장 잘 쓰인 1편을 대표로 지정", "대표 글에 오시는 길 단락 삽입 — 마산동에서 구래역까지 도보·차량 시간", "본문 첫 문단에 '김포시 마산동' 명시 (창원 마산과 구분)", "나머지 2편에서 대표 글로 내부 링크"],
-      faq: ["김포 마산동에서 얼마나 걸리나요?", "주차는 되나요?", "평일 저녁 몇 시까지 진료하나요?"],
-      hooks: ["'김포 마산동' 표기 필수 (창원 마산 구분)", "마산동 기준 이동 시간", "감두리빌딩 2층·주차 3시간", "요일별 진료시간(일요일 휴진)"],
-      impact: "마산동 피부과 → 미노출에서 노출로", diff: "쉬움" },
-
-    { no: 9, g: "3단계 · 진짜 공백 신규 작성 — 이 2개만 새로 씁니다",
-      title: "김포 한강신도시 피부과 고를 때 — 동네별 접근 가이드",
-      alt: "한강신도시에서 피부과 찾기 — 구래·마산·장기·운양 정리",
-      kw: ["김포 한강신도시 피부과", "한강신도시 피부과", "김포 신도시 피부과"],
-      why: "538편 전체에서 한강신도시가 제목에 들어간 글이 0편이고 검색 결과도 비어 있습니다. 동네 4곳을 한 글에 묶는 허브로 만들면 여러 동네 키워드를 한 번에 커버하고, 각 동네 대표 글이 여기로 연결됩니다.",
-      outline: ["한강신도시에서 피부과 고를 때의 고민 — 서울까지 가야 하나", "동네별 이동 시간 정리 — 구래동·마산동·장기동·운양동 각각", "동네 피부과 선택 기준 4가지 — 진료시간·보유 장비·의사 상담·사후 관리", "고민별 시술 대응표 — 보유 장비 기준", "퇴근 후 방문 — 평일 야간 진료(일요일 휴진)", "주차와 대중교통"],
-      faq: ["한강신도시에서 가장 가까운가요?", "동네별로 얼마나 걸리나요?", "주차 지원이 되나요?", "평일 야간 진료는 몇 시까지인가요?"],
-      hooks: ["동네 4곳 각각의 이동 시간", "김포골드라인 구래역", "감두리빌딩 2층·주차 3시간", "요일별 진료시간"],
-      impact: "한강신도시·동네 키워드 동시 커버", diff: "쉬움" },
-
-    { no: 10, g: "3단계 · 진짜 공백 신규 작성 — 이 2개만 새로 씁니다",
-      title: "김포 야간 진료 피부과 — 퇴근 후 받기 좋은 시술",
-      alt: "평일 저녁에 피부과 가려면 — 시술별 다운타임 기준",
-      kw: ["김포 야간 진료 피부과", "김포 저녁 피부과", "구래동 야간 피부과"],
-      why: "야간·진료시간을 다룬 글이 538편 중 0편입니다. 평일 야간 진료는 실제 강점인데 콘텐츠가 전혀 없고, 해날·리멤버·미엘이 플랫폼 야간진료 필터로 노출되고 있습니다. 요일별 시간을 숫자로 명시하는 것이 핵심입니다.",
-      outline: ["퇴근 후 받기 좋은 시술 — 다운타임 거의 없는 시술 목록", "금요일 저녁에 받는 게 나은 시술 — 회복 기간이 필요한 시술", "요일별 진료 마감 시간 — 실제 시간표(일요일 휴진 명시)", "야간 방문 시 접수 마감 확인 — 예약 권장", "구래역 퇴근 동선에서 들르기 — 교통편과 주차", "시술 다음 날 출근에 지장 없으려면"],
-      faq: ["평일 저녁 몇 시까지 접수되나요?", "야간에도 모든 시술이 가능한가요?", "토요일 진료 시간은 어떻게 되나요?", "퇴근 후 예약은 어떻게 하나요?"],
-      hooks: ["요일별 진료시간을 숫자로 (발행 전 실제 시간 확인 필수)", "구래역 퇴근 동선", "지하주차장 3시간", "일요일 휴진 명시"],
-      impact: "김포 야간 진료 피부과 → 미노출에서 노출로", diff: "쉬움" },
-
-    { no: 11, g: "4단계 · 검증된 공식 반복",
-      title: "신규·희소 시술이 생기면 즉시 글 쓰기 (힐로웨이브 공식)",
-      alt: "경쟁자가 없을 때 선점하는 루틴",
-      kw: ["신규 시술 키워드", "장비명 키워드"],
-      why: "7월 발행 14편 중 상위노출된 건 힐로웨이브 글 하나뿐이고 바로 1위였습니다. 경쟁자가 아직 글을 안 쓴 신규 시술이라 가능했던 것 — 이 패턴을 규칙으로 만듭니다.",
-      outline: ["새 장비·시술을 도입하면 도입 시점에 바로 글 발행 (경쟁 없을 때) — 지금 바로 해당: 써마지(10/17 도입)는 '김포 써마지' 글을, 올타이트(10/18 도입)는 '김포 올타이트' 글을 도입 당일 발행", "제목은 '김포 + 정식 제품명' 형태로 — 검색하는 사람은 제품명을 그대로 칩니다", "제품 공식 사양·식약처 허가 정보를 출처와 함께 명시", "기존 계열 허브 글에서 새 글로 내부 링크", "발행 후 대시보드 추적 키워드에 추가 요청"],
-      faq: ["(시술별로 실제 상담에서 받는 질문 4~6개)"],
-      hooks: ["제품 정식 명칭·제조사", "구래역 도보·주차·야간 진료"],
-      impact: "신규 키워드 즉시 선점", diff: "쉬움" },
-
-    { no: 12, g: "5단계 · 운영 방식 전환",
-      title: "발행 비율을 신규 7편 + 기존 강화 7편으로 조정",
-      alt: "월 14편의 절반을 리터칭에 배분",
-      kw: ["운영 전환"],
-      why: "이미 538편을 발행했고 월 14편씩 계속 쓰는데 상위노출은 4개 키워드뿐입니다. 신규 글을 더 쌓는 것보다 있는 글을 살리는 쪽이 효율이 훨씬 높습니다. 인블로그 대행사에 전달할 운영 지침입니다.",
-      outline: ["월 14편 중 7편은 기존 글 강화(지역 단락·비교표·내부 링크)로 배분", "신규 7편은 공백 키워드와 신규 시술 위주로", "모든 신규 글에 오시는 길 단락을 기본 포함하도록 템플릿 수정", "월 1회 인블로그 순위 리포트와 대시보드 AI 노출을 함께 확인", "대행사에 이 페이지의 공통 규칙 9개 전달"],
-      faq: ["(해당 없음 — 운영 지침)"],
-      hooks: ["오시는 길 단락을 발행 템플릿에 기본 포함"],
-      impact: "전체 효율 개선", diff: "보통" }
-  ];
-  var BLOG_KEY = "uni-blog-v1";
   var LOG_KEY = "uni-testlog-v2", PLAN_KEY = "uni-plan-v1";
 
   /* ============ 유틸 ============ */
@@ -1859,7 +1669,7 @@
   var lastRecordKey = null;
 
   /* ============ 내비 ============ */
-  var TITLES = { home: "홈", sov: "노출 점유율", prompts: "모델별 현황", models: "노출률 및 경쟁구도", sources: "인용 출처", test: "키워드 테스트", blog: "블로그 기획", docs: "콘텐츠", report: "월간 리포트", account: "브랜드 관리" };
+  var TITLES = { home: "홈", sov: "노출 점유율", prompts: "모델별 현황", models: "노출률 및 경쟁구도", sources: "인용 출처", test: "키워드 테스트", report: "월간 리포트", account: "브랜드 관리" };
   function goPage(id, skipPush) {
     document.querySelectorAll(".nav").forEach(function (x) { x.classList.toggle("active", x.dataset.page === id); });
     document.querySelectorAll(".page").forEach(function (x) { x.classList.remove("active"); });
@@ -2185,7 +1995,6 @@
     }).join("");
     /* 사이드바 배지 */
     $("bdgPrompts").textContent = allPrompts().length;
-    $("bdgDocs").textContent = DOCS.length;
   }
 
   /* ============ 키워드 테스트 ============ */
@@ -2278,66 +2087,18 @@
   $("csvBtn").addEventListener("click", exportCSV);
   $("csvBtn2").addEventListener("click", exportCSV);
 
-  /* ============ 콘텐츠 ============ */
-  var DOCS = [
-    { id: "d1", title: "김포 울쎄라, 샷 수와 가격은 어떻게 정해질까? 상담 전 알아둘 5가지", type: "블로그 초안", target: "김포 울쎄라 · 김포 울쎄라 가격", date: "2026-07-24",
-      html: "<blockquote>타깃 키워드: 김포 울쎄라, 김포 울쎄라 가격, 김포 울쎄라 잘하는 곳 · 공식 블로그 + 네이버 블로그 동시 발행 권장</blockquote><p>울쎄라는 고강도 집속 초음파(HIFU)를 피부 깊은 SMAS 근막층에 전달해 탄력 개선을 유도하는 미국 FDA 허가 리프팅 시술입니다. 김포에서도 울쎄라를 찾는 분들이 많아졌지만, \"몇 샷을 맞아야 하는지\", \"가격 차이는 왜 나는지\" 궁금해하시는 분들이 많아 상담실에서 가장 자주 받는 질문들을 정리했습니다.</p><h4>1. 샷 수는 어떻게 정해질까</h4><p>울쎄라 샷 수는 정해진 답이 있는 것이 아니라 개인의 피부 상태에 따라 달라집니다. 일반적으로 고려하는 요소는:</p><ul><li><b>개선 부위</b>: 얼굴 전체인지, 턱선·이중턱 등 특정 부위인지</li><li><b>피부 처짐 정도</b>: 처짐이 진행된 정도에 따라 필요한 에너지량이 다릅니다</li><li><b>피부 두께와 지방량</b>: 초음파 화면으로 피부층을 확인하며 조절합니다</li></ul><p>같은 300샷이라도 어느 깊이에, 어느 부위에 넣느냐에 따라 결과가 달라지므로, 샷 수 숫자만으로 비교하기보다 상담 시 \"내 얼굴에는 왜 이 샷 수인지\" 설명을 들어보시는 것이 좋습니다.</p><h4>2. 가격 차이가 나는 이유</h4><p>울쎄라 비용은 샷 수, 시술 범위, 시술자(원장 직접 시술 여부)에 따라 달라집니다. 비용을 비교할 때는 \"총 몇 샷 기준 가격인지\", \"추가 샷 비용은 어떻게 되는지\"를 함께 확인하시면 병원 간 비교가 정확해집니다.</p><h4>3. 정품 확인은 이렇게</h4><p>울쎄라는 제조사(멀츠)의 정품 팁을 사용하는지가 중요합니다. 시술 전 정품 팁 개봉을 직접 확인시켜 주는지, 울쎄라 공식 인증 병원인지 확인해 보세요. 멀츠 코리아 홈페이지에서 인증 병원을 조회할 수 있습니다.</p><h4>4. 시술 주기와 유지 기간</h4><p>울쎄라는 시술 후 2~3개월에 걸쳐 콜라겐 재생이 진행되며, 효과 유지 기간은 보통 1년 안팎으로 알려져 있습니다(개인차 있음). 1년에 1회 정도 주기로 관리하시는 분들이 많습니다.</p><h4>5. 울쎄라가 맞지 않는 경우도 있습니다</h4><p>피부 처짐보다 볼륨 부족이 고민이라면 필러나 스킨부스터가, 피부 표면 탄력이 고민이라면 올리지오 같은 고주파 시술이 더 적합할 수 있습니다. 유앤아이의원 김포점은 울쎄라와 올리지오를 모두 보유하고 있어 상담 시 피부 상태에 맞는 시술을 비교해 안내해 드립니다.</p><h4>자주 묻는 질문 (FAQ)</h4><p><b>Q. 울쎄라 시술 시간은 얼마나 걸리나요?</b><br>A. 부위와 샷 수에 따라 다르지만 보통 30분~1시간 정도 소요됩니다.</p><p><b>Q. 시술 후 일상생활이 가능한가요?</b><br>A. 대부분 시술 직후 일상 복귀가 가능합니다. 일시적인 붉어짐이나 부기가 있을 수 있으며 개인차가 있습니다.</p><p><b>Q. 통증이 심한가요?</b><br>A. 뼈 주변 부위에서 통증을 느끼는 분들이 있어, 필요 시 통증 완화 조치를 병행합니다.</p><p><b>Q. 김포 유앤아이의원은 어디에 있나요?</b><br>A. 김포시 김포한강4로 525 감두리빌딩 2층(구래동, 구래역 인근)입니다. 평일 야간 진료를 운영해 낮 방문이 어려운 분들도 이용하실 수 있습니다(일요일 휴진). 문의: 031-8049-6024</p><blockquote>⚠️ 발행 전 확인: 의료광고 규정상 치료 효과 보장, 최상급 표현(\"김포 1등\"), 시술 전후 사진의 무분별한 사용은 피해야 합니다. 광고성으로 발행할 경우 의료광고 사전심의 대상인지 대행사와 확인하세요.</blockquote>" },
-    { id: "d2", title: "구래동·장기동에서 피부과 찾을 때 체크리스트 5가지 (구래역 도보 이용 가능)", type: "블로그 초안", target: "구래동 피부과 · 장기동 피부과 · 운양동 피부과", date: "2026-07-24",
-      html: "<blockquote>타깃 키워드: 구래동 피부과, 장기동 피부과, 운양동 피부과, 마산동 피부과, 구래역 피부과 — 병원 소재지인 구래동조차 미노출 상태라 선점 효과가 큰 글</blockquote><p>김포 한강신도시(구래동·마산동·장기동·운양동)에 거주하시는 분들이 피부과를 찾을 때 가장 많이 고민하는 것은 \"서울까지 가야 하나, 동네에서 해결되나\"입니다. 보톡스·필러·리프팅·제모 같은 시술은 이제 김포 안에서도 충분히 받을 수 있습니다. 동네에서 피부과를 고를 때 확인하면 좋은 것들을 정리했습니다.</p><h4>1. 우리 동네에서의 접근성</h4><ul><li><b>구래동·마산동</b>: 유앤아이의원 김포점은 구래역 인근 감두리빌딩 2층에 있어 김포골드라인 이용 시 편리합니다. 건물 지하주차장 3시간 무료 지원으로 차량 방문도 편합니다.</li><li><b>장기동·운양동</b>: 김포골드라인으로 구래역까지 10분 내외. 장기동에서 차량으로 약 10~15분 거리입니다.</li></ul><h4>2. 야간·주말 진료 여부</h4><p>직장인이라면 평일 저녁이나 주말 진료가 가능한지가 사실상 가장 중요한 조건입니다. 유앤아이의원 김포점은 <b>평일 야간 진료</b>를 운영하고 있어, 낮 방문이 어려운 한강신도시 직장인 분들이 많이 찾으십니다(일요일 휴진). (방문 전 전화로 당일 진료 시간을 확인해 주세요: 031-8049-6024)</p><h4>3. 받으려는 시술의 장비를 보유했는지</h4><table><tr><th>고민</th><th>해당 시술</th></tr><tr><td>얼굴 처짐, 턱선</td><td>울쎄라, 올리지오, 실리프팅</td></tr><tr><td>주름, 사각턱</td><td>보톡스</td></tr><tr><td>볼륨, 팔자주름</td><td>필러</td></tr><tr><td>피부결, 속건조</td><td>스킨부스터(리쥬란 등)</td></tr><tr><td>기미, 잡티</td><td>색소 레이저</td></tr><tr><td>제모</td><td>레이저 제모(아포지 플러스)</td></tr></table><h4>4. 상담과 시술의 연결</h4><p>상담만 실장이 하고 시술 방향이 갑자기 바뀌는 경우가 종종 있습니다. 의사 상담에서 시술 계획(샷 수, 용량, 주기)을 구체적으로 설명해 주는지 확인하세요.</p><h4>5. 시술 후 관리 접근성</h4><p>시술 후 붉어짐·부기 등으로 병원을 다시 찾아야 할 때, 동네 병원의 장점이 큽니다. 서울 원정 시술의 경우 사후 관리 방문이 부담될 수 있다는 점도 고려하세요.</p><h4>자주 묻는 질문 (FAQ)</h4><p><b>Q. 구래역에서 걸어갈 수 있나요?</b><br>A. 네, 유앤아이의원 김포점은 구래역 인근 감두리빌딩 2층입니다.</p><p><b>Q. 주차가 되나요?</b><br>A. 건물 지하주차장 최대 3시간 지원, 만차 시 구래1 공영주차장·구래상업지역 공영주차장을 이용하실 수 있습니다.</p><p><b>Q. 장기동에서도 갈 만한가요?</b><br>A. 차량 10~15분, 김포골드라인 이용 시 구래역 하차 후 도보로 방문 가능합니다. 평일 야간 진료로 퇴근 후 방문도 가능합니다.</p><blockquote>⚠️ 발행 전 확인: 표의 시술 목록이 실제 보유 장비와 일치하는지 확인 후 발행하세요.</blockquote>" },
-    { id: "d3", title: "김포 야간 진료 피부과 찾으세요? 퇴근 후에 받기 좋은 시술 정리", type: "블로그 초안", target: "김포 야간 피부과 · 김포 저녁 진료 피부과", date: "2026-07-24",
-      html: "<blockquote>타깃 키워드: 김포 야간 진료 피부과, 김포 저녁 피부과, 구래동 야간 피부과 — 해날·리멤버·미엘이 야간 키워드에 노출 중이므로 구래역·퇴근 동선을 앞세워 차별화</blockquote><p>\"피부과 가고 싶은데 평일 낮엔 도저히 시간이 안 나요.\" 김포 한강신도시에서 서울로 출퇴근하는 분들께 가장 많이 듣는 이야기입니다. 유앤아이의원 김포점은 <b>평일 야간 진료</b>를 운영합니다(일요일 휴진). 퇴근 후 방문을 계획하신다면 아래 내용이 도움이 될 것입니다.</p><h4>퇴근 후에 받기 좋은 시술</h4><p>다운타임이 거의 없어 다음 날 출근에 지장이 없는 시술들:</p><ul><li>보톡스: 시술 10~20분, 직후 일상 가능</li><li>스킨부스터: 주사 자국이 1~2일 내 가라앉는 편(개인차)</li><li>레이저 토닝·색소 관리: 당일 세안·화장 가능 여부는 시술별로 안내</li><li>레이저 제모: 직후 일상 가능</li></ul><p><b>금요일 저녁에 받는 것이 나은 시술</b> — 며칠의 회복 기간을 주말에 쓰도록:</p><ul><li>실리프팅: 부기·멍이 며칠 갈 수 있음</li><li>필러(부위에 따라): 멍이 들 수 있는 부위는 주말 회복 추천</li><li>울쎄라·올리지오: 대부분 바로 일상 가능하지만, 붉어짐이 걱정되면 금요일 저녁 추천</li></ul><h4>야간 진료 활용 팁</h4><p>퇴근 후 방문 시에는 전화로 당일 마감 접수 시간을 확인하고 오시는 것이 안전합니다. 보톡스·토닝처럼 짧은 시술은 야간 시간대에도 충분히 가능합니다. 구래역 인근이라 김포골드라인 퇴근 동선에서 바로 들를 수 있습니다.</p><h4>위치와 예약</h4><ul><li>위치: 김포시 김포한강4로 525 감두리빌딩 2층 (구래동, 구래역 인근)</li><li>주차: 건물 지하주차장 3시간 지원</li><li>예약·진료시간 문의: 031-8049-6024 (일요일 휴진)</li></ul><h4>자주 묻는 질문 (FAQ)</h4><p><b>Q. 야간에도 모든 시술이 가능한가요?</b><br>A. 대부분의 시술이 가능하지만, 시술 종류와 예약 상황에 따라 다를 수 있어 전화 예약을 권장합니다.</p><p><b>Q. 야간 진료는 몇 시까지인가요?</b><br>A. 요일별 진료 시간은 변동될 수 있으니 방문 전 031-8049-6024로 확인해 주세요.</p><p><b>Q. 주말 진료도 하나요?</b><br>A. 토요일 진료 시간은 전화로 확인해 주세요. 일요일은 휴진입니다.</p><blockquote>⚠️ 발행 전 확인: 실제 야간 진료 요일과 마감 시간을 본문에 구체적인 숫자로 넣으면 검색 노출에 훨씬 유리합니다 (예: \"화·금 저녁 8시 30분까지\"). AI와 검색엔진은 구체적인 시간이 명시된 페이지를 우선 인용합니다.</blockquote>" },
-    { id: "d5", title: "웹업체 기술 요청서 — 메인 경량화 + 구조화 데이터 (7/25 진단 반영)", type: "기술 문서", target: "웹 담당 업체에 그대로 전달", date: "2026-07-25",
-      html: "<p>홈페이지 관리 업체에 그대로 전달하시면 됩니다. 2026-07-25 실측 진단을 반영한 요청서입니다.</p><h4 style='color:var(--warn)'>⚠ 요청 0. og:description의 \"일요일진료\" 즉시 수정 (가장 급함)</h4><p>메인 페이지 &lt;head&gt;의 og:description에 <b>\"…김포써마지,야간/일요일진료\"</b>가 라이브로 실려 있습니다. <b>일요일은 휴진</b>인데 잘못 표기되어 있고, 이 문구가 검색·AI 답변에 그대로 인용되는 것이 확인됐습니다(카카오톡 공유 미리보기에도 노출됩니다). <b>\"야간/일요일진료\" → \"야간진료\"</b>로 수정 부탁드립니다. name=description 태그도 함께 점검해 주세요. </p><blockquote><b>진단 요약</b> — robots.txt 정상(전면 허용·사이트맵 존재), GPTBot·ClaudeBot·PerplexityBot 등 AI 크롤러 접속 모두 정상(HTTP 200), 해외 IP 차단 없음, 블로그 페이지는 경량(160KB)·구조화 데이터 포함으로 양호. <b>문제 2가지</b>: ① 메인 페이지 HTML이 2.4MB로 과도하게 무거워 ChatGPT의 페이지 읽기가 실패함(실측 확인) ② 메인에 병원 정보(MedicalClinic) 구조화 데이터가 없음(캐러셀 ItemList만 존재).</blockquote><h4>요청 1. 메인 페이지 경량화 (가장 중요)</h4><p>메인 HTML이 2.4MB입니다. AI 검색 봇들은 대체로 1MB 안팎에서 읽기를 포기하므로, 아래 방향으로 <b>1MB 이하</b>를 목표로 줄여 주세요.</p><ul><li>이미지 지연 로딩(lazy loading) 적용 및 첫 화면 외 섹션의 마크업 축소</li><li>사용하지 않는 인라인 스크립트·스타일·중복 마크업 정리</li><li>가능하면 시술 소개는 요약+개별 페이지 링크 구조로 분리</li></ul><h4>요청 2. 메인 head에 병원 정보 구조화 데이터 추가</h4><p>현재 캐러셀(ItemList)만 있습니다. 아래 MedicalClinic 스키마를 추가해 주세요. <b>진료시간·좌표는 실제 값으로 교체.</b></p><pre>&lt;script type=\"application/ld+json\"&gt;\n{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"MedicalClinic\",\n  \"name\": \"유앤아이의원 김포점\",\n  \"url\": \"https://www.gpuni114.co.kr/\",\n  \"telephone\": \"+82-31-8049-6024\",\n  \"address\": {\n    \"@type\": \"PostalAddress\",\n    \"streetAddress\": \"김포한강4로 525 감두리빌딩 2층\",\n    \"addressLocality\": \"김포시\",\n    \"addressRegion\": \"경기도\",\n    \"addressCountry\": \"KR\"\n  },\n  \"medicalSpecialty\": \"Dermatology\",\n  \"availableService\": [\n    { \"@type\": \"MedicalProcedure\", \"name\": \"울쎄라 리프팅\" },\n    { \"@type\": \"MedicalProcedure\", \"name\": \"올리지오\" },\n    { \"@type\": \"MedicalProcedure\", \"name\": \"보톡스\" },\n    { \"@type\": \"MedicalProcedure\", \"name\": \"필러\" },\n    { \"@type\": \"MedicalProcedure\", \"name\": \"레이저 제모\" }\n  ]\n}\n&lt;/script&gt;</pre><p>(일요일 휴진이므로 진료시간에 Sunday 항목을 넣지 마세요.)</p><h4>요청 3. 보안장비의 OpenAI IP 대역 차단 여부 확인</h4><p>일반적인 크롤러 차단은 없는 것으로 확인됐지만, 보안장비(방화벽/IPS)가 OpenAI 크롤러의 IP 대역만 별도로 차단하는지 확인 부탁드립니다. OpenAI 공식 IP 목록: openai.com/gptbot.json</p><h4>완료 확인</h4><ul><li>메인 HTML 용량 1MB 이하</li><li>구글 리치 결과 테스트에서 MedicalClinic 인식</li><li>완료 회신 주시면 저희가 ChatGPT 실측으로 재검증합니다</li></ul>" },
-  ];
-  function renderDocs() {
-    $("docRows").innerHTML = DOCS.map(function (d) {
-      return '<div class="rowitem" data-doc="' + d.id + '"><div><div class="t">' + esc(d.title) + '</div><div class="s">' + esc(d.type) + " · " + esc(d.target) + '</div></div><div class="right"><span class="pill off">초안</span><span class="date num">' + md(d.date) + "</span></div></div>";
-    }).join("");
-    $("docRows").querySelectorAll("[data-doc]").forEach(function (r) {
-      r.addEventListener("click", function () { openDoc(r.dataset.doc); });
-    });
-  }
-  function openDoc(id, skipPush) {
-    var d = null;
-    DOCS.forEach(function (x) { if (x.id === id) d = x; });
-    if (!d) return;
-    $("docTitle").textContent = d.title;
-    $("docMeta").textContent = d.type + " · " + d.target + " · " + d.date;
-    $("docBody").innerHTML = d.html;
-    $("docsList").style.display = "none";
-    $("docDetail").style.display = "block";
-    window.scrollTo(0, 0);
-    if (!skipPush) history.pushState({ page: "docs", doc: id }, "", "#docs/" + id);
-  }
-  function closeDoc() {
-    $("docDetail").style.display = "none";
-    $("docsList").style.display = "block";
-  }
-  $("docBack").addEventListener("click", function () {
-    if (history.state && history.state.doc) history.back();
-    else closeDoc();
-  });
-  window.addEventListener("popstate", function (e) {
-    var st = e.state || {};
-    closeDoc();
-    goPage(st.page || "home", true);
-    if (st.doc) openDoc(st.doc, true);
-  });
-  $("docCopy").addEventListener("click", function () {
-    var text = $("docTitle").textContent + "\n\n" + $("docBody").innerText;
-    navigator.clipboard.writeText(text).then(function () { toast("전문을 복사했습니다 — 블로그에 붙여 넣으세요"); },
-      function () { toast("복사 실패 — 직접 선택해 주세요"); });
-  });
-
   /* ============ 전체 렌더 ============ */
-  $("baseDateChip").textContent = md(BASE_DATE);
+  /* 상단 칩은 가장 최근 자동측정 날짜 — 예전엔 첫 측정일(7/24)을 고정으로 보여줘 측정해도 안 바뀌었음 */
+  $("baseDateChip").textContent = md(MEASURE.concat(AI_MEASURE).map(function (m) { return m.date; }).sort().pop() || BASE_DATE);
   (function restoreRoute() {
     var parts = location.hash.replace("#", "").split("/");
     var pg = TITLES[parts[0]] ? parts[0] : "home";
-    history.replaceState({ page: pg, doc: parts[1] || null }, "", "#" + pg + (parts[1] ? "/" + parts[1] : ""));
+    history.replaceState({ page: pg }, "", "#" + pg);
     if (pg !== "home") goPage(pg, true);
-    if (pg === "docs" && parts[1]) openDoc(parts[1], true);
   })();
+  window.addEventListener("popstate", function (e) {
+    goPage((e.state || {}).page || "home", true);
+  });
   $("addKwBtn").addEventListener("click", function () {
     if (SERVER && !AUTHED) { needLogin(); return; }
     var q = $("newkw").value.trim();
@@ -2353,55 +2114,8 @@
     toast('"' + q + '" 추적 시작 — 키워드 테스트에서 기록해 보세요');
   });
   $("newkw").addEventListener("keydown", function (ev) { if (ev.key === "Enter") $("addKwBtn").click(); });
-  var blogDone = load(BLOG_KEY, {});
-  if (typeof blogDone !== "object" || blogDone === null || Array.isArray(blogDone)) blogDone = {};
-  function renderBlog() {
-    var rl = $("blogRules");
-    if (rl) rl.innerHTML = BLOG_RULES.map(function (r, i) {
-      return '<div class="rule"><span class="n">' + (i + 1) + '</span><span><span class="t">' + esc(r.t) + '</span><div class="d">' + esc(r.d) + "</div></span></div>";
-    }).join("");
-    var el = $("blogList");
-    if (!el) return;
-    var html = "", lastG = null, done = 0;
-    BLOG_POSTS.forEach(function (b) {
-      if (b.g !== lastG) { html += '<div class="grplabel">' + esc(b.g) + "</div>"; lastG = b.g; }
-      var c = !!blogDone[b.no];
-      if (c) done++;
-      var diffCls = b.diff === "쉬움" ? "ok" : b.diff === "보통" ? "part" : "off";
-      html += '<div class="bpost' + (c ? " done" : "") + '" data-no="' + b.no + '">' +
-        '<div class="bhead"><input type="checkbox"' + (c ? " checked" : "") + '>' +
-        '<span><span class="bno">글 ' + b.no + '</span> <span class="pill ' + diffCls + '">' + esc(b.diff) + "</span>" +
-        '<div class="btitle">' + esc(b.title) + "</div>" +
-        '<div class="bkw">' + b.kw.map(function (k) { return "<span>" + esc(k) + "</span>"; }).join("") + "</div>" +
-        '<div class="bwhy">' + esc(b.why) + "</div></span>" +
-        '<span class="toggle">펼치기 ▾</span></div>' +
-        '<div class="bbody">' +
-        '<div class="bsec"><div class="blabel">대안 제목</div><div class="alt">' + esc(b.alt) + "</div></div>" +
-        '<div class="bsec"><div class="blabel">소제목 구성 (이 순서로)</div><ol>' + b.outline.map(function (o) { return "<li>" + esc(o) + "</li>"; }).join("") + "</ol></div>" +
-        '<div class="bsec"><div class="blabel">글 끝 FAQ</div><ul>' + b.faq.map(function (f) { return "<li>" + esc(f) + "</li>"; }).join("") + "</ul></div>" +
-        '<div class="bsec"><div class="blabel">본문에 반드시 넣을 것</div><ul>' + b.hooks.map(function (h) { return "<li>" + esc(h) + "</li>"; }).join("") + "</ul></div>" +
-        '<div class="bsec"><div class="blabel">기대 효과</div><div class="alt">' + esc(b.impact) + "</div></div>" +
-        "</div></div>";
-    });
-    el.innerHTML = html;
-    el.querySelectorAll(".bpost").forEach(function (card) {
-      card.querySelector(".bhead").addEventListener("click", function (ev) {
-        if (ev.target.tagName === "INPUT") return;
-        card.classList.toggle("open");
-        card.querySelector(".toggle").textContent = card.classList.contains("open") ? "접기 ▴" : "펼치기 ▾";
-      });
-      card.querySelector("input").addEventListener("change", function (ev) {
-        blogDone[card.dataset.no] = ev.target.checked;
-        save(BLOG_KEY, blogDone);
-        renderBlog();
-      });
-    });
-    $("blogbar").style.width = (done / BLOG_POSTS.length * 100) + "%";
-    $("blogcount").textContent = done + " / " + BLOG_POSTS.length + " 완료";
-    $("bdgBlog").textContent = done + "/" + BLOG_POSTS.length;
-  }
   function renderAll() {
-    renderHome(); renderSov(); renderBoard(); renderModels(); renderLog(); renderChips(); renderBlog();
+    renderHome(); renderSov(); renderBoard(); renderModels(); renderLog(); renderChips();
   }
   $("authBtn").addEventListener("click", function () { AUTHED ? doLogout() : openLogin(); });
   $("loginGo").addEventListener("click", doLogin);
@@ -2409,6 +2123,6 @@
   $("pw").addEventListener("keydown", function (e) { if (e.key === "Enter") doLogin(); });
   $("loginModal").addEventListener("click", function (e) { if (e.target === $("loginModal")) closeLogin(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeLogin(); });
-  renderSources(); renderDocs(); renderAll(); applyAuthUI(); syncInit();
+  renderSources(); renderAll(); applyAuthUI(); syncInit();
 })();
 </script>
