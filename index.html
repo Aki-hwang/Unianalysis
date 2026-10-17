@@ -1959,8 +1959,11 @@
   }
 
   /* ============ 트래킹 보드 (프롬프트) ============ */
+  /* 소유자 지시로 추적에서 뺀 질문 — 예전 수동 기록에 남아 있어도 보드에 다시 나오지 않게 함 */
+  var REMOVED = { "유앤아이의원 김포점": true };
   function allPrompts() {
     var list = [], known = {};
+    Object.keys(REMOVED).forEach(function (q) { known[q] = true; });
     PROMPTS.forEach(function (k) { if (!isHidden(k.q)) { known[k.q] = true; list.push(k); } });
     custom.added.forEach(function (k) { if (!known[k.q] && !isHidden(k.q)) { known[k.q] = true; list.push({ q: k.q, cat: "직접 추가", base: null }); } });
     log.forEach(function (e) { if (!known[e.kw] && !isHidden(e.kw)) { known[e.kw] = true; list.push({ q: e.kw, cat: "직접 추가", base: null }); } });
