@@ -296,6 +296,32 @@
   .callout b { color: var(--ink); }
   .callout .cap { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .07em; color: var(--faint); margin-bottom: 3px; }
 
+  /* 급락 원인 진단 */
+  .diag { padding: 0; overflow: hidden; }
+  .diag-hd { padding: 16px 20px 14px; border-bottom: 1px solid var(--line); }
+  .diag-hd .cap { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .07em; color: var(--faint); margin-bottom: 4px; }
+  .diag-hd .ttl { font-size: 15px; font-weight: 700; letter-spacing: -.01em; color: var(--ink); }
+  .diag-hd .sub { font-size: 12.5px; color: var(--muted); margin-top: 5px; text-wrap: pretty; }
+  .diag-ch { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
+  .diag-ch .c { padding: 13px 16px; border-right: 1px solid var(--line); min-width: 0; }
+  .diag-ch .c:last-child { border-right: 0; }
+  .diag-ch .n { font-size: 11px; font-weight: 600; color: var(--muted); }
+  .diag-ch .f { font-size: 18px; font-weight: 700; letter-spacing: -.02em; margin-top: 3px; white-space: nowrap; }
+  .diag-ch .f .was { font-size: 14px; font-weight: 600; color: var(--faint); }
+  .diag-ch .f .ar { font-size: 13px; font-weight: 600; color: var(--faint); margin: 0 5px; }
+  .diag-step { display: flex; gap: 11px; padding: 13px 20px; border-bottom: 1px solid var(--line); }
+  .diag-mark { flex-shrink: 0; width: 17px; height: 17px; border-radius: 999px; font-size: 11px; font-weight: 700;
+               display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+  .diag-mark.no { background: var(--off-bg); color: var(--off); }
+  .diag-mark.yes { background: var(--warn-bg); color: var(--warn); }
+  .diag-step .tx { font-size: 12.5px; color: var(--muted); line-height: 1.62; text-wrap: pretty; min-width: 0; }
+  .diag-step .tx b { color: var(--ink); }
+  .diag-q { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 9px; }
+  .diag-q span { font-size: 11px; color: var(--muted); background: var(--inset); border: 1px solid var(--line); border-radius: 5px; padding: 2px 7px; }
+  .diag-end { padding: 14px 20px 16px; display: flex; gap: 14px; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; }
+  .diag-end .tx { font-size: 12.5px; color: var(--muted); line-height: 1.62; text-wrap: pretty; flex: 1 1 320px; min-width: 0; }
+  .diag-end .tx b { color: var(--ink); }
+
   .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   @media (max-width: 900px) {
     .cols2 { grid-template-columns: 1fr; }
@@ -303,6 +329,9 @@
     .strip .cell:nth-child(2) { border-right: 0; }
     .strip .cell:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
     .strip3 { grid-template-columns: 1fr; }
+    .diag-ch { grid-template-columns: 1fr 1fr; }
+    .diag-ch .c:nth-child(2n) { border-right: 0; }
+    .diag-ch .c:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
     .strip3 .cell { border-right: 0; border-bottom: 1px solid var(--line); }
     .strip3 .cell:last-child { border-bottom: 0; }
   }
@@ -401,6 +430,11 @@
         <div class="panel chartcard">
           <div class="chartwrap" id="homeChart"></div>
           <div class="chart-cap">검은 실선 = 자동 측정(3일 1회 아침 9시, 웹 인용 소스 기준, AI 비서가 실행) · 회색 점선 = 내 수동 기록. 노출 1점 + 부분 0.5점 ÷ 테스트 수.</div>
+        </div>
+
+        <div id="homeDiagWrap" style="display:none">
+          <h2>이 하락, 왜 생겼나</h2>
+          <div class="panel diag" id="homeDiag"></div>
         </div>
 
         <div class="cols2" style="margin-top:26px">
@@ -2424,6 +2458,142 @@
   });
 
   /* ============ 홈 ============ */
+  /* ============ 급락 원인 진단 ============
+     차트에 보이는 큰 낙폭을 데이터에서 직접 찾아, 원인 후보를 하나씩 지워가며 보여줍니다.
+     측정이 회복되면 카드는 자동으로 사라집니다. */
+  /* 자동 측정은 매월 3·6·9…30일 (cron 3-31/3) — 그 다음 차례를 돌려준다 */
+  function nextMeasureDate(dstr) {
+    var p = dstr.split("-"), y = +p[0], m = +p[1];
+    for (var d = +p[2] + 1; d <= 30; d++) {
+      if (d % 3 === 0) {
+        var t = new Date(y, m - 1, d);
+        if (t.getMonth() === m - 1) return fmt(t);
+      }
+    }
+    return fmt(new Date(y, m, 3));
+  }
+  function autoRows() {
+    var by = {};
+    MEASURE.forEach(function (m) { if (!m.time) by[m.date] = m; });
+    return Object.keys(by).sort().map(function (d) { return by[d]; });
+  }
+  function engineRate(date, engine) {
+    var v = null;
+    AI_MEASURE.forEach(function (a) { if (a.date === date && a.engine === engine) v = measureRate(a); });
+    return v;
+  }
+  function subsetRate(m, keys) {
+    var r = {}, n = 0;
+    keys.forEach(function (q) { if (q in m.results) { r[q] = m.results[q]; n++; } });
+    return n ? measureRate({ results: r }) : null;
+  }
+  function diagnose() {
+    var rows = autoRows();
+    if (rows.length < 4) return null;
+    /* 한 번에 가장 크게 떨어진 지점 */
+    var cut = 0, worst = 0;
+    for (var i = 1; i < rows.length; i++) {
+      var drop = measureRate(rows[i - 1]) - measureRate(rows[i]);
+      if (drop > worst) { worst = drop; cut = i; }
+    }
+    if (!cut || worst < 20) return null;
+    var pre = rows[cut - 1], post = rows.slice(cut), last = rows[rows.length - 1];
+    var before = rows.slice(Math.max(0, cut - 6), cut);
+    var avg = function (a) { return Math.round(a.reduce(function (t, m) { return t + measureRate(m); }, 0) / a.length); };
+    var beforeAvg = avg(before);
+    /* 회복했으면 진단을 띄우지 않는다 */
+    if (measureRate(last) >= beforeAvg * 0.7) return null;
+    var preKeys = Object.keys(pre.results);
+    return {
+      preDate: pre.date, cutDate: rows[cut].date, lastDate: last.date,
+      preRate: measureRate(pre), lastRate: measureRate(last),
+      beforeAvg: beforeAvg, afterAvg: avg(post), runs: post.length,
+      sameBasisRate: subsetRate(last, preKeys),
+      preCount: preKeys.length, cutCount: Object.keys(rows[cut].results).length,
+      added: Object.keys(rows[cut].results).filter(function (q) { return preKeys.indexOf(q) < 0; }),
+      flipped: preKeys.filter(function (q) {
+        return score(pre.results[q]) > 0 && (q in rows[cut].results) && score(rows[cut].results[q]) === 0;
+      }),
+      nextDate: nextMeasureDate(last.date),
+      channels: ENGINES.map(function (en) {
+        return {
+          id: en.id, was: engineRate(pre.date, en.id), now: engineRate(last.date, en.id),
+          post: post.map(function (m) { return engineRate(m.date, en.id); }).filter(function (v) { return v !== null; })
+        };
+      })
+    };
+  }
+  function renderDiag() {
+    var wrap = $("homeDiagWrap"), el = $("homeDiag");
+    if (!wrap || !el) return;
+    var d = diagnose();
+    if (!d) { wrap.style.display = "none"; el.innerHTML = ""; return; }
+    wrap.style.display = "";
+
+    var cells = [{ id: "웹검색", was: d.preRate, now: d.lastRate }].concat(d.channels).map(function (c) {
+      var sank = c.was !== null && c.now !== null && (c.was - c.now) >= 20;
+      return '<div class="c"><div class="n">' + esc(c.id) + '</div><div class="f num">' +
+        '<span class="was">' + (c.was === null ? "–" : c.was + "%") + '</span><span class="ar">→</span>' +
+        '<span' + (sank ? ' style="color:var(--warn)"' : '') + '>' + (c.now === null ? "–" : c.now + "%") + '</span>' +
+        '</div></div>';
+    }).join("");
+
+    var held = d.channels.filter(function (c) {
+      return c.now !== null && c.now >= 60 && (c.was === null || c.now >= c.was - 10);
+    }).sort(function (a, b) { return b.now - a.now; });
+    var heldTxt = held.map(function (c) { return esc(c.id) + " " + c.now + "%"; }).join(" · ");
+    /* 웹검색 말고 또 떨어진 채널이 있으면 따로 짚는다 */
+    var wobbly = d.channels.filter(function (c) {
+      return c.was !== null && c.now !== null && (c.was - c.now) >= 15 && c.post.length >= 2;
+    });
+    var wobbleTxt = wobbly.map(function (c) {
+      var prior = c.post.slice(0, -1);
+      var lo = Math.min.apply(null, prior), hi = Math.max.apply(null, prior);
+      return '<b>' + esc(c.id) + '는 따로 봐야 합니다.</b> ' + md(d.lastDate) + ' 한 번에 ' + c.now +
+        '%로 내려갔는데, 직전 ' + prior.length + '회가 ' + (lo === hi ? lo + '%' : lo + '~' + hi + '%') +
+        '였습니다. 이번 한 번만으로 추세라고 보기는 이르고, 다음 측정(' + md(d.nextDate) + ')에서 갈립니다.';
+    }).join(" ");
+
+    var step = function (mark, cls, html) {
+      return '<div class="diag-step"><div class="diag-mark ' + cls + '">' + mark + '</div><div class="tx">' + html + '</div></div>';
+    };
+
+    var s1 = d.added.length
+      ? '<b>질의어가 늘어서 생긴 착시가 아닙니다.</b> ' + md(d.cutDate) + '에 질의 ' + d.added.length +
+        '개가 추가돼 분모가 ' + d.preCount + ' → ' + d.cutCount + '개로 커졌습니다. 하지만 추가분을 빼고 <b>이전과 똑같은 ' +
+        d.preCount + '개만으로 다시 계산해도 ' + d.sameBasisRate + '%</b>입니다 — 분모는 이 하락을 거의 설명하지 못합니다.'
+      : '<b>측정 대상이 바뀐 탓이 아닙니다.</b> 추적 질의 ' + d.preCount + '개는 그대로였고, 같은 질의에서 판정만 뒤집혔습니다.';
+
+    var s2 = '<b>측정이 틀린 것도 아닙니다.</b> ' + md(d.lastDate) +
+      '에 떨어진 질의를 사람이 직접 다시 검색해 확인했습니다. 경쟁 병원(미엘·청담뷰)은 그대로 잡히고 ' +
+      '<b>우리 이름만 빠져</b> 있었습니다. 숫자가 아니라 실제 결과가 그렇습니다.';
+
+    var s3 = '<b>AI가 근거로 삼는 글이 통째로 바뀌었습니다.</b> ' + d.flipped.length +
+      '개 질의가 ' + md(d.cutDate) + ' <b>하루에 한꺼번에</b> 뒤집혔습니다 — 서서히 밀려난 게 아니라 끊긴 모양입니다. ' +
+      '이후 ' + d.runs + '회 연속으로 우리 블로그(gpuni114 · 네이버 블로그)는 <b>한 번도 인용되지 않았고</b>, ' +
+      '상위 근거가 전부 모두닥 · 굿닥 · 나만의닥터 · 강남언니 같은 <b>병원 목록 사이트</b>로 교체됐습니다. ' +
+      '우리는 이 목록 어디에도 등재돼 있지 않습니다.' +
+      (d.flipped.length ? '<div class="diag-q">' + d.flipped.map(function (q) { return '<span>' + esc(q) + '</span>'; }).join("") + '</div>' : "");
+
+    el.innerHTML =
+      '<div class="diag-hd"><span class="cap">원인 진단 · ' + md(d.cutDate) + ' 이후 ' + d.runs + '회 측정</span>' +
+        '<div class="ttl">웹검색 한 채널만 끊겼습니다</div>' +
+        '<div class="sub">웹검색 노출률이 ' + md(d.preDate) + ' ' + d.preRate + '% → ' + md(d.lastDate) + ' ' + d.lastRate +
+        '%로 주저앉았습니다(직전 6회 평균 ' + d.beforeAvg + '% → 이후 평균 ' + d.afterAvg + '%). ' +
+        '같은 날 같은 질의로 잰 다른 채널에는 이만한 붕괴가 없습니다.</div></div>' +
+      '<div class="diag-ch">' + cells + '</div>' +
+      step("✕", "no", s1) + step("✕", "no", s2) + step("!", "yes", s3) +
+      (wobbleTxt ? '<div class="diag-step"><div class="diag-mark no">?</div><div class="tx">' + wobbleTxt + '</div></div>' : "") +
+      '<div class="diag-end"><div class="tx">' +
+        (heldTxt ? '<b>' + heldTxt + '는 그대로입니다.</b> 블로그가 닿는 채널에서는 여전히 상위입니다. ' : "") +
+        '콘텐츠가 나빠진 게 아니라, <b>웹검색이 블로그 대신 목록 사이트를 근거로 쓰기 시작했고 거기에 우리 이름이 없는 것</b>이 원인입니다. ' +
+        '그래서 다음 한 수는 새 글을 더 쓰는 것이 아니라 목록 사이트 등재입니다.' +
+      '</div><button class="btn primary" data-go="sources">소스 등재 현황 보기 →</button></div>';
+
+    var go = el.querySelector("[data-go]");
+    if (go) go.addEventListener("click", function () { goPage(go.dataset.go); });
+  }
+
   function renderHome() {
     var auto = autoSeries();
     var latest = auto.length ? auto[auto.length - 1].v : null;
@@ -2441,6 +2611,7 @@
     $("hPrompts").textContent = allPrompts().length;
     $("hTests").textContent = log.length;
     $("homeChart").innerHTML = chartSVG({ range: 0, width: $("homeChart").clientWidth });
+    renderDiag();
     var recent = log.slice(-5).reverse();
     $("homeRecent").innerHTML = recent.length
       ? recent.map(function (e) {
